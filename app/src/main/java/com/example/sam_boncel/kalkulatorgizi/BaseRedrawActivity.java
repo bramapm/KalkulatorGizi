@@ -1,5 +1,9 @@
 package com.example.sam_boncel.kalkulatorgizi;
 
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.app.TaskStackBuilder;
+import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -7,6 +11,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.NotificationCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
@@ -80,6 +85,7 @@ public class BaseRedrawActivity extends BaseActivity {
                 } else if (id == R.id.nav_manage) {
                     Toolbar toolbar1 = (Toolbar) findViewById(R.id.toolbar);
                     toolbar1.setTitle("Pengaturan");
+                    //shNtif();
                     Toast.makeText(getApplicationContext(), "Pengaturan", Toast.LENGTH_SHORT).show();
                     PengaturanFragment pengaturanFragment = new PengaturanFragment();
                     FragmentManager manager = getSupportFragmentManager();
@@ -132,4 +138,18 @@ public class BaseRedrawActivity extends BaseActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+//    public void shNtif() {
+//        NotificationCompat.Builder notif = new NotificationCompat.Builder(this);
+//        notif.setSmallIcon(R.drawable.ic_menu_makanan);
+//        notif.setContentTitle("Judul Apl");
+//        notif.setContentText("Pesan dalam notifnya");
+//        Intent intent = new Intent(this, BerandaFragment.class);
+//        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+//        stackBuilder.addParentStack(BerandaFragment.class);
+//        stackBuilder.addNextIntent(intent);
+//        PendingIntent pendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+//        NotificationManager NM = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+//        NM.notify(0, notif.build());
+//    }
 }

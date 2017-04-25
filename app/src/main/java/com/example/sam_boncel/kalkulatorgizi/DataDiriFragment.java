@@ -1,10 +1,16 @@
 package com.example.sam_boncel.kalkulatorgizi;
 
 
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.app.TaskStackBuilder;
+import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.app.NotificationCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,7 +38,6 @@ public class DataDiriFragment extends Fragment {
     public User users_login;
     EditText txtUsername, txtPass, txtEmail, txtNama, txtTinggi, txtBerat, txtTTL, txtJK, txtUmur;
     Button btnSave;
-    BaseActivity ba;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
