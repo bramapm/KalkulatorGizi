@@ -13,6 +13,7 @@
         <activity android:name=".FirstActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -23,14 +24,20 @@
             android:name=".HomeActivity"
             android:label="Beranda"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity android:name=".BaseActivity" />
         <activity
             android:name=".RegisterActivity"
             android:label="Registrasi" />
-        <activity android:name=".FoodActivity"
+        <activity
+            android:name=".FoodActivity"
             android:label="Makanan"
-            android:theme="@style/AppTheme.NoActionBar" ></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".DetailMakananActivity"
+            android:theme="@style/AppTheme.CustomeTheme" />
+        <activity android:name=".DetailOlahragaActivity"
+            android:label="Detail Olahraga">
+        </activity>
     </application>
 
 </manifest>
