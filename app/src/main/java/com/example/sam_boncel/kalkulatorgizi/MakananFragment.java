@@ -4,6 +4,7 @@ package com.example.sam_boncel.kalkulatorgizi;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -32,7 +33,7 @@ import java.util.List;
  * Use the {@link MakananFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class MakananFragment extends Fragment implements AdapterView.OnItemClickListener {
+public class MakananFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -85,6 +86,29 @@ public class MakananFragment extends Fragment implements AdapterView.OnItemClick
         View rootView = inflater.inflate(R.layout.fragment_makanan, container, false);
 
         lv = (ListView)rootView.findViewById(R.id.listView);
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Makanan selecetedMakanan = listMakanan.get(position);
+                Intent i = new Intent(getContext(), DetailMakananActivity.class);
+                //DetailMakananFragment dmFragment = new DetailMakananFragment();
+//                Bundle i = new Bundle();
+//                FragmentManager manager = getActivity().getSupportFragmentManager();
+//                manager.beginTransaction().replace(
+//                        R.id.relativelayout_for_fragment,
+//                        dmFragment).commit();
+                i.putExtra("id_makanan", String.valueOf(selecetedMakanan.getId_makanan()));
+                i.putExtra("nama_makanan", selecetedMakanan.getNama_makanan());
+                i.putExtra("jenis", selecetedMakanan.getJenis());
+                i.putExtra("kkal", selecetedMakanan.getKkal());
+                i.putExtra("karbo", selecetedMakanan.getKarbo());
+                i.putExtra("protein", selecetedMakanan.getProtein());
+                i.putExtra("lemak", selecetedMakanan.getLemak());
+                i.putExtra("foto", selecetedMakanan.getFoto());
+                i.putExtra("keterangan", selecetedMakanan.getKeterangan());
+                startActivity(i);
+            }
+        });
         this.listMakanan = new ArrayList<>();
         getMakanan();
 
@@ -95,9 +119,6 @@ public class MakananFragment extends Fragment implements AdapterView.OnItemClick
 
 
 
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-    }
 
     public void getMakanan(){
             FormData data = new FormData();

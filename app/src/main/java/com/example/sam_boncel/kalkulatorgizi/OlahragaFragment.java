@@ -1,6 +1,7 @@
 package com.example.sam_boncel.kalkulatorgizi;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -10,6 +11,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.example.sam_boncel.kalkulatorgizi.entities.Makanan;
 import com.example.sam_boncel.kalkulatorgizi.entities.Olahraga;
 import com.example.sam_boncel.kalkulatorgizi.lib.FormData;
 import com.example.sam_boncel.kalkulatorgizi.lib.InternetTask;
@@ -27,7 +29,8 @@ import java.util.ArrayList;
  * Use the {@link OlahragaFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class OlahragaFragment extends Fragment implements AdapterView.OnItemClickListener{
+public class OlahragaFragment extends Fragment {
+    public ListView listView;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -37,10 +40,7 @@ public class OlahragaFragment extends Fragment implements AdapterView.OnItemClic
     private String mParam1;
     private String mParam2;
 
-    public ListView lv;
     private ArrayList<Olahraga> listOlahraga;
-
-
     public OlahragaFragment() {
         // Required empty public constructor
     }
@@ -76,55 +76,60 @@ public class OlahragaFragment extends Fragment implements AdapterView.OnItemClic
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-
         View rootView = inflater.inflate(R.layout.fragment_olahraga, container, false);
-
-        lv = (ListView)rootView.findViewById(R.id.listView);
-        this.listOlahraga = new ArrayList<>();
-        getOlahraga();
-
-        return rootView;
-    }
-
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-    }
-
-    public void getOlahraga(){
-        FormData data = new FormData();
-        data.add("method", "get_olahraga");
-        InternetTask uploadTask = new InternetTask("Olahraga", data);
-        uploadTask.setOnInternetTaskFinishedListener(new OnInternetTaskFinishedListener() {
+        listView = (ListView) rootView.findViewById(R.id.listView);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void OnInternetTaskFinished(InternetTask internetTask) {
-                try {
-                    JSONObject jsonObject = new JSONObject(internetTask.getResponseString());
-                    if (jsonObject.get("code").equals(200)){
-                        JSONArray jsonArray = jsonObject.getJSONArray("data");
-                        if (jsonArray.length() > 0){
-                            ArrayList<String> listpost = new ArrayList<>();
-                            for (int i = 0; i < jsonArray.length();i++){
-                                Olahraga olahraga = new Olahraga(jsonArray.getJSONObject(i));
-                                listOlahraga.add(new Olahraga(jsonArray.getJSONObject(i)));
-                                listpost.add
-                                        (olahraga.getNama_olahraga().toString()+"\n"+ olahraga.getKkal().toString()+"kkal");
-                            }
-                            ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, listpost);
-                            lv.setAdapter(adapter);
-                        }
-                    }else{
-//                            Snackbar.make(clContent, "Liked!", Snackbar.LENGTH_SHORT).show();
-                    }
-                } catch (JSONException e) {
-                    //                       Snackbar.make(clContent, e.getMessage(), Snackbar.LENGTH_SHORT).show();
-                }
-            }
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Olahraga selectedOlahraga = listOlahraga.get(position);
+                Intent i = new Intent(getContext(), DetailOlahragaActivity.class);
 
-            @Override
-            public void OnInternetTaskFailed(InternetTask internetTask) {
-                //                   Snackbar.make(clContent, internetTask.getException().getMessage(), Snackbar.LENGTH_SHORT).show();
+                i.putExtra("id_olahraga", String.valueOf(selectedOlahraga.getId_olahraga()));
+                i.putExtra("nama_olahraga", selectedOlahraga.getNama_olahraga());
+                i.putExtra("kkal", selectedOlahraga.getKkal());
+                i.putExtra("keterangan", selectedOlahraga.getKeterangan());
+                i.putExtra("foto", selectedOlahraga.getFoto());
             }
         });
-        uploadTask.execute();
-    }
 
+        this.listOlahraga = new ArrayList<>();
+        getOlahraga();
+        return rootView;
+    }
+        public void getOlahraga(){
+            FormData data = new FormData();
+            data.add("method", "get_olahraga");
+            InternetTask uploadTask = new InternetTask("Olahraga", data);
+            uploadTask.setOnInternetTaskFinishedListener(new OnInternetTaskFinishedListener() {
+                @Override
+                public void OnInternetTaskFinished(InternetTask internetTask) {
+                    try {
+                        JSONObject jsonObject = new JSONObject(internetTask.getResponseString());
+                        if (jsonObject.get("code").equals(200)){
+                            JSONArray jsonArray = jsonObject.getJSONArray("data");
+                            if (jsonArray.length() > 0){
+                                ArrayList<String> listpost = new ArrayList<>();
+                                for (int i = 0; i < jsonArray.length();i++){
+                                    Olahraga olahraga = new Olahraga(jsonArray.getJSONObject(i));
+                                    listOlahraga.add(new Olahraga(jsonArray.getJSONObject(i)));
+                                    listpost.add(olahraga.getNama_olahraga().toString());
+                                }
+                                ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, listpost);
+                                listView.setAdapter(adapter);
+                            }
+                        }else{
+    //                            Snackbar.make(clContent, "Liked!", Snackbar.LENGTH_SHORT).show();
+                        }
+                    } catch (JSONException e) {
+                        //                       Snackbar.make(clContent, e.getMessage(), Snackbar.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void OnInternetTaskFailed(InternetTask internetTask) {
+                    //                   Snackbar.make(clContent, internetTask.getException().getMessage(), Snackbar.LENGTH_SHORT).show();
+                }
+            });
+            uploadTask.execute();
+        }
 }
