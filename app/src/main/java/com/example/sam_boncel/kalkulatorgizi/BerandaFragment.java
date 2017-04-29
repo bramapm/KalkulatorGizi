@@ -51,6 +51,7 @@ public class BerandaFragment extends Fragment {
             showConfirmation();
         } else {
             Toast.makeText(getContext(), "Sudah ada Data", Toast.LENGTH_SHORT).show();
+            showInputMakanan();
         }
         return rootView;
     }
@@ -75,8 +76,8 @@ public class BerandaFragment extends Fragment {
 
     public void showConfirmation() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setMessage("Silahkan Update Data Anda!");
-        builder.setPositiveButton("Ya!", new DialogInterface.OnClickListener() {
+        builder.setMessage("Silahkan Update Data Anda");
+        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 Toolbar toolbar1 = (Toolbar) getActivity().findViewById(R.id.toolbar);
@@ -91,4 +92,23 @@ public class BerandaFragment extends Fragment {
 
         builder.show();
     } //end showconfir
+
+    public void showInputMakanan() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setMessage("Sudah makan apa saja hari ini?");
+        builder.setPositiveButton("Input", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Toolbar toolbar1 = (Toolbar) getActivity().findViewById(R.id.toolbar);
+                toolbar1.setTitle("Input Makanan");
+                InputMakananFragment imFragment = new InputMakananFragment();
+                FragmentManager manager = getActivity().getSupportFragmentManager();
+                manager.beginTransaction().replace(
+                        R.id.relativelayout_for_fragment,
+                        imFragment).commit();
+            }
+        });
+
+        builder.show();
+    } //en
 }

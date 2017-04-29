@@ -38,10 +38,5 @@
         android:layout_height="wrap_content"
         android:paddingTop="100dp">
 
-        <CalendarView
-            android:id="@+id/calendarView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
     </LinearLayout>
 </FrameLayout>
