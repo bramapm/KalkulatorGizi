@@ -35,9 +35,10 @@
         <activity
             android:name=".DetailMakananActivity"
             android:theme="@style/AppTheme.CustomeTheme" />
-        <activity android:name=".DetailOlahragaActivity"
-            android:label="Detail Olahraga">
-        </activity>
+        <activity
+            android:name=".DetailOlahragaActivity"
+            android:label="Detail Olahraga"></activity>
+        <activity android:name=".PilihMakananActivity"></activity>
     </application>
 
 </manifest>

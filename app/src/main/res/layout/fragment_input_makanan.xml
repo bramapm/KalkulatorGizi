@@ -23,8 +23,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="5dp"
-                android:paddingRight="5dp"
-                android:paddingLeft="5dp">
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp">
 
                 <TextView
                     android:layout_width="200dp"
@@ -49,10 +49,10 @@
                 android:layout_height="match_parent"
                 android:layout_below="@+id/garis"
                 android:layout_marginTop="5dp"
-                android:paddingRight="5dp"
+                android:paddingBottom="8dp"
                 android:paddingLeft="5dp"
-                android:paddingTop="5dp"
-                android:paddingBottom="8dp">
+                android:paddingRight="5dp"
+                android:paddingTop="5dp">
 
                 <TextView
                     android:layout_width="200dp"
@@ -76,15 +76,17 @@
                 android:layout_height="5dp"
                 android:layout_marginTop="5dp"
                 android:background="#000"></LinearLayout>
+
             <LinearLayout
                 android:id="@+id/mknPagi"
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
                 android:layout_marginTop="10dp"
-                android:paddingRight="5dp"
+                android:background="@drawable/background"
                 android:paddingLeft="5dp"
-                android:paddingTop="5dp"
-                android:background="@drawable/background">
+                android:paddingRight="5dp"
+                android:paddingTop="5dp">
+
                 <Button
                     android:id="@+id/button1"
                     android:layout_width="40dp"
@@ -95,12 +97,12 @@
                 <TextView
                     android:layout_width="150dp"
                     android:layout_height="wrap_content"
+                    android:fontFamily="casual"
                     android:paddingLeft="20dp"
                     android:text="Makan Pagi"
-                    android:fontFamily="casual"
-                    android:textStyle="bold"
                     android:textColor="#000"
-                    android:textSize="20dp" />
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -117,10 +119,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
                 android:layout_marginTop="10dp"
-                android:paddingRight="5dp"
+                android:background="@drawable/background"
                 android:paddingLeft="5dp"
-                android:paddingTop="5dp"
-                android:background="@drawable/background">
+                android:paddingRight="5dp"
+                android:paddingTop="5dp">
 
                 <Button
                     android:id="@+id/button2"
@@ -132,12 +134,12 @@
                 <TextView
                     android:layout_width="150dp"
                     android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-smallcaps"
                     android:paddingLeft="20dp"
                     android:text="Makan Siang"
-                    android:fontFamily="sans-serif-smallcaps"
-                    android:textStyle="bold"
                     android:textColor="#000"
-                    android:textSize="20dp" />
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -154,10 +156,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
                 android:layout_marginTop="10dp"
-                android:paddingRight="5dp"
-                android:paddingLeft="5dp"
-                android:paddingTop="5dp"
                 android:background="@drawable/background"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:paddingTop="5dp"
                 android:weightSum="1">
 
                 <Button
@@ -170,12 +172,12 @@
                 <TextView
                     android:layout_width="150dp"
                     android:layout_height="wrap_content"
+                    android:fontFamily="cursive"
                     android:paddingLeft="20dp"
                     android:text="Makan Malam"
-                    android:fontFamily="cursive"
-                    android:textStyle="bold"
                     android:textColor="#000"
-                    android:textSize="20dp" />
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/textView2"
@@ -193,10 +195,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
                 android:layout_marginTop="10dp"
-                android:paddingRight="5dp"
-                android:paddingLeft="5dp"
-                android:paddingTop="5dp"
                 android:background="@drawable/background"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:paddingTop="5dp"
                 android:weightSum="1">
 
                 <Button
@@ -209,12 +211,12 @@
                 <TextView
                     android:layout_width="150dp"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@string/navigation_drawer_close"
                     android:paddingLeft="20dp"
                     android:text="Snack / Lainnya"
-                    android:fontFamily="@string/navigation_drawer_close"
-                    android:textStyle="bold"
                     android:textColor="#000"
-                    android:textSize="20dp" />
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -226,5 +228,18 @@
 
             </LinearLayout>
         </LinearLayout>
+
+        <Button
+            android:id="@+id/btnProses"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/btnsingin"
+            android:onClick="btn_onClick"
+            android:text="PROSES"
+            android:textColor="#fff"
+            android:textSize="18dp"
+            android:textStyle="bold"
+            android:layout_marginLeft="65dp"/>
     </LinearLayout>
 </FrameLayout>
