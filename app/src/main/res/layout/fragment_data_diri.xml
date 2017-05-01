@@ -167,7 +167,23 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:src="@mipmap/ic_user" />
-
+                <!--<TextView-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:text="Jenis Kelamin"-->
+                    <!--android:layout_marginRight="10dp"/>-->
+                    <!--<RadioButton-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:id="@+id/rb_pria"-->
+                        <!--android:text="Pria"-->
+                        <!--android:onClick="rd_onClick"/>-->
+                    <!--<RadioButton-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:id="@+id/rb_wanita"-->
+                        <!--android:text="Wanita"-->
+                        <!--android:onClick="rd_onClick"/>-->
                 <EditText
                     android:id="@+id/txtJK"
                     android:layout_width="match_parent"

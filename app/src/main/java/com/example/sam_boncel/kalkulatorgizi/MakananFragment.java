@@ -38,7 +38,7 @@ public class MakananFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-
+    public ArrayAdapter<String> adapter;
     public ListView lv;
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -138,7 +138,7 @@ public class MakananFragment extends Fragment {
                                     listMakanan.add(new Makanan(jsonArray.getJSONObject(i)));
                                     listpost.add(makanan.getNama_makanan().toString()+"\n"+ makanan.getKkal().toString()+"kkal");
                                 }
-                                ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, listpost);
+                                adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, listpost);
                                 lv.setAdapter(adapter);
                             }
                         }else{

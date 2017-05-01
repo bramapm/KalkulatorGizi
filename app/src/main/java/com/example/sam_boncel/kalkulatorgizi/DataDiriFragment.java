@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.Toast;
 
 import com.example.sam_boncel.kalkulatorgizi.entities.User;
@@ -37,6 +38,7 @@ import org.json.JSONObject;
 public class DataDiriFragment extends Fragment {
     public User users_login;
     EditText txtUsername, txtPass, txtEmail, txtNama, txtTinggi, txtBerat, txtTTL, txtJK, txtUmur;
+    RadioButton rdPria,rdWanita;
     Button btnSave;
 
     // TODO: Rename parameter arguments, choose names that match
@@ -94,6 +96,8 @@ public class DataDiriFragment extends Fragment {
         txtTTL = (EditText) rootView.findViewById(R.id.txtTTL);
         txtTinggi = (EditText) rootView.findViewById(R.id.txtTinggi);
         txtBerat = (EditText) rootView.findViewById(R.id.txtBerat);
+//        rdPria = (RadioButton)rootView.findViewById(R.id.rb_pria);
+//        rdWanita = (RadioButton)rootView.findViewById(R.id.rb_wanita);
 
         loadDataUsersLogin();
         txtUsername.setText(users_login.getUsername());
@@ -116,6 +120,7 @@ public class DataDiriFragment extends Fragment {
         return rootView;
     }
 
+
     public void onUpdateAkunClick() {
         if (is_parameters_update_valid()){
             String tinggi, berat, umur, jenisk;
@@ -125,7 +130,7 @@ public class DataDiriFragment extends Fragment {
             tinggi  = txtTinggi.getText().toString();
             berat   = txtBerat.getText().toString();
             umur    = txtUmur.getText().toString();
-            jenisk  = txtJK.getText().toString();
+           jenisk  = txtJK.getText().toString();
 
             tb = Double.parseDouble(tinggi);
             be = Double.parseDouble(berat);

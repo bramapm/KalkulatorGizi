@@ -39,7 +39,8 @@
                     android:layout_height="wrap_content"
                     android:text="....."
                     android:textAlignment="textEnd"
-                    android:textColor="#000"
+                    android:textColor="#218044"
+                    android:textStyle="bold"
                     android:textSize="15dp" />
             </LinearLayout>
 
@@ -88,7 +89,7 @@
                 android:paddingTop="5dp">
 
                 <Button
-                    android:id="@+id/button1"
+                    android:id="@+id/btnPagi"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_marginLeft="10dp"
@@ -97,7 +98,7 @@
                 <TextView
                     android:layout_width="150dp"
                     android:layout_height="wrap_content"
-                    android:fontFamily="casual"
+                    android:fontFamily="@string/navigation_drawer_close"
                     android:paddingLeft="20dp"
                     android:text="Makan Pagi"
                     android:textColor="#000"
@@ -105,6 +106,7 @@
                     android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/txtPagi"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="....."
@@ -125,16 +127,18 @@
                 android:paddingTop="5dp">
 
                 <Button
-                    android:id="@+id/button2"
+                    android:id="@+id/btnSiang"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_marginLeft="10dp"
-                    android:background="@mipmap/ic_plus" />
+                    android:background="@mipmap/ic_plus"
+                    android:onClick="btn_onClick" />
 
                 <TextView
+                    android:id="@+id/textView3"
                     android:layout_width="150dp"
                     android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif-smallcaps"
+                    android:fontFamily="@string/navigation_drawer_close"
                     android:paddingLeft="20dp"
                     android:text="Makan Siang"
                     android:textColor="#000"
@@ -142,6 +146,7 @@
                     android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/txtSiang"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="....."
@@ -163,16 +168,17 @@
                 android:weightSum="1">
 
                 <Button
-                    android:id="@+id/button3"
+                    android:id="@+id/btnMlm"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_marginLeft="10dp"
-                    android:background="@mipmap/ic_plus" />
+                    android:background="@mipmap/ic_plus"
+                    android:onClick="btn_onClick" />
 
                 <TextView
                     android:layout_width="150dp"
                     android:layout_height="wrap_content"
-                    android:fontFamily="cursive"
+                    android:fontFamily="@string/navigation_drawer_close"
                     android:paddingLeft="20dp"
                     android:text="Makan Malam"
                     android:textColor="#000"
@@ -180,7 +186,7 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/textView2"
+                    android:id="@+id/txtMlm"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="....."
@@ -202,11 +208,12 @@
                 android:weightSum="1">
 
                 <Button
-                    android:id="@+id/button4"
+                    android:id="@+id/btnLain"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_marginLeft="10dp"
-                    android:background="@mipmap/ic_plus" />
+                    android:background="@mipmap/ic_plus"
+                    android:onClick="btn_onClick" />
 
                 <TextView
                     android:layout_width="150dp"
@@ -219,6 +226,7 @@
                     android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/txtLain"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="....."
@@ -233,13 +241,13 @@
             android:id="@+id/btnProses"
             android:layout_width="250dp"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="65dp"
             android:layout_marginTop="5dp"
             android:background="@drawable/btnsingin"
             android:onClick="btn_onClick"
             android:text="PROSES"
             android:textColor="#fff"
             android:textSize="18dp"
-            android:textStyle="bold"
-            android:layout_marginLeft="65dp"/>
+            android:textStyle="bold" />
     </LinearLayout>
 </FrameLayout>

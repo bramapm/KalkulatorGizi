@@ -9,39 +9,42 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
+
             <Button
                 android:id="@+id/btnHistori"
-                android:layout_width="100dp"
+                android:layout_width="80dp"
                 android:layout_height="50dp"
+                android:layout_marginLeft="20dp"
                 android:layout_marginTop="5dp"
                 android:background="@drawable/btnsingin"
                 android:onClick="btn_onClick"
+                android:text="Histori"
                 android:textColor="#fff"
                 android:textSize="18dp"
-                android:textStyle="bold"
-                android:text="Histori"
-                android:layout_marginLeft="20dp" />
+                android:textStyle="bold" />
+
             <Button
                 android:id="@+id/btnJadwal"
-                android:layout_width="100dp"
+                android:layout_width="80dp"
                 android:layout_height="50dp"
+                android:layout_marginLeft="145dp"
                 android:layout_marginTop="5dp"
                 android:background="@drawable/btnsingin"
                 android:onClick="btn_onClick"
+                android:text="Jadwal"
                 android:textColor="#fff"
                 android:textSize="18dp"
-                android:textStyle="bold"
-                android:text="Jadwal"
-                android:layout_marginLeft="145dp" />
+                android:textStyle="bold" />
         </LinearLayout>
+
         <ListView
+            android:id="@+id/listView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/listView">
-        </ListView>
+            android:layout_height="match_parent"></ListView>
     </LinearLayout>
 </FrameLayout>
