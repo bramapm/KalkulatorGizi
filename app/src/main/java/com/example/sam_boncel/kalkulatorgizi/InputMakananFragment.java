@@ -4,22 +4,28 @@ package com.example.sam_boncel.kalkulatorgizi;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Adapter;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.sam_boncel.kalkulatorgizi.entities.Makanan;
+import com.example.sam_boncel.kalkulatorgizi.entities.Record_mkn;
 import com.example.sam_boncel.kalkulatorgizi.entities.User;
 import com.example.sam_boncel.kalkulatorgizi.lib.FormData;
 import com.example.sam_boncel.kalkulatorgizi.lib.InternetTask;
@@ -30,8 +36,11 @@ import com.google.gson.GsonBuilder;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 
 /**
@@ -41,12 +50,16 @@ import java.util.ArrayList;
  */
 public class InputMakananFragment extends Fragment {
     public User users_login;
+    public Makanan makanan;
+    public Record_mkn record_mkn;
     private ArrayList<Makanan> listMakanan;
     public ArrayAdapter<String> adapter;
     ListView lv;
     public Button btnPagi, btnSiang, btnMlm, btnLain, btnProses;
     public TextView txtKaloributuh, txtKalorikonsumsi, txtPagi, txtSiang, txtMlm, txtLain;
     public EditText txtSearch;
+    String kat_waktu = "";
+    String id_mkn = "";
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -85,6 +98,7 @@ public class InputMakananFragment extends Fragment {
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
+//            sumKalMkn();
         }
     }
 
@@ -100,7 +114,24 @@ public class InputMakananFragment extends Fragment {
                 //alertdialog buat popup
                 AlertDialog.Builder mBuilder = new AlertDialog.Builder(getActivity());
                 View mView = getLayoutInflater(savedInstanceState).inflate(R.layout.activity_pilih_makanan, null);
-                lv = (ListView) mView.findViewById(R.id.listViewaa);
+                kat_waktu = "pagi";
+                Button btnSimpan = (Button) mView.findViewById(R.id.btnSimpan);
+                btnSimpan.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        saveRecordMkn();
+                    }
+                });
+                lv = (ListView) mView.findViewById(R.id.listViewMkn);
+                lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                      @Override
+                      public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                          Makanan selecetedMakanan = listMakanan.get(position);
+                          String ss = selecetedMakanan.getId_makanan().toString();
+                          Toast.makeText(getContext(), "Yang dipilih 3"+ ss, Toast.LENGTH_SHORT).show();
+                          id_mkn = ss;
+                      }
+                  });
                 txtSearch = (EditText) mView.findViewById(R.id.search);
                 //buat search
                 txtSearch.addTextChangedListener(new TextWatcher() {
@@ -127,13 +158,32 @@ public class InputMakananFragment extends Fragment {
 //                Log.d("A", "A");
             }
         });
+
+
         btnSiang = (Button)rootView.findViewById(R.id.btnSiang);
         btnSiang.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder mBuilder = new AlertDialog.Builder(getActivity());
                 View mView = getLayoutInflater(savedInstanceState).inflate(R.layout.activity_pilih_makanan, null);
-                lv = (ListView) mView.findViewById(R.id.listViewaa);
+                kat_waktu = "siang";
+                Button btnSimpan = (Button) mView.findViewById(R.id.btnSimpan);
+                btnSimpan.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        saveRecordMkn();
+                    }
+                });
+                lv = (ListView) mView.findViewById(R.id.listViewMkn);
+                lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        Makanan selecetedMakanan = listMakanan.get(position);
+                        String ss = selecetedMakanan.getId_makanan().toString();
+                        Toast.makeText(getContext(), "Yang dipilih 3"+ ss, Toast.LENGTH_SHORT).show();
+                        id_mkn = ss;
+                    }
+                });
                 txtSearch = (EditText) mView.findViewById(R.id.search);
                 //buat search
                 txtSearch.addTextChangedListener(new TextWatcher() {
@@ -159,13 +209,32 @@ public class InputMakananFragment extends Fragment {
                 dialog.show(); // *akhir popup
             }
         });
+
+
         btnMlm = (Button)rootView.findViewById(R.id.btnMlm);
         btnMlm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder mBuilder = new AlertDialog.Builder(getActivity());
                 View mView = getLayoutInflater(savedInstanceState).inflate(R.layout.activity_pilih_makanan, null);
-                lv = (ListView) mView.findViewById(R.id.listViewaa);
+                kat_waktu = "malam";
+                Button btnSimpan = (Button) mView.findViewById(R.id.btnSimpan);
+                btnSimpan.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        saveRecordMkn();
+                    }
+                });
+                lv = (ListView) mView.findViewById(R.id.listViewMkn);
+                lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        Makanan selecetedMakanan = listMakanan.get(position);
+                        String ss = selecetedMakanan.getId_makanan().toString();
+                        Toast.makeText(getContext(), "Yang dipilih 3"+ ss, Toast.LENGTH_SHORT).show();
+                        id_mkn = ss;
+                    }
+                });
                 txtSearch = (EditText) mView.findViewById(R.id.search);
                 //buat search
                 txtSearch.addTextChangedListener(new TextWatcher() {
@@ -191,13 +260,32 @@ public class InputMakananFragment extends Fragment {
                 dialog.show(); // *akhir popup
             }
         });
+
+
         btnLain = (Button) rootView.findViewById(R.id.btnLain);
         btnLain.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder mBuilder = new AlertDialog.Builder(getActivity());
                 View mView = getLayoutInflater(savedInstanceState).inflate(R.layout.activity_pilih_makanan, null);
-                lv = (ListView) mView.findViewById(R.id.listViewaa);
+                kat_waktu = "lain";
+                Button btnSimpan = (Button) mView.findViewById(R.id.btnSimpan);
+                btnSimpan.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        saveRecordMkn();
+                    }
+                });
+                lv = (ListView) mView.findViewById(R.id.listViewMkn);
+                lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        Makanan selecetedMakanan = listMakanan.get(position);
+                        String ss = selecetedMakanan.getId_makanan().toString();
+                        Toast.makeText(getContext(), "Yang dipilih 3"+ ss, Toast.LENGTH_SHORT).show();
+                        id_mkn = ss;
+                    }
+                });
                 txtSearch = (EditText) mView.findViewById(R.id.search);
                 //buat search
                 txtSearch.addTextChangedListener(new TextWatcher() {
@@ -224,17 +312,28 @@ public class InputMakananFragment extends Fragment {
             }
         });
         btnProses = (Button) rootView.findViewById(R.id.btnProses);
-
         loadDataUsersLogin();
+        sumKalMkn();
         txtKaloributuh = (TextView) rootView.findViewById(R.id.kaloributuh);
         txtKalorikonsumsi = (TextView) rootView.findViewById(R.id.kalorikonsumsi);
         txtPagi = (TextView) rootView.findViewById(R.id.txtPagi);
         txtSiang = (TextView) rootView.findViewById(R.id.txtSiang);
         txtMlm = (TextView) rootView.findViewById(R.id.txtMlm);
         txtLain = (TextView) rootView.findViewById(R.id.txtLain);
-
         txtKaloributuh.setText(users_login.getKalori());
+
         return rootView;
+    }
+
+    private void onCheckedChanged(CompoundButton button, boolean isCheck){
+        int pos = lv.getPositionForView(button);
+        if (pos != ListView.INVALID_POSITION){
+            Makanan m = listMakanan.get(pos);
+            m.setCheck(isCheck);
+
+        Toast.makeText(getContext(), "Makanan yang dipilih" + m.getNama_makanan() + isCheck, Toast.LENGTH_SHORT).show();
+
+        }
     }
 
     public boolean loadDataUsersLogin(){
@@ -254,8 +353,6 @@ public class InputMakananFragment extends Fragment {
             return false;
         }
     }
-
-
     public void getMakanan(){
         FormData data = new FormData();
         data.add("method", "get_makanan");
@@ -291,5 +388,84 @@ public class InputMakananFragment extends Fragment {
             }
         });
         uploadTask.execute();
+    }
+
+    public void saveRecordMkn() {
+            FormData data = new FormData();
+            data.add("method", "insertMkn");
+            data.add("id_user", users_login.getId_user());
+            data.add("id_makanan", id_mkn); //id makanan yang di select
+            data.add("kat_waktu", kat_waktu);
+            data.add("tanggal", getTanggal());
+            InternetTask uploadTask = new InternetTask("Record", data);
+            uploadTask.setOnInternetTaskFinishedListener(new OnInternetTaskFinishedListener() {
+                @Override
+                public void OnInternetTaskFinished(InternetTask internetTask) {
+                    try {
+                        JSONObject jsonObject = new JSONObject(internetTask.getResponseString());
+                        if (jsonObject.get("code").equals(200)){
+                            //btnRegister.setClickable(false);
+
+                            //Snackbar.make(,"Registrasi Sukses", Snackbar.LENGTH_SHORT).show();
+                            //Snackbar.make(this, "Registration Success", Snackbar.LENGTH_SHORT).show();
+                        }else{
+                            Toast.makeText(getContext(),"Gagal", Toast.LENGTH_SHORT).show();
+                        }
+                    } catch (JSONException e) {
+                        //Snackbar.make(clContent, e.getMessage(), Snackbar.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void OnInternetTaskFailed(InternetTask internetTask) {
+                    //Snackbar.make(clContent, internetTask.getException().getMessage(), Snackbar.LENGTH_SHORT).show();
+                }
+            });
+            uploadTask.execute();
+    }
+
+    private void sumKalMkn(){
+        FormData data = new FormData();
+        data.add("method", "countKaloriMkn");
+        data.add("id_user", users_login.getId_user());
+        data.add("tanggal", getTanggal());
+        InternetTask uploadTask = new InternetTask("Record", data);
+        uploadTask.setOnInternetTaskFinishedListener(new OnInternetTaskFinishedListener() {
+            @Override
+            public void OnInternetTaskFinished(InternetTask internetTask) {
+                try {
+                    JSONObject jsonObject = new JSONObject(internetTask.getResponseString());
+                    if (jsonObject.get("code").equals(200)){
+                        //btnRegister.setClickable(false);
+                        JSONArray nv =jsonObject.getJSONArray("data");
+                        txtPagi.setText(String.valueOf(nv.get(0)));
+                        txtSiang.setText(String.valueOf(nv.get(1)));
+                        txtMlm.setText(String.valueOf(nv.get(2)));
+                        txtLain.setText(String.valueOf(nv.get(3)));
+                        //Toast.makeText(getContext(),"Sukses" + nv.toString() , Toast.LENGTH_SHORT).show();
+                        //Snackbar.make(,"Registrasi Sukses", Snackbar.LENGTH_SHORT).show();
+                        //Snackbar.make(this, "Registration Success", Snackbar.LENGTH_SHORT).show();
+                    }else{
+                        Toast.makeText(getContext(),"Gagal get Data", Toast.LENGTH_SHORT).show();
+                    }
+                } catch (JSONException e) {
+                    //Snackbar.make(clContent, e.getMessage(), Snackbar.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void OnInternetTaskFailed(InternetTask internetTask) {
+                //Snackbar.make(clContent, internetTask.getException().getMessage(), Snackbar.LENGTH_SHORT).show();
+            }
+        });
+        uploadTask.execute();
+    }
+
+
+    private String getTanggal() {
+        Date now = new Date();
+        SimpleDateFormat frmt = new SimpleDateFormat("yyyy-MM-dd");
+        String dateString = frmt.format(now);
+        return dateString;
     }
 }

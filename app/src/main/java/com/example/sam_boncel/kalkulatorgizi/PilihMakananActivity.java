@@ -19,15 +19,13 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 public class PilihMakananActivity extends AppCompatActivity {
-    private ArrayList<Makanan> listMakanan;
-    public ListView lv;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pilih_makanan);
 
-        lv = (ListView) findViewById(R.id.listViewaa);
-        this.listMakanan = new ArrayList<>();
+
     }
 
 

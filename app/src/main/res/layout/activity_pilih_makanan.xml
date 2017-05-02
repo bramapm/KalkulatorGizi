@@ -24,34 +24,29 @@
                 android:src="@mipmap/ic_seacrh"
                 android:layout_gravity="center_vertical"
                 />
-            <!--<TextView-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content" -->
-                <!--android:text="Pencarian"-->
-                <!--android:textAlignment="center"-->
-                <!--android:textSize="14dp"-->
-                <!--/>-->
+
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/search"
                 android:hint="Pencarian"/>
         </LinearLayout>
+
         <ListView
             android:layout_width="match_parent"
-            android:layout_height="430dp"
-            android:id="@+id/listViewaa"/>
-        <Button
-            android:id="@+id/btnProses"
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:background="@drawable/btnsingin"
-            android:onClick="btn_onClick"
-            android:text="SIMPAN"
-            android:textColor="#fff"
-            android:textSize="18dp"
-            android:textStyle="bold"
-            android:layout_marginLeft="65dp"/>
+            android:layout_height="265dp"
+            android:id="@+id/listViewMkn"/>
+
     </LinearLayout>
+    <Button
+        android:id="@+id/btnSimpan"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/btnsingin"
+        android:text="SIMPAN"
+        android:textColor="#fff"
+        android:textSize="18dp"
+        android:layout_alignParentBottom="true"
+
+        android:textStyle="bold" />
 </RelativeLayout>

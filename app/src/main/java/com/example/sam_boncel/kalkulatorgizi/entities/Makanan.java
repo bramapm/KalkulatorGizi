@@ -19,6 +19,7 @@ public class Makanan {
     private String keterangan;
 
     private JSONObject json;
+    private Boolean isCheck;
 
     public Makanan(JSONObject json) throws JSONException{
         this.json = json;
@@ -103,5 +104,13 @@ public class Makanan {
 
     public void setKeterangan(String keterangan) {
         this.keterangan = keterangan;
+    }
+
+    public Boolean isCheck() {
+        return isCheck();
+    }
+
+    public void setCheck(Boolean isCheck) {
+        this.isCheck = isCheck;
     }
 }
