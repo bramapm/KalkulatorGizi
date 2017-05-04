@@ -21,6 +21,7 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,6 +39,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.w3c.dom.Text;
 
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -58,6 +60,7 @@ public class InputMakananFragment extends Fragment {
     public Button btnPagi, btnSiang, btnMlm, btnLain, btnProses;
     public TextView txtKaloributuh, txtKalorikonsumsi, txtPagi, txtSiang, txtMlm, txtLain;
     public EditText txtSearch;
+    public ProgressBar progressBar;
     String kat_waktu = "";
     String id_mkn = "";
     // TODO: Rename parameter arguments, choose names that match
@@ -312,15 +315,21 @@ public class InputMakananFragment extends Fragment {
             }
         });
         btnProses = (Button) rootView.findViewById(R.id.btnProses);
+
         loadDataUsersLogin();
         sumKalMkn();
+        sumKalMknTotal();
         txtKaloributuh = (TextView) rootView.findViewById(R.id.kaloributuh);
         txtKalorikonsumsi = (TextView) rootView.findViewById(R.id.kalorikonsumsi);
         txtPagi = (TextView) rootView.findViewById(R.id.txtPagi);
         txtSiang = (TextView) rootView.findViewById(R.id.txtSiang);
         txtMlm = (TextView) rootView.findViewById(R.id.txtMlm);
         txtLain = (TextView) rootView.findViewById(R.id.txtLain);
-        txtKaloributuh.setText(users_login.getKalori());
+        progressBar = (ProgressBar) rootView.findViewById(R.id.progressBar);
+        //DecimalFormat aaa = new DecimalFormat("#.##");
+        Double keb = Double.valueOf(users_login.getKalori());
+        //String.format();
+        txtKaloributuh.setText(String.format("%.2f", keb));
 
         return rootView;
     }
@@ -442,6 +451,43 @@ public class InputMakananFragment extends Fragment {
                         txtSiang.setText(String.valueOf(nv.get(1)));
                         txtMlm.setText(String.valueOf(nv.get(2)));
                         txtLain.setText(String.valueOf(nv.get(3)));
+                        //Toast.makeText(getContext(),"Sukses" + nv.toString() , Toast.LENGTH_SHORT).show();
+                        //Snackbar.make(,"Registrasi Sukses", Snackbar.LENGTH_SHORT).show();
+                        //Snackbar.make(this, "Registration Success", Snackbar.LENGTH_SHORT).show();
+                    }else{
+                        Toast.makeText(getContext(),"Gagal get Data", Toast.LENGTH_SHORT).show();
+                    }
+                } catch (JSONException e) {
+                    //Snackbar.make(clContent, e.getMessage(), Snackbar.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void OnInternetTaskFailed(InternetTask internetTask) {
+                //Snackbar.make(clContent, internetTask.getException().getMessage(), Snackbar.LENGTH_SHORT).show();
+            }
+        });
+        uploadTask.execute();
+    }
+
+    private void sumKalMknTotal(){
+        FormData data = new FormData();
+        data.add("method", "countKaloriMknTotal");
+        data.add("id_user", users_login.getId_user());
+        data.add("tanggal", getTanggal());
+        InternetTask uploadTask = new InternetTask("Record", data);
+        uploadTask.setOnInternetTaskFinishedListener(new OnInternetTaskFinishedListener() {
+            @Override
+            public void OnInternetTaskFinished(InternetTask internetTask) {
+                try {
+                    JSONObject jsonObject = new JSONObject(internetTask.getResponseString());
+                    if (jsonObject.get("code").equals(200)){
+                        //btnRegister.setClickable(false);
+                        JSONArray nv = jsonObject.getJSONArray("data");
+                        JSONObject jo = nv.getJSONObject(0);
+                        String ss = jo.getString("kalori");
+                        //String jo = nv.get(0).toString();
+                        txtKalorikonsumsi.setText(ss);
                         //Toast.makeText(getContext(),"Sukses" + nv.toString() , Toast.LENGTH_SHORT).show();
                         //Snackbar.make(,"Registrasi Sukses", Snackbar.LENGTH_SHORT).show();
                         //Snackbar.make(this, "Registration Success", Snackbar.LENGTH_SHORT).show();

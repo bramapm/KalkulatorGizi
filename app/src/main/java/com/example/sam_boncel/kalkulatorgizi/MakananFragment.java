@@ -40,6 +40,7 @@ public class MakananFragment extends Fragment {
     private static final String ARG_PARAM2 = "param2";
     public ArrayAdapter<String> adapter;
     public ListView lv;
+
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
