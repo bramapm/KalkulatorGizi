@@ -1,12 +1,15 @@
 package com.example.sam_boncel.kalkulatorgizi;
 
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.format.DateFormat;
@@ -26,6 +29,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.sam_boncel.kalkulatorgizi.entities.Makanan;
+import com.example.sam_boncel.kalkulatorgizi.entities.Olahraga;
 import com.example.sam_boncel.kalkulatorgizi.entities.Record_mkn;
 import com.example.sam_boncel.kalkulatorgizi.entities.User;
 import com.example.sam_boncel.kalkulatorgizi.lib.FormData;
@@ -314,7 +318,6 @@ public class InputMakananFragment extends Fragment {
                 dialog.show(); // *akhir popup
             }
         });
-        btnProses = (Button) rootView.findViewById(R.id.btnProses);
 
         loadDataUsersLogin();
         sumKalMkn();
@@ -327,12 +330,69 @@ public class InputMakananFragment extends Fragment {
         txtLain = (TextView) rootView.findViewById(R.id.txtLain);
         progressBar = (ProgressBar) rootView.findViewById(R.id.progressBar);
         //DecimalFormat aaa = new DecimalFormat("#.##");
-        Double keb = Double.valueOf(users_login.getKalori());
+        //Double keb = Double.valueOf(users_login.getKalori());
         //String.format();
-        txtKaloributuh.setText(String.format("%.2f", keb));
+        //txtKaloributuh.setText(String.format("%.2f", keb));
+        txtKaloributuh.setText(users_login.getKalori());
 
+        btnProses = (Button) rootView.findViewById(R.id.btnProses);
+        btnProses.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (txtKalorikonsumsi.getText().toString() == txtKaloributuh.getText().toString()){
+                    Toast.makeText(getContext(), "Kalori Anda Sama", Toast.LENGTH_SHORT).show();
+                }else if(Double.parseDouble(txtKalorikonsumsi.getText().toString()) >= Double.parseDouble(txtKaloributuh.getText().toString())){
+                    showConfirmationOlg();
+                }else if(Double.parseDouble(txtKalorikonsumsi.getText().toString()) <= Double.parseDouble(txtKaloributuh.getText().toString())){
+                    showConfirmationMkn();
+                }
+            }
+        });
         return rootView;
     }
+
+    public void showConfirmationOlg() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        double hasil = Double.parseDouble(txtKalorikonsumsi.getText().toString()) - Double.parseDouble(txtKaloributuh.getText().toString());
+        builder.setMessage("Kalori Anda Kelebihan " + hasil + " Silahkan Pilih Saran Olahraga");
+        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Toolbar toolbar1 = (Toolbar) getActivity().findViewById(R.id.toolbar);
+                toolbar1.setTitle("Olahraga");
+                OlahragaFragment olahragaFragment= new OlahragaFragment();
+                FragmentManager manager = getActivity().getSupportFragmentManager();
+                manager.beginTransaction().replace(
+                        R.id.relativelayout_for_fragment,
+                        olahragaFragment).commit();
+            }
+        });
+
+        builder.show();
+    } //end showconfir
+
+    public void showConfirmationMkn() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        double hasil = Double.parseDouble(txtKalorikonsumsi.getText().toString()) - Double.parseDouble(txtKaloributuh.getText().toString());
+        builder.setMessage("Anda Kekurangan Kalori Sebanyak " + hasil + " Silahkan Pilih Saran Makanan");
+        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Toolbar toolbar1 = (Toolbar) getActivity().findViewById(R.id.toolbar);
+                toolbar1.setTitle("Makanan");
+                MakananFragment makananFragment = new MakananFragment();
+                FragmentManager manager = getActivity().getSupportFragmentManager();
+                manager.beginTransaction().replace(
+                        R.id.relativelayout_for_fragment,
+                        makananFragment).commit();
+            }
+        });
+
+        builder.show();
+    } //end showconfir
+
+
+
 
     private void onCheckedChanged(CompoundButton button, boolean isCheck){
         int pos = lv.getPositionForView(button);
