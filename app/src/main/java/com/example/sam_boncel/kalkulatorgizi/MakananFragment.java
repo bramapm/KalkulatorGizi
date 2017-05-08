@@ -6,12 +6,15 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
 
 import com.example.sam_boncel.kalkulatorgizi.entities.Makanan;
@@ -39,6 +42,7 @@ public class MakananFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     public ArrayAdapter<String> adapter;
+    EditText txtSearch;
     public ListView lv;
 
     // TODO: Rename and change types of parameters
@@ -86,18 +90,30 @@ public class MakananFragment extends Fragment {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_makanan, container, false);
 
+        txtSearch = (EditText) rootView.findViewById(R.id.search);
+        //buat search
+        txtSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                adapter.getFilter().filter(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            } //akhir search
+        });
         lv = (ListView)rootView.findViewById(R.id.listView);
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Makanan selecetedMakanan = listMakanan.get(position);
                 Intent i = new Intent(getContext(), DetailMakananActivity.class);
-                //DetailMakananFragment dmFragment = new DetailMakananFragment();
-//                Bundle i = new Bundle();
-//                FragmentManager manager = getActivity().getSupportFragmentManager();
-//                manager.beginTransaction().replace(
-//                        R.id.relativelayout_for_fragment,
-//                        dmFragment).commit();
                 i.putExtra("id_makanan", String.valueOf(selecetedMakanan.getId_makanan()));
                 i.putExtra("nama_makanan", selecetedMakanan.getNama_makanan());
                 i.putExtra("jenis", selecetedMakanan.getJenis());
@@ -112,9 +128,6 @@ public class MakananFragment extends Fragment {
         });
         this.listMakanan = new ArrayList<>();
         getMakanan();
-
-
-//        lv.setAdapter(new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1));
         return rootView;
     }
 

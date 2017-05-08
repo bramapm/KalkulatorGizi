@@ -9,30 +9,27 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:padding="2dp"
             android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/btnHistori"
-                android:layout_width="80dp"
-                android:layout_height="50dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="5dp"
-                android:background="@drawable/btnsingin"
-                android:onClick="btn_onClick"
-                android:text="Histori"
-                android:textColor="#fff"
-                android:textSize="18dp"
-                android:textStyle="bold" />
-
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/ic_seacrh"
+                android:layout_gravity="center_vertical"
+                />
+            <EditText
+                android:layout_width="230dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/search"
+                android:hint="Pencarian"/>
             <Button
                 android:id="@+id/btnJadwal"
                 android:layout_width="80dp"
                 android:layout_height="50dp"
-                android:layout_marginLeft="145dp"
+                android:layout_marginLeft="5dp"
                 android:layout_marginTop="5dp"
                 android:background="@drawable/btnsingin"
                 android:onClick="btn_onClick"
@@ -41,7 +38,6 @@
                 android:textSize="18dp"
                 android:textStyle="bold" />
         </LinearLayout>
-
         <ListView
             android:id="@+id/listView"
             android:layout_width="match_parent"
