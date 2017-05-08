@@ -3,6 +3,7 @@ package com.example.sam_boncel.kalkulatorgizi;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -19,6 +20,13 @@ public class DetailOlahragaActivity extends AppCompatActivity {
         txtKeterangan = (TextView) findViewById(R.id.keterangan);
         imageView = (ImageView) findViewById(R.id.imageView);
 
+        DisplayMetrics dm = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(dm);
+
+        int witdh = dm.widthPixels;
+        int height = dm.heightPixels;
+
+        getWindow().setLayout((int) (witdh * .80), (int) (height * .60));
         showData();
     }
 

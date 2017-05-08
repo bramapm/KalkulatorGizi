@@ -44,7 +44,7 @@ public class BerandaFragment extends Fragment {
         loadDataUsersLogin();
 
         txtNama.setText(users_login.getNama_user());
-        txtKalori.setText("Kebutuhan kalori anda\n" + users_login.getKalori() + "\n per hari");
+        txtKalori.setText(users_login.getKalori());
 
         if ((users_login.getKalori().toString().length() <= 1)) {
             Toast.makeText(getContext(), "Data 0 atau null", Toast.LENGTH_SHORT).show();
