@@ -35,6 +35,7 @@ import com.example.sam_boncel.kalkulatorgizi.entities.User;
 import com.example.sam_boncel.kalkulatorgizi.lib.FormData;
 import com.example.sam_boncel.kalkulatorgizi.lib.InternetTask;
 import com.example.sam_boncel.kalkulatorgizi.lib.OnInternetTaskFinishedListener;
+import com.example.sam_boncel.kalkulatorgizi.lib.SaranMakan;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -64,7 +65,7 @@ public class InputMakananFragment extends Fragment {
     public Button btnPagi, btnSiang, btnMlm, btnLain, btnProses;
     public TextView txtKaloributuh, txtKalorikonsumsi, txtPagi, txtSiang, txtMlm, txtLain;
     public EditText txtSearch;
-    public ProgressBar progressBar;
+
     String kat_waktu = "";
     String id_mkn = "";
     // TODO: Rename parameter arguments, choose names that match
@@ -328,7 +329,7 @@ public class InputMakananFragment extends Fragment {
         txtSiang = (TextView) rootView.findViewById(R.id.txtSiang);
         txtMlm = (TextView) rootView.findViewById(R.id.txtMlm);
         txtLain = (TextView) rootView.findViewById(R.id.txtLain);
-        progressBar = (ProgressBar) rootView.findViewById(R.id.progressBar);
+
         //DecimalFormat aaa = new DecimalFormat("#.##");
         //Double keb = Double.valueOf(users_login.getKalori());
         //String.format();
@@ -340,7 +341,7 @@ public class InputMakananFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (txtKalorikonsumsi.getText().toString() == txtKaloributuh.getText().toString()){
-                    Toast.makeText(getContext(), "Kalori Anda Sama", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Asupan Kalori Anda Baik", Toast.LENGTH_SHORT).show();
                 }else if(Double.parseDouble(txtKalorikonsumsi.getText().toString()) >= Double.parseDouble(txtKaloributuh.getText().toString())){
                     showConfirmationOlg();
                 }else if(Double.parseDouble(txtKalorikonsumsi.getText().toString()) <= Double.parseDouble(txtKaloributuh.getText().toString())){
@@ -353,7 +354,7 @@ public class InputMakananFragment extends Fragment {
 
     public void showConfirmationOlg() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        double hasil = Double.parseDouble(txtKalorikonsumsi.getText().toString()) - Double.parseDouble(txtKaloributuh.getText().toString());
+        final double hasil = Double.parseDouble(txtKalorikonsumsi.getText().toString()) - Double.parseDouble(txtKaloributuh.getText().toString());
         builder.setMessage("Kalori Anda Kelebihan " + hasil + " Silahkan Pilih Saran Olahraga");
         builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             @Override
@@ -373,21 +374,23 @@ public class InputMakananFragment extends Fragment {
 
     public void showConfirmationMkn() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        double hasil = Double.parseDouble(txtKalorikonsumsi.getText().toString()) - Double.parseDouble(txtKaloributuh.getText().toString());
+        final double hasil = Double.parseDouble(txtKalorikonsumsi.getText().toString()) - Double.parseDouble(txtKaloributuh.getText().toString());
         builder.setMessage("Anda Kekurangan Kalori Sebanyak " + hasil + " Silahkan Pilih Saran Makanan");
         builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 Toolbar toolbar1 = (Toolbar) getActivity().findViewById(R.id.toolbar);
-                toolbar1.setTitle("Makanan");
-                MakananFragment makananFragment = new MakananFragment();
+                toolbar1.setTitle("Saran Makanan");
+                SaranMakan SaranMknFragment = new SaranMakan();
+                Bundle bundle = new Bundle();
+                bundle.putDouble("hasil", hasil);
+                SaranMknFragment.setArguments(bundle);
                 FragmentManager manager = getActivity().getSupportFragmentManager();
                 manager.beginTransaction().replace(
                         R.id.relativelayout_for_fragment,
-                        makananFragment).commit();
+                        SaranMknFragment).commit();
             }
         });
-
         builder.show();
     } //end showconfir
 
