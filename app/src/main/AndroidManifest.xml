@@ -37,7 +37,8 @@
             android:theme="@style/AppTheme.CustomeTheme" />
         <activity
             android:name=".DetailOlahragaActivity"
-            android:label="Detail Olahraga"></activity>
+            android:label="Detail Olahraga"
+            android:theme="@style/AppTheme.CustomeTheme"></activity>
         <activity android:name=".PilihMakananActivity"></activity>
     </application>
 

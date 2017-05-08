@@ -2,20 +2,31 @@ package com.example.sam_boncel.kalkulatorgizi;
 
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.example.sam_boncel.kalkulatorgizi.entities.Makanan;
 import com.example.sam_boncel.kalkulatorgizi.entities.Olahraga;
+import com.example.sam_boncel.kalkulatorgizi.entities.User;
 import com.example.sam_boncel.kalkulatorgizi.lib.FormData;
 import com.example.sam_boncel.kalkulatorgizi.lib.InternetTask;
 import com.example.sam_boncel.kalkulatorgizi.lib.OnInternetTaskFinishedListener;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -31,6 +42,10 @@ import java.util.ArrayList;
  */
 public class OlahragaFragment extends Fragment {
     public ListView listView;
+    TextView txtNama, txtKkal, txtKeterangan;
+    EditText txtSearch;
+    ImageView imageView;
+    public ArrayAdapter<String> adapter;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -41,6 +56,7 @@ public class OlahragaFragment extends Fragment {
     private String mParam2;
 
     private ArrayList<Olahraga> listOlahraga;
+    public User users_login;
     public OlahragaFragment() {
         // Required empty public constructor
     }
@@ -74,21 +90,40 @@ public class OlahragaFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+                             final Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_olahraga, container, false);
         listView = (ListView) rootView.findViewById(R.id.listView);
+        txtSearch = (EditText) rootView.findViewById(R.id.search);
+        //buat search
+        txtSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                adapter.getFilter().filter(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            } //akhir search
+        });
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Olahraga selectedOlahraga = listOlahraga.get(position);
                 Intent i = new Intent(getContext(), DetailOlahragaActivity.class);
-
-                i.putExtra("id_olahraga", String.valueOf(selectedOlahraga.getId_olahraga()));
+                i.putExtra("id_olahraga", selectedOlahraga.getId_olahraga());
                 i.putExtra("nama_olahraga", selectedOlahraga.getNama_olahraga());
                 i.putExtra("kkal", selectedOlahraga.getKkal());
                 i.putExtra("keterangan", selectedOlahraga.getKeterangan());
                 i.putExtra("foto", selectedOlahraga.getFoto());
+
+                startActivity(i);
             }
         });
 
@@ -114,7 +149,7 @@ public class OlahragaFragment extends Fragment {
                                     listOlahraga.add(new Olahraga(jsonArray.getJSONObject(i)));
                                     listpost.add(olahraga.getNama_olahraga().toString());
                                 }
-                                ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, listpost);
+                                adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, listpost);
                                 listView.setAdapter(adapter);
                             }
                         }else{
@@ -132,4 +167,22 @@ public class OlahragaFragment extends Fragment {
             });
             uploadTask.execute();
         }
+
+    public boolean loadDataUsersLogin(){
+        SharedPreferences sharedPref = getContext().getSharedPreferences("data_private", 0);
+        Log.d("karepmu A", "sakkarepmu A");
+        String data = sharedPref.getString("data", "");
+        if (data != ""){
+            Log.d("karepmu B", "sakkarepmu B");
+            Gson gson = new GsonBuilder()
+                    .disableHtmlEscaping()
+                    .setPrettyPrinting()
+                    .enableComplexMapKeySerialization()
+                    .create();
+            users_login = gson.fromJson(data, User.class);
+            return true;
+        }else{
+            return false;
+        }
+    }
 }
