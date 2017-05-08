@@ -40,7 +40,7 @@
                         android:layout_height="wrap_content"
                         android:hint=":" />
                     <TextView
-                        android:layout_width="50dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:hint="Kalori"
                         android:textColor="#218044"
@@ -48,9 +48,9 @@
                         android:id="@+id/txt_kalori"/>
 
                     <TextView
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Per Hari" />
+                        android:text=" Per Hari" />
                 </LinearLayout>
             </LinearLayout>
     <LinearLayout

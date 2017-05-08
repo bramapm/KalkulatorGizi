@@ -2,49 +2,40 @@ package com.example.sam_boncel.kalkulatorgizi;
 
 
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.sam_boncel.kalkulatorgizi.entities.Makanan;
-import com.example.sam_boncel.kalkulatorgizi.entities.Olahraga;
 import com.example.sam_boncel.kalkulatorgizi.entities.Record_mkn;
 import com.example.sam_boncel.kalkulatorgizi.entities.User;
 import com.example.sam_boncel.kalkulatorgizi.lib.FormData;
 import com.example.sam_boncel.kalkulatorgizi.lib.InternetTask;
 import com.example.sam_boncel.kalkulatorgizi.lib.OnInternetTaskFinishedListener;
-import com.example.sam_boncel.kalkulatorgizi.lib.SaranMakan;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
-import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -374,8 +365,14 @@ public class InputMakananFragment extends Fragment {
 
     public void showConfirmationMkn() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        final double hasil = Double.parseDouble(txtKalorikonsumsi.getText().toString()) - Double.parseDouble(txtKaloributuh.getText().toString());
+        double hasil = Double.parseDouble(txtKalorikonsumsi.getText().toString()) - Double.parseDouble(txtKaloributuh.getText().toString());
+        if (hasil < 0.0){
+            hasil *= (-1);
+        }
         builder.setMessage("Anda Kekurangan Kalori Sebanyak " + hasil + " Silahkan Pilih Saran Makanan");
+        final double finalHasil = hasil;
+        Log.d("KEM", "KON:"+String.valueOf(finalHasil));
+        Log.d("KEM", "KON:"+String.valueOf(hasil));
         builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -383,7 +380,7 @@ public class InputMakananFragment extends Fragment {
                 toolbar1.setTitle("Saran Makanan");
                 SaranMakan SaranMknFragment = new SaranMakan();
                 Bundle bundle = new Bundle();
-                bundle.putDouble("hasil", hasil);
+                bundle.putDouble("hasil", finalHasil);
                 SaranMknFragment.setArguments(bundle);
                 FragmentManager manager = getActivity().getSupportFragmentManager();
                 manager.beginTransaction().replace(

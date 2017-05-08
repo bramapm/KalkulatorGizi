@@ -1,9 +1,10 @@
-package com.example.sam_boncel.kalkulatorgizi.lib;
+package com.example.sam_boncel.kalkulatorgizi;
 
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,9 +13,10 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.example.sam_boncel.kalkulatorgizi.DetailMakananActivity;
-import com.example.sam_boncel.kalkulatorgizi.R;
 import com.example.sam_boncel.kalkulatorgizi.entities.Makanan;
+import com.example.sam_boncel.kalkulatorgizi.lib.FormData;
+import com.example.sam_boncel.kalkulatorgizi.lib.InternetTask;
+import com.example.sam_boncel.kalkulatorgizi.lib.OnInternetTaskFinishedListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -40,6 +42,7 @@ public class SaranMakan extends Fragment {
     public ArrayAdapter<String> adapter;
     public ListView lv;
     public TextView teks;
+    double hasil;
 
     public SaranMakan() {
         // Required empty public constructor
@@ -79,7 +82,7 @@ public class SaranMakan extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View rootView = inflater.inflate(R.layout.fragment_makanan, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_saran_makan, container, false);
         teks = (TextView) rootView.findViewById(R.id.teks);
         lv = (ListView)rootView.findViewById(R.id.listView);
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -106,13 +109,15 @@ public class SaranMakan extends Fragment {
             }
         });
         this.listSaranMkn= new ArrayList<>();
-        getSaran();
 
         Bundle bundle = getArguments();
         if (bundle != null){
-            double hasil = bundle.getDouble("hasil");
-         teks.setText(String.valueOf(hasil).toString());
+            hasil = bundle.getDouble("hasil");
+            Log.d("hasil", String.valueOf(hasil));
+            //Log.d("hasil", teks.toString());
+            teks.setText(String.valueOf(hasil));
         }
+        getSaran();
 
         return rootView;
     }
@@ -121,8 +126,9 @@ public class SaranMakan extends Fragment {
 
         FormData data = new FormData();
         data.add("method", "saran");
-        data.add("key", "");
-        data.add("kal", "");
+        data.add("key", "a");
+        Log.d("H", "H:"+ String.valueOf(hasil));
+        data.add("kal", String.valueOf(hasil));
         InternetTask uploadTask = new InternetTask("Record", data);
         uploadTask.setOnInternetTaskFinishedListener(new OnInternetTaskFinishedListener() {
             @Override
