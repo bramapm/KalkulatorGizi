@@ -38,6 +38,7 @@ import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 
@@ -56,6 +57,7 @@ public class InputMakananFragment extends Fragment {
     public Button btnPagi, btnSiang, btnMlm, btnLain, btnProses;
     public TextView txtKaloributuh, txtKalorikonsumsi, txtPagi, txtSiang, txtMlm, txtLain;
     public EditText txtSearch;
+    private TextView cobaUmur;
 
     String kat_waktu = "";
     String id_mkn = "";
@@ -98,6 +100,7 @@ public class InputMakananFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
 //            sumKalMkn();
+
         }
     }
 
@@ -105,7 +108,9 @@ public class InputMakananFragment extends Fragment {
     public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              final Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+
         View rootView = inflater.inflate(R.layout.fragment_input_makanan, container, false);
+        TextView cobaUmur = (TextView) rootView.findViewById(R.id.cobaUmur);
         btnPagi = (Button)rootView.findViewById(R.id.btnPagi);
         btnPagi.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -312,6 +317,7 @@ public class InputMakananFragment extends Fragment {
         });
 
         loadDataUsersLogin();
+
         sumKalMkn();
         sumKalMknTotal();
         txtKaloributuh = (TextView) rootView.findViewById(R.id.kaloributuh);
@@ -566,7 +572,6 @@ public class InputMakananFragment extends Fragment {
         });
         uploadTask.execute();
     }
-
 
     private String getTanggal() {
         Date now = new Date();

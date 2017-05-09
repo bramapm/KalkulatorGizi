@@ -30,6 +30,9 @@ import com.google.gson.GsonBuilder;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.Calendar;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link DataDiriFragment#newInstance} factory method to
@@ -40,6 +43,7 @@ public class DataDiriFragment extends Fragment {
     EditText txtUsername, txtPass, txtEmail, txtNama, txtTinggi, txtBerat, txtTTL, txtJK, txtUmur;
     RadioButton rdPria,rdWanita;
     Button btnSave;
+    int hasil = 0;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -144,6 +148,19 @@ public class DataDiriFragment extends Fragment {
                 Toast.makeText(getContext(),"Data Jenis Kelamin Kosong!!", Toast.LENGTH_SHORT).show();
             }
 
+            Calendar calendar = Calendar.getInstance();
+            int year = calendar.get(Calendar.YEAR);
+            String umurS = "";
+            String as = users_login.getTtl();
+            Log.d("haha", String.valueOf(year));
+            Log.d("haha", String.valueOf(as));
+
+            umurS = as.substring(0,4);
+            Log.d("haha", String.valueOf(umurS));
+
+            int hasil = year - Integer.parseInt(umurS);
+            Log.d("haha", String.valueOf(hasil));
+
             final FormData data = new FormData();
             data.add("method", "update_akun");
             data.add("id_user", users_login.getId_user());
@@ -155,7 +172,7 @@ public class DataDiriFragment extends Fragment {
             data.add("ttl",txtTTL.getText().toString());
             data.add("tinggi",txtTinggi.getText().toString());
             data.add("berat",txtBerat.getText().toString());
-            data.add("umur",txtUmur.getText().toString());
+            data.add("umur", String.valueOf(hasil));
             data.add("kalori", String.valueOf(hasila));
             InternetTask uploadTask = new InternetTask("Users", data);
             uploadTask.setOnInternetTaskFinishedListener(new OnInternetTaskFinishedListener() {
@@ -220,4 +237,5 @@ public class DataDiriFragment extends Fragment {
         }else
             return true;
     }
+
 }
