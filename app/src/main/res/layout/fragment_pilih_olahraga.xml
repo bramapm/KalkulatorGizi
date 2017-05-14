@@ -1,18 +1,14 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.sam_boncel.kalkulatorgizi.PilihMakananActivity">
+    tools:context="com.example.sam_boncel.kalkulatorgizi.PilihOlahragaFragment">
 
+    <!-- TODO: Update blank fragment layout -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true">
+        android:orientation="vertical">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -21,32 +17,19 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_search"
+                android:src="@mipmap/ic_seacrh"
                 android:layout_gravity="center_vertical"
                 />
-
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/search"
                 android:hint="Pencarian"/>
         </LinearLayout>
-
         <ListView
+            android:id="@+id/listView"
             android:layout_width="match_parent"
-            android:layout_height="265dp"
-            android:id="@+id/listViewMkn"/>
-
+            android:layout_height="match_parent"></ListView>
     </LinearLayout>
-    <Button
-        android:id="@+id/btnSimpan"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/btnsingin"
-        android:text="SIMPAN"
-        android:textColor="#fff"
-        android:textSize="18dp"
-        android:layout_alignParentBottom="true"
 
-        android:textStyle="bold" />
-</RelativeLayout>
+</FrameLayout>

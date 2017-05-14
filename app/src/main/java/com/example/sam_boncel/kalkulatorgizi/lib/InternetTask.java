@@ -16,7 +16,7 @@ public class InternetTask  extends AsyncTask<String, Void, Void> {
     private Exception exception;
     private FormData formData;
     private boolean usesForm;
-    private String base_url = "http://192.168.100.19/KalkulatorGiziService/index.php/";
+    private String base_url = "http://192.168.100.14/KalkulatorGiziService/index.php/";
     public InternetTask(String urlString, FormData data)
     {
         this.method = InternetHelper.REQUEST_METHOD_POST;

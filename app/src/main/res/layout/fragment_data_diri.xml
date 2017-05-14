@@ -33,7 +33,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:src="@mipmap/ic_user" />
+                    android:src="@drawable/ic_user" />
 
                 <EditText
                     android:id="@+id/txtUsername"
@@ -53,7 +53,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:src="@mipmap/ic_lock" />
+                    android:src="@drawable/ic_lock" />
 
                 <EditText
                     android:id="@+id/txtPassword"
@@ -72,7 +72,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:src="@mipmap/ic_email" />
+                    android:src="@drawable/ic_email" />
 
                 <EditText
                     android:id="@+id/txtEmail"
@@ -92,7 +92,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:src="@mipmap/ic_nama" />
+                    android:src="@drawable/ic_nama" />
 
                 <EditText
                     android:id="@+id/txtNama"
@@ -166,7 +166,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:src="@mipmap/ic_user" />
+                    android:src="@drawable/ic_gender" />
                 <!--<TextView-->
                     <!--android:layout_width="wrap_content"-->
                     <!--android:layout_height="wrap_content"-->
@@ -203,7 +203,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:src="@mipmap/ic_user" />
+                    android:src="@drawable/ic_kalender" />
 
                 <EditText
                     android:id="@+id/txtTTL"

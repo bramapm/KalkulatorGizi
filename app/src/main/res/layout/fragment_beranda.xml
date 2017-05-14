@@ -46,22 +46,25 @@
                         android:textColor="#218044"
                         android:textStyle="bold"
                         android:id="@+id/txt_kalori"/>
-
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text=" Per Hari" />
+                        android:text=" Kkal" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=" /Hari" />
                 </LinearLayout>
             </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="50dp">
-        <CalendarView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/kalender">
-        </CalendarView>
+        <!--<CalendarView-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:id="@+id/kalender">-->
+        <!--</CalendarView>-->
     </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"

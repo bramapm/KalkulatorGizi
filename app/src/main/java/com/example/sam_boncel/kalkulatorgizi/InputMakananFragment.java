@@ -358,11 +358,11 @@ public class InputMakananFragment extends Fragment {
             public void onClick(DialogInterface dialog, int which) {
                 Toolbar toolbar1 = (Toolbar) getActivity().findViewById(R.id.toolbar);
                 toolbar1.setTitle("Olahraga");
-                OlahragaFragment olahragaFragment= new OlahragaFragment();
+                PilihOlahragaFragment pilihOlahragaFragment= new PilihOlahragaFragment();
                 FragmentManager manager = getActivity().getSupportFragmentManager();
                 manager.beginTransaction().replace(
                         R.id.relativelayout_for_fragment,
-                        olahragaFragment).commit();
+                        pilihOlahragaFragment).commit();
             }
         });
 

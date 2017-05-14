@@ -4,12 +4,14 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 public class DetailOlahragaActivity extends AppCompatActivity {
     TextView txtNama, txtKkal, txtKeterangan;
     ImageView imageView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -19,6 +21,7 @@ public class DetailOlahragaActivity extends AppCompatActivity {
         txtKkal = (TextView) findViewById(R.id.kkal);
         txtKeterangan = (TextView) findViewById(R.id.keterangan);
         imageView = (ImageView) findViewById(R.id.imageView);
+
 
         DisplayMetrics dm = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dm);

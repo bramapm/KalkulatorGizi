@@ -48,7 +48,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@mipmap/ic_user"
+                android:src="@drawable/ic_user"
                 android:layout_gravity="center_vertical"
                 />
             <EditText
@@ -70,7 +70,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@mipmap/ic_lock"
+                android:src="@drawable/ic_lock"
                 android:layout_gravity="center_vertical"
                 />
             <EditText
