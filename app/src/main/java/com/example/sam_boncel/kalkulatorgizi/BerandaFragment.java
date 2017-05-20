@@ -15,20 +15,33 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.CalendarView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.sam_boncel.kalkulatorgizi.entities.Makanan;
 import com.example.sam_boncel.kalkulatorgizi.entities.User;
+import com.example.sam_boncel.kalkulatorgizi.lib.FormData;
+import com.example.sam_boncel.kalkulatorgizi.lib.InternetTask;
+import com.example.sam_boncel.kalkulatorgizi.lib.OnInternetTaskFinishedListener;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class BerandaFragment extends Fragment {
-    TextView txtNama, txtKalori;
+    TextView txtNama, txtKalori, txtMkn, txtOlg, kalorimkn, kaloriolg;
     public User users_login;
+    public String klikTgl = "a";
     public BerandaFragment() {
         // Required empty public constructor
     }
@@ -40,6 +53,10 @@ public class BerandaFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_beranda, container, false);
         txtNama = (TextView)rootView.findViewById(R.id.txt_nama);
         txtKalori = (TextView)rootView.findViewById(R.id.txt_kalori);
+        txtMkn = (TextView)rootView.findViewById(R.id.txtMkn);
+        txtOlg = (TextView)rootView.findViewById(R.id.txtOlg);
+        kalorimkn = (TextView)rootView.findViewById(R.id.kalorimkn);
+        kaloriolg = (TextView)rootView.findViewById(R.id.kaloriolg);
 
         loadDataUsersLogin();
 
@@ -53,8 +70,62 @@ public class BerandaFragment extends Fragment {
             Toast.makeText(getContext(), "Sudah ada Data", Toast.LENGTH_SHORT).show();
             showInputMakanan();
         }
+
+        CalendarView calendarView=(CalendarView) rootView.findViewById(R.id.kalender);
+        calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+
+            @Override
+            public void onSelectedDayChange(CalendarView view, int year, int month,
+                                            int dayOfMonth) {
+                Toast.makeText(getContext(),year +"-"+ (month+1) +"-"+ dayOfMonth, 0).show();
+                klikTgl = year +"-"+ (month+1) +"-"+ dayOfMonth;
+                Log.d("tes", klikTgl);
+                kalOnClick();
+                //txtMkn.setText(klikTgl.toString());
+
+
+            }
+        });
+
+
+        txtOlg.setText("pagi");
+
+
         return rootView;
     }
+
+    public void kalOnClick(){
+        FormData data = new FormData();
+        data.add("method", "countKaloriMknTotal");
+        data.add("id_user", users_login.getId_user());
+        data.add("tanggal", klikTgl);
+        InternetTask uploadTask = new InternetTask("Record", data);
+        uploadTask.setOnInternetTaskFinishedListener(new OnInternetTaskFinishedListener() {
+            @Override
+            public void OnInternetTaskFinished(InternetTask internetTask) {
+                try {
+                    JSONObject jsonObject = new JSONObject(internetTask.getResponseString());
+                    if (jsonObject.get("code").equals(200)){
+                        JSONArray nv =jsonObject.getJSONArray("data");
+                        JSONObject jo = nv.getJSONObject(0);
+                        String ss = jo.getString("kalori");
+                        kalorimkn.setText(ss);
+                    }else{
+                        Toast.makeText(getContext(),"Gagal get Data", Toast.LENGTH_SHORT).show();
+                    }
+                } catch (JSONException e) {
+                    //Snackbar.make(clContent, e.getMessage(), Snackbar.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void OnInternetTaskFailed(InternetTask internetTask) {
+                //Snackbar.make(clContent, internetTask.getException().getMessage(), Snackbar.LENGTH_SHORT).show();
+            }
+        });
+        uploadTask.execute();
+    }
+
 
     public boolean loadDataUsersLogin(){
         SharedPreferences sharedPref = getContext().getSharedPreferences("data_private", 0);
@@ -72,6 +143,33 @@ public class BerandaFragment extends Fragment {
         }else{
             return false;
         }
+    }
+
+    public void getMakanan(){
+        FormData data = new FormData();
+        data.add("method", "get_recordMkn");
+        InternetTask uploadTask = new InternetTask("Makanan", data);
+        uploadTask.setOnInternetTaskFinishedListener(new OnInternetTaskFinishedListener() {
+            @Override
+            public void OnInternetTaskFinished(InternetTask internetTask) {
+                try {
+                    JSONObject jsonObject = new JSONObject(internetTask.getResponseString());
+                    if (jsonObject.get("code").equals(200)){
+                        JSONArray jsonArray = jsonObject.getJSONArray("data");
+                    }else{
+
+                    }
+                } catch (JSONException e) {
+
+                }
+            }
+
+            @Override
+            public void OnInternetTaskFailed(InternetTask internetTask) {
+
+            }
+        });
+        uploadTask.execute();
     }
 
     public void showConfirmation() {
