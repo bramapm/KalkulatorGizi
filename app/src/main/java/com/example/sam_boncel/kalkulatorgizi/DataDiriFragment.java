@@ -1,6 +1,7 @@
 package com.example.sam_boncel.kalkulatorgizi;
 
 
+import android.app.DatePickerDialog;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.TaskStackBuilder;
@@ -8,22 +9,32 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.NotificationCompat;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.sam_boncel.kalkulatorgizi.entities.User;
 import com.example.sam_boncel.kalkulatorgizi.lib.FormData;
 import com.example.sam_boncel.kalkulatorgizi.lib.InternetTask;
 import com.example.sam_boncel.kalkulatorgizi.lib.OnInternetTaskFinishedListener;
+import com.example.sam_boncel.kalkulatorgizi.other.CircleTransform;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -40,8 +51,12 @@ import java.util.Calendar;
  */
 public class DataDiriFragment extends Fragment {
     public User users_login;
-    EditText txtUsername, txtPass, txtEmail, txtNama, txtTinggi, txtBerat, txtTTL, txtJK, txtUmur;
-    RadioButton rdPria,rdWanita;
+    EditText txtUsername, txtEmail, txtNama, txtTinggi, txtBerat, txtTTL, txtJK, txtUmur;
+    private RadioGroup genderRadio;
+    String radioButton = "";
+    ImageView imgProfile;
+    ImageButton imgBtn;
+    private int mYear, mMonth, mDay;
     Button btnSave;
     int hasil = 0;
 
@@ -91,8 +106,7 @@ public class DataDiriFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_data_diri, container, false);
-        txtUsername = (EditText) rootView.findViewById(R.id.txtUsername);
-        txtPass = (EditText) rootView.findViewById(R.id.txtPassword);
+        imgProfile = (ImageView) rootView.findViewById(R.id.img_profile);
         txtEmail = (EditText) rootView.findViewById(R.id.txtEmail);
         txtNama = (EditText) rootView.findViewById(R.id.txtNama);
         txtUmur = (EditText) rootView.findViewById(R.id.txtUmur);
@@ -100,12 +114,39 @@ public class DataDiriFragment extends Fragment {
         txtTTL = (EditText) rootView.findViewById(R.id.txtTTL);
         txtTinggi = (EditText) rootView.findViewById(R.id.txtTinggi);
         txtBerat = (EditText) rootView.findViewById(R.id.txtBerat);
+        imgBtn = (ImageButton) rootView.findViewById(R.id.imgBtn);
+        imgBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Calendar c = Calendar.getInstance();
+                mYear = c.get(Calendar.YEAR);
+                mMonth = c.get(Calendar.MONTH);
+                mDay = c.get(Calendar.DAY_OF_MONTH);
+
+                DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(),
+                        new DatePickerDialog.OnDateSetListener() {
+
+                            @Override
+                            public void onDateSet(DatePicker view, int year,
+                                                  int monthOfYear, int dayOfMonth) {
+                        txtTTL.setText(year + "-" + (monthOfYear + 1) + "-" + dayOfMonth);
+
+                            }
+                        }, mYear, mMonth, mDay);
+                datePickerDialog.show();
+            }
+        });
 //        rdPria = (RadioButton)rootView.findViewById(R.id.rb_pria);
 //        rdWanita = (RadioButton)rootView.findViewById(R.id.rb_wanita);
 
         loadDataUsersLogin();
-        txtUsername.setText(users_login.getUsername());
-        txtPass.setText(users_login.getPassword());
+        String urlProfileImg = users_login.getFoto().toString();;
+        Glide.with(this).load(urlProfileImg)
+                .crossFade()
+                .thumbnail(0.5f)
+                .bitmapTransform(new CircleTransform(getContext()))
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .into(imgProfile);
         txtEmail.setText(users_login.getEmail());
         txtNama.setText(users_login.getNama_user());
         txtTinggi.setText(users_login.getTinggi());
@@ -164,8 +205,6 @@ public class DataDiriFragment extends Fragment {
             final FormData data = new FormData();
             data.add("method", "update_akun");
             data.add("id_user", users_login.getId_user());
-            data.add("username", txtUsername.getText().toString());
-            data.add("password", txtPass.getText().toString());
             data.add("email", txtEmail.getText().toString());
             data.add("nama_user",txtNama.getText().toString());
             data.add("jk",txtJK.getText().toString());
@@ -176,24 +215,24 @@ public class DataDiriFragment extends Fragment {
             data.add("kalori", String.valueOf(hasila));
             InternetTask uploadTask = new InternetTask("Users", data);
             uploadTask.setOnInternetTaskFinishedListener(new OnInternetTaskFinishedListener() {
-                                                             @Override
-                                                             public void OnInternetTaskFinished(InternetTask internetTask) {
-                                                                 try {
-                                                                     JSONObject jsonObject = new JSONObject(internetTask.getResponseString());
-                                                                     if (jsonObject.get("code").equals(200)){
-                                                                         Toast.makeText(getContext(),"Update Sukses", Toast.LENGTH_SHORT).show();
+                     @Override
+                     public void OnInternetTaskFinished(InternetTask internetTask) {
+                         try {
+                             JSONObject jsonObject = new JSONObject(internetTask.getResponseString());
+                             if (jsonObject.get("code").equals(200)){
+                                 Toast.makeText(getContext(),"Update Sukses", Toast.LENGTH_SHORT).show();
 
-                                                                     }else{
-                                                                         Toast.makeText(getContext(),"Update Gagal", Toast.LENGTH_SHORT).show();
-                                                                     }
-                                                                 } catch (JSONException e) {
-                                                                 }
-                                                             }
+                             }else{
+                                 Toast.makeText(getContext(),"Update Gagal", Toast.LENGTH_SHORT).show();
+                             }
+                         } catch (JSONException e) {
+                         }
+                     }
 
-                                                             @Override
-                                                             public void OnInternetTaskFailed(InternetTask internetTask) {
-                                                             }
-                                                         }
+                     @Override
+                     public void OnInternetTaskFailed(InternetTask internetTask) {
+                     }
+                 }
             );
             uploadTask.execute();
         }
@@ -218,24 +257,19 @@ public class DataDiriFragment extends Fragment {
     }
 
     private boolean is_parameters_update_valid(){
-        if (txtUsername.getText().toString().equals("")){
-            txtUsername.requestFocus();
-            txtUsername.setError("Please Input Your Username");
-            return false;
-        }else if (txtPass.getText().toString().equals("")) {
-            txtPass.requestFocus();
-            txtPass.setError("Please Input Your Password");
-            return false;
-        }else if(txtNama.getText().toString().equals("")){
-            txtNama.requestFocus();
-            txtNama.setError("Please Input Your Full Name");
-            return false;
-        }else if(txtEmail.getText().toString().equals("")){
-            txtEmail.requestFocus();
-            txtEmail.setError("Please Input Your Email");
-            return false;
-        }else
+//        if (txtUsername.getText().toString().equals("")){
+//            txtUsername.requestFocus();
+//            txtUsername.setError("Please Input Your Username");
+//            return false;
+//        }else if(txtNama.getText().toString().equals("")){
+//            txtNama.requestFocus();
+//            txtNama.setError("Please Input Your Full Name");
+//            return false;
+//        }else if(txtEmail.getText().toString().equals("")){
+//            txtEmail.requestFocus();
+//            txtEmail.setError("Please Input Your Email");
+//            return false;
+//        }else
             return true;
     }
-
 }

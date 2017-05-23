@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "418798078920",
+    "project_id": "kalkulatorgizi"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:418798078920:android:d4804aa22abafe2e",
+        "android_client_info": {
+          "package_name": "com.example.sam_boncel.kalkulatorgizi"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "418798078920-p24la2p25jb53t7upm447v4h1jeqp1m9.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "418798078920-rkdaf06c5fbje79mn5ig5q5nla5sg0pf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.sam_boncel.kalkulatorgizi",
+            "certificate_hash": "7e8bfe86931c1b79c83affcbf085dbfa30f6bd68"
+          }
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC9AbBBHbHTWrBf8jBarNqkPGg9D5Ca1yk"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

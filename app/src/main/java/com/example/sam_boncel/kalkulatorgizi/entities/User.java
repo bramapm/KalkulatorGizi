@@ -20,6 +20,7 @@ public class User {
     private String umur;
     private String status;
     private String kalori;
+    private String foto;
 
     private JSONObject json;
 
@@ -37,6 +38,7 @@ public class User {
         this.umur = this.json.getString("umur");
         this.kalori = this.json.getString("kalori");
         this.status = this.json.getString("status");
+        this.foto = this.json.getString("foto");
     }
 
     public String getId_user() {
@@ -133,5 +135,13 @@ public class User {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getFoto() {
+        return foto;
+    }
+
+    public void setFoto(String foto) {
+        this.foto = foto;
     }
 }

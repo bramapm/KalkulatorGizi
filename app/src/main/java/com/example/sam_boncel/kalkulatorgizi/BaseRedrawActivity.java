@@ -15,16 +15,26 @@ import android.support.v7.app.NotificationCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.example.sam_boncel.kalkulatorgizi.other.CircleTransform;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
 
 /**
  * Created by Sam_Boncel on 19/03/2017.
  */
 
 public class BaseRedrawActivity extends BaseActivity {
-
+ImageView img;
+    private GoogleApiClient mGoogleApiClient;
     @Override
     public void setContentView(int layout){
         super.setContentView(layout);
@@ -94,11 +104,19 @@ public class BaseRedrawActivity extends BaseActivity {
                             pengaturanFragment,
                             pengaturanFragment.getTag()).commit();
                 } else if (id == R.id.nav_logout){
-                    deleteDataUsersLogin();
-                    Intent intent = new Intent(BaseRedrawActivity.this, FirstActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(intent);
+
+                    Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
+                            new ResultCallback<Status>() {
+                                @Override
+                                public void onResult(Status status) {
+                                    mGoogleApiClient.connect();
+                                }
+                            });
+//                    deleteDataUsersLogin();
+//                    Intent intent = new Intent(BaseRedrawActivity.this, LoginActivity.class);
+//                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//                    startActivity(intent);
                 }
 
                 DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -107,6 +125,30 @@ public class BaseRedrawActivity extends BaseActivity {
             }
         });
         View vv = navigationView.getHeaderView(0);
+        ImageView img = (ImageView) vv.findViewById(R.id.foto_user);
+        String urlProfileImg = users_login.getFoto().toString();;
+        Glide.with(this).load(urlProfileImg)
+                .crossFade()
+                .thumbnail(0.5f)
+                .bitmapTransform(new CircleTransform(this))
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .into(img);
+
+        img.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toolbar toolbar1 = (Toolbar) findViewById(R.id.toolbar);
+                toolbar1.setTitle("Data Diri");
+                DataDiriFragment dataDiriFragment = new DataDiriFragment();
+                FragmentManager manager = getSupportFragmentManager();
+                manager.beginTransaction().replace(
+                        R.id.relativelayout_for_fragment,
+                        dataDiriFragment,
+                        dataDiriFragment.getTag()).commit();
+                DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+                drawer.closeDrawer(GravityCompat.START);
+            }
+        });
         TextView nama_user = (TextView) vv.findViewById(R.id.nama_user);
         nama_user.setText(users_login.getNama_user());
         TextView email_user = (TextView) vv.findViewById(R.id.email_user);

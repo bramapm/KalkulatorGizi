@@ -179,12 +179,12 @@ public class BerandaFragment extends Fragment {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 Toolbar toolbar1 = (Toolbar) getActivity().findViewById(R.id.toolbar);
-                toolbar1.setTitle("Pengaturan");
-                PengaturanFragment pengaturanFragment = new PengaturanFragment();
+                toolbar1.setTitle("Data Diri");
+                DataDiriFragment dataDiriFragment = new DataDiriFragment();
                 FragmentManager manager = getActivity().getSupportFragmentManager();
                 manager.beginTransaction().replace(
                         R.id.relativelayout_for_fragment,
-                        pengaturanFragment).commit();
+                        dataDiriFragment).commit();
             }
         });
 

@@ -12,89 +12,47 @@
 
 
     <TextView
+        android:id="@+id/tvtJudul"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Sign In"
-        android:id="@+id/tvtSign"
-        android:textSize="50dp"
-        android:textStyle="bold"
+        android:layout_marginTop="89dp"
+        android:text="Kalkulator"
         android:textColor="#ffffff"
-        android:layout_alignParentTop="true"
+        android:textSize="30dp"
+        android:textStyle="bold"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="50dp" />
+        />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Selamat Datang Kembali!"
-        android:id="@+id/tvtWelcome"
-        android:layout_below="@+id/tvtSign"
-        android:textSize="15dp"
-        android:textStyle="bold"
+        android:text="Gizi"
         android:textColor="#ffffff"
+        android:textStyle="bold"
+        android:textSize="60dp"
+        android:id="@+id/tvtGizi"
+        android:layout_below="@+id/tvtJudul"
+        android:layout_centerHorizontal="true" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Balance Your Nutrition"
+        android:textColor="#ffffff"
+        android:textSize="20dp"
+        android:id="@+id/tvtContent"
+        android:layout_below="@+id/tvtGizi"
         android:layout_centerHorizontal="true" />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
-        android:orientation="vertical"
-        android:layout_below="@+id/tvtWelcome"
-        android:id="@+id/linearLayout">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/kotak2"
-            android:padding="5dp"
-            android:orientation="horizontal">
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_user"
-                android:layout_gravity="center_vertical"
-                />
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Username"
-                android:id="@+id/txtUsername"
-                android:inputType="text"
-                android:layout_gravity="center_vertical"
-                />
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/kotak"
-            android:padding="5dp"
-            android:orientation="horizontal"
-            >
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_lock"
-                android:layout_gravity="center_vertical"
-                />
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textPassword"
-                android:id="@+id/txtPassword"
-                android:hint="Password"
-                android:layout_gravity="center_vertical"
-                />
-        </LinearLayout>
+        android:layout_below="@+id/tvtGizi"
+        android:orientation="vertical">
 
+        <com.google.android.gms.common.SignInButton
+            android:id="@+id/btn_sign_in"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true" />
     </LinearLayout>
-
-    <Button
-        android:layout_width="250dp"
-        android:layout_height="wrap_content"
-        android:text="MASUK"
-        android:textStyle="bold"
-        android:textSize="18dp"
-        android:textColor="@color/colorPrimaryDark"
-        android:background="@drawable/btnjoin"
-        android:id="@+id/btnSignin"
-        android:layout_marginTop="30dp"
-        android:layout_below="@+id/linearLayout"
-        android:layout_centerHorizontal="true" />
 </RelativeLayout>
