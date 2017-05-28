@@ -9,7 +9,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:scrollbars="vertical">
 
         <LinearLayout
             android:id="@+id/garis"
@@ -77,162 +78,281 @@
                 android:layout_height="5dp"
                 android:layout_marginTop="5dp"
                 android:background="#000"></LinearLayout>
-
+<!--//garis-->
             <LinearLayout
-                android:id="@+id/mknPagi"
                 android:layout_width="match_parent"
-                android:layout_height="80dp"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/background"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp"
-                android:paddingTop="5dp">
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/background">
 
-                <Button
-                    android:id="@+id/btnPagi"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_marginLeft="10dp"
-                    android:background="@drawable/ic_plus" />
+                <LinearLayout
+                    android:id="@+id/mknPagi"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="10dp"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:paddingTop="5dp"
+                    android:weightSum="1">
 
-                <TextView
-                    android:layout_width="150dp"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@string/navigation_drawer_close"
-                    android:paddingLeft="20dp"
-                    android:text="Makan Pagi"
-                    android:textColor="#000"
-                    android:textSize="20dp"
-                    android:textStyle="bold" />
+                    <Button
+                        android:id="@+id/btnPagi"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_marginLeft="10dp"
+                        android:background="@drawable/ic_plus" />
 
-                <TextView
-                    android:id="@+id/txtPagi"
+                    <TextView
+                        android:layout_width="150dp"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@string/navigation_drawer_close"
+                        android:paddingLeft="20dp"
+                        android:text="Makan Pagi"
+                        android:textColor="#000"
+                        android:textSize="20dp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/txtPagi"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textAlignment="textEnd"
+                        android:textColor="#000"
+                        android:textSize="20dp" />
+                </LinearLayout>
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="....."
-                    android:textAlignment="textEnd"
-                    android:textColor="#000"
-                    android:textSize="20dp" />
+                    android:orientation="vertical">
 
+                    <TextView
+                        android:id="@+id/detail1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="right"
+                        android:text="Klik untuk detail"
+                        android:textStyle="bold"/>
+
+                        <TextView
+                            android:id="@+id/row1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="20dp"
+                            android:gravity="start"
+                            android:scrollbars="vertical"
+                            />
+
+                </LinearLayout>
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/mknSiang"
                 android:layout_width="match_parent"
-                android:layout_height="80dp"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/background"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp"
-                android:paddingTop="5dp">
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/background">
 
-                <Button
-                    android:id="@+id/btnSiang"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_marginLeft="10dp"
-                    android:background="@drawable/ic_plus" />
+                <LinearLayout
+                    android:id="@+id/mknSiang"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="10dp"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:paddingTop="5dp"
+                    android:weightSum="1">
 
-                <TextView
-                    android:id="@+id/textView3"
-                    android:layout_width="150dp"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@string/navigation_drawer_close"
-                    android:paddingLeft="20dp"
-                    android:text="Makan Siang"
-                    android:textColor="#000"
-                    android:textSize="20dp"
-                    android:textStyle="bold" />
+                    <Button
+                        android:id="@+id/btnSiang"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_marginLeft="10dp"
+                        android:background="@drawable/ic_plus" />
 
-                <TextView
-                    android:id="@+id/txtSiang"
+                    <TextView
+                        android:layout_width="150dp"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@string/navigation_drawer_close"
+                        android:paddingLeft="20dp"
+                        android:text="Makan Siang"
+                        android:textColor="#000"
+                        android:textSize="20dp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/txtSiang"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="....."
+                        android:textAlignment="textEnd"
+                        android:textColor="#000"
+                        android:textSize="20dp" />
+                </LinearLayout>
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="....."
-                    android:textAlignment="textEnd"
-                    android:textColor="#000"
-                    android:textSize="20dp" />
+                    android:orientation="vertical">
 
+                    <TextView
+                        android:id="@+id/detail2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="right"
+                        android:text="Klik untuk detail"
+                        android:textStyle="bold"/>
+
+                    <TextView
+                        android:id="@+id/row2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:gravity="start"
+                        android:scrollbars="vertical"
+                        />
+
+                </LinearLayout>
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/mknMlm"
                 android:layout_width="match_parent"
-                android:layout_height="80dp"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/background"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp"
-                android:paddingTop="5dp"
-                android:weightSum="1">
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/background">
 
-                <Button
-                    android:id="@+id/btnMlm"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_marginLeft="10dp"
-                    android:background="@drawable/ic_plus" />
+                <LinearLayout
+                    android:id="@+id/mknMalam"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="10dp"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:paddingTop="5dp"
+                    android:weightSum="1">
 
-                <TextView
-                    android:layout_width="150dp"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@string/navigation_drawer_close"
-                    android:paddingLeft="20dp"
-                    android:text="Makan Malam"
-                    android:textColor="#000"
-                    android:textSize="20dp"
-                    android:textStyle="bold" />
+                    <Button
+                        android:id="@+id/btnMalam"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_marginLeft="10dp"
+                        android:background="@drawable/ic_plus" />
 
-                <TextView
-                    android:id="@+id/txtMlm"
+                    <TextView
+                        android:layout_width="150dp"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@string/navigation_drawer_close"
+                        android:paddingLeft="20dp"
+                        android:text="Makan Malam"
+                        android:textColor="#000"
+                        android:textSize="20dp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/txtMalam"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="....."
+                        android:textAlignment="textEnd"
+                        android:textColor="#000"
+                        android:textSize="20dp" />
+                </LinearLayout>
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="....."
-                    android:textAlignment="textEnd"
-                    android:textColor="#000"
-                    android:textSize="20dp" />
+                    android:orientation="vertical">
 
+                    <TextView
+                        android:id="@+id/detail3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="right"
+                        android:text="Klik untuk detail"
+                        android:textStyle="bold"/>
+
+                    <TextView
+                        android:id="@+id/row3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:gravity="start"
+                        android:scrollbars="vertical"
+                        />
+
+                </LinearLayout>
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/mknLn"
                 android:layout_width="match_parent"
-                android:layout_height="80dp"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/background"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp"
-                android:paddingTop="5dp"
-                android:weightSum="1">
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/background">
 
-                <Button
-                    android:id="@+id/btnLain"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_marginLeft="10dp"
-                    android:background="@drawable/ic_plus" />
+                <LinearLayout
+                    android:id="@+id/mknLain"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="10dp"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:paddingTop="5dp"
+                    android:weightSum="1">
 
-                <TextView
-                    android:layout_width="150dp"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@string/navigation_drawer_close"
-                    android:paddingLeft="20dp"
-                    android:text="Snack / Lainnya"
-                    android:textColor="#000"
-                    android:textSize="20dp"
-                    android:textStyle="bold" />
+                    <Button
+                        android:id="@+id/btnLain"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_marginLeft="10dp"
+                        android:background="@drawable/ic_plus" />
 
-                <TextView
-                    android:id="@+id/txtLain"
+                    <TextView
+                        android:layout_width="150dp"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@string/navigation_drawer_close"
+                        android:paddingLeft="20dp"
+                        android:text="Makan Lain"
+                        android:textColor="#000"
+                        android:textSize="20dp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/txtLain"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="....."
+                        android:textAlignment="textEnd"
+                        android:textColor="#000"
+                        android:textSize="20dp" />
+                </LinearLayout>
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="....."
-                    android:textAlignment="textEnd"
-                    android:textColor="#000"
-                    android:textSize="20dp" />
+                    android:orientation="vertical">
 
+                    <TextView
+                        android:id="@+id/detail4"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="right"
+                        android:text="Klik untuk detail"
+                        android:textStyle="bold"/>
+
+                    <TextView
+                        android:id="@+id/row4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:gravity="start"
+                        android:scrollbars="vertical"
+                        />
+
+                </LinearLayout>
             </LinearLayout>
+
+            <!--End-->
         </LinearLayout>
+
 
         <Button
             android:id="@+id/btnProses"
@@ -247,11 +367,6 @@
             android:textStyle="bold"
             />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="ghjhjkkj"
-            android:id="@+id/cobaUmur"/>
     </LinearLayout>
 
 </FrameLayout>

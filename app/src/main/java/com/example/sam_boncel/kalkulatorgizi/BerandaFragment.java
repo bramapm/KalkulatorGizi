@@ -2,7 +2,6 @@ package com.example.sam_boncel.kalkulatorgizi;
 
 
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -12,7 +11,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -39,9 +37,9 @@ import java.util.ArrayList;
  * A simple {@link Fragment} subclass.
  */
 public class BerandaFragment extends Fragment {
-    TextView txtNama, txtKalori, txtMkn, txtOlg, kalorimkn, kaloriolg;
+    TextView txtNama, txtKalori, txtMkn, txtOlg, kalorimkn, kaloridibakar, tvdetail;
     public User users_login;
-    public String klikTgl = "a";
+    public String klikTgl = "";
     public BerandaFragment() {
         // Required empty public constructor
     }
@@ -53,10 +51,9 @@ public class BerandaFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_beranda, container, false);
         txtNama = (TextView)rootView.findViewById(R.id.txt_nama);
         txtKalori = (TextView)rootView.findViewById(R.id.txt_kalori);
-        txtMkn = (TextView)rootView.findViewById(R.id.txtMkn);
-        txtOlg = (TextView)rootView.findViewById(R.id.txtOlg);
         kalorimkn = (TextView)rootView.findViewById(R.id.kalorimkn);
-        kaloriolg = (TextView)rootView.findViewById(R.id.kaloriolg);
+        kaloridibakar = (TextView)rootView.findViewById(R.id.kaloriolg);
+        tvdetail = (TextView)rootView.findViewById(R.id.tvdetail);
 
         loadDataUsersLogin();
 
@@ -70,31 +67,25 @@ public class BerandaFragment extends Fragment {
             Toast.makeText(getContext(), "Sudah ada Data", Toast.LENGTH_SHORT).show();
             showInputMakanan();
         }
-
+        kalorimkn.setText("-");
+        kaloridibakar.setText("-");
         CalendarView calendarView=(CalendarView) rootView.findViewById(R.id.kalender);
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
 
             @Override
             public void onSelectedDayChange(CalendarView view, int year, int month,
                                             int dayOfMonth) {
-                Toast.makeText(getContext(),year +"-"+ (month+1) +"-"+ dayOfMonth, 0).show();
+                //Toast.makeText(getContext(),year +"-"+ (month+1) +"-"+ dayOfMonth, 0).show();
                 klikTgl = year +"-"+ (month+1) +"-"+ dayOfMonth;
-                Log.d("tes", klikTgl);
+                //Log.d("tes", klikTgl);
                 kalOnClick();
-                //txtMkn.setText(klikTgl.toString());
-
-
             }
         });
-
-
-        txtOlg.setText("pagi");
-
-
         return rootView;
     }
 
     public void kalOnClick(){
+        kalOlg();
         FormData data = new FormData();
         data.add("method", "countKaloriMknTotal");
         data.add("id_user", users_login.getId_user());
@@ -109,23 +100,98 @@ public class BerandaFragment extends Fragment {
                         JSONArray nv =jsonObject.getJSONArray("data");
                         JSONObject jo = nv.getJSONObject(0);
                         String ss = jo.getString("kalori");
-                        kalorimkn.setText(ss);
+                        final String jd = ss;
+                        //kalorimkn.setText(ss);
+                        Log.d("tes", ss);
+                        if (!(jo == null || nv == null)){
+                            kalorimkn.setText(ss);
+                            tvdetail.setText("(Lihat Detail)");
+                            final String tgl = klikTgl;
+
+                            tvdetail.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    Toolbar toolbar1 = (Toolbar) getActivity().findViewById(R.id.toolbar);
+                                    toolbar1.setTitle("Detail Record");
+                                    DetailRecordFragment detailRecordFragment = new DetailRecordFragment();
+                                    Bundle bundle = new Bundle();
+                                    bundle.putString("tgl", String.valueOf(tgl));
+                                    bundle.putString("kalori", String.valueOf(jd));
+                                    detailRecordFragment.setArguments(bundle);
+                                    FragmentManager manager = getActivity().getSupportFragmentManager();
+                                    manager.beginTransaction().replace(
+                                            R.id.relativelayout_for_fragment,
+                                            detailRecordFragment).commit();
+                                }
+                            });
+                            if (ss == "null"){
+                                kalorimkn.setText("-");
+                                tvdetail.setText("");
+                            }
+                        } else {
+                            kalorimkn.setText("-");
+                            tvdetail.setText("");
+                        }
+
                     }else{
                         Toast.makeText(getContext(),"Gagal get Data", Toast.LENGTH_SHORT).show();
                     }
                 } catch (JSONException e) {
-                    //Snackbar.make(clContent, e.getMessage(), Snackbar.LENGTH_SHORT).show();
+
                 }
             }
 
             @Override
             public void OnInternetTaskFailed(InternetTask internetTask) {
-                //Snackbar.make(clContent, internetTask.getException().getMessage(), Snackbar.LENGTH_SHORT).show();
             }
         });
         uploadTask.execute();
     }
 
+    public void kalOlg(){
+        FormData data = new FormData();
+        data.add("method", "countKaloriOlgTotal");
+        data.add("id_user", users_login.getId_user());
+        data.add("tanggal", klikTgl);
+        InternetTask uploadTask = new InternetTask("Record", data);
+        uploadTask.setOnInternetTaskFinishedListener(new OnInternetTaskFinishedListener() {
+            @Override
+            public void OnInternetTaskFinished(InternetTask internetTask) {
+                try {
+                    JSONObject jsonObject = new JSONObject(internetTask.getResponseString());
+                    if (jsonObject.get("code").equals(200)){
+                        JSONArray nv =jsonObject.getJSONArray("data");
+                        JSONObject jo = nv.getJSONObject(0);
+                        String ssa = jo.getString("kalori");
+                        final String jd = ssa;
+                        if (!(jo == null || nv == null)){
+                            kaloridibakar.setText(ssa);
+                            tvdetail.setText("(Lihat Detail)");
+                            final String tgl = klikTgl;
+
+                            if (ssa == "null"){
+                                kaloridibakar.setText("-");
+                                tvdetail.setText("");
+                            }
+                        } else {
+                            kalorimkn.setText("-");
+                            tvdetail.setText("");
+                        }
+
+                    }else{
+                        Toast.makeText(getContext(),"Gagal get Data", Toast.LENGTH_SHORT).show();
+                    }
+                } catch (JSONException e) {
+
+                }
+            }
+
+            @Override
+            public void OnInternetTaskFailed(InternetTask internetTask) {
+            }
+        });
+        uploadTask.execute();
+    }
 
     public boolean loadDataUsersLogin(){
         SharedPreferences sharedPref = getContext().getSharedPreferences("data_private", 0);
@@ -187,7 +253,6 @@ public class BerandaFragment extends Fragment {
                         dataDiriFragment).commit();
             }
         });
-
         builder.show();
     } //end showconfir
 
@@ -208,5 +273,5 @@ public class BerandaFragment extends Fragment {
         });
 
         builder.show();
-    } //en
+    } //end show input makanan
 }

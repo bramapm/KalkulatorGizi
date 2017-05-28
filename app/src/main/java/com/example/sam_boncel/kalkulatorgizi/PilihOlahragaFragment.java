@@ -43,6 +43,7 @@ public class PilihOlahragaFragment extends Fragment {
     TextView txtNama, txtKkal, txtKeterangan;
     EditText txtSearch;
     ImageView imageView;
+    double hasilKal;
     public ArrayAdapter<String> adapter;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -121,9 +122,18 @@ public class PilihOlahragaFragment extends Fragment {
                 i.putExtra("kkal", selectedOlahraga.getKkal());
                 i.putExtra("keterangan", selectedOlahraga.getKeterangan());
                 i.putExtra("foto", selectedOlahraga.getFoto());
+                i.putExtra("hasilKal", String.valueOf(hasilKal));
                 startActivity(i);
             }
         });
+
+        Bundle bundle = getArguments();
+        if (bundle != null){
+            hasilKal = bundle.getDouble("hasil");
+            Log.d("hasil", String.valueOf(hasilKal));
+            //Log.d("hasil", teks.toString());
+            //teks.setText(String.valueOf(hasil));
+        }
 
         this.listOlahraga = new ArrayList<>();
         getOlahraga();

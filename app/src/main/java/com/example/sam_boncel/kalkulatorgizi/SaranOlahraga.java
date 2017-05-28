@@ -112,6 +112,8 @@ public class SaranOlahraga extends Fragment {
             //Log.d("hasil", teks.toString());
             teks.setText(String.valueOf(hasil));
         }
+
+
         getSaran();
 
         return rootView;

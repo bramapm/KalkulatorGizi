@@ -14,11 +14,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.sam_boncel.kalkulatorgizi.entities.Jadwal;
 import com.example.sam_boncel.kalkulatorgizi.entities.Makanan;
 import com.example.sam_boncel.kalkulatorgizi.entities.Olahraga;
 import com.example.sam_boncel.kalkulatorgizi.entities.User;
@@ -44,6 +46,7 @@ public class OlahragaFragment extends Fragment {
     public ListView listView;
     TextView txtNama, txtKkal, txtKeterangan;
     EditText txtSearch;
+    Button btnJadwal;
     ImageView imageView;
     public ArrayAdapter<String> adapter;
     // TODO: Rename parameter arguments, choose names that match
@@ -57,6 +60,7 @@ public class OlahragaFragment extends Fragment {
 
     private ArrayList<Olahraga> listOlahraga;
     public User users_login;
+
     public OlahragaFragment() {
         // Required empty public constructor
     }
@@ -95,6 +99,7 @@ public class OlahragaFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_olahraga, container, false);
         listView = (ListView) rootView.findViewById(R.id.listView);
         txtSearch = (EditText) rootView.findViewById(R.id.search);
+        btnJadwal = (Button) rootView.findViewById(R.id.btnJadwal);
         //buat search
         txtSearch.addTextChangedListener(new TextWatcher() {
             @Override
@@ -129,6 +134,14 @@ public class OlahragaFragment extends Fragment {
 
         this.listOlahraga = new ArrayList<>();
         getOlahraga();
+
+        btnJadwal.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), JadwalActivity.class);
+                startActivity(intent);
+            }
+        });
         return rootView;
     }
         public void getOlahraga(){

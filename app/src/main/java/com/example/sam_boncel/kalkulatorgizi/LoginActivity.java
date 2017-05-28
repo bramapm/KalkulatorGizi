@@ -97,7 +97,7 @@ public class LoginActivity extends BaseActivity implements GoogleApiClient.OnCon
                             JSONArray jsonArray = jsonObject.getJSONArray("data");
                             saveDataUsersLogin(jsonArray.getString(0));
                             Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);//
                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                             startActivity(intent);
                         } else {

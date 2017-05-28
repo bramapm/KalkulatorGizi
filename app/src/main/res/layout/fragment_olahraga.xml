@@ -35,7 +35,6 @@
                 android:layout_marginLeft="5dp"
                 android:layout_marginTop="5dp"
                 android:background="@drawable/btnsingin"
-                android:onClick="btn_onClick"
                 android:text="Jadwal"
                 android:textColor="#fff"
                 android:textSize="18dp"

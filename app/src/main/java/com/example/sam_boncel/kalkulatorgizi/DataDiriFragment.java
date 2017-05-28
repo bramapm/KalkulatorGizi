@@ -54,6 +54,7 @@ public class DataDiriFragment extends Fragment {
     EditText txtUsername, txtEmail, txtNama, txtTinggi, txtBerat, txtTTL, txtJK, txtUmur;
     private RadioGroup genderRadio;
     String radioButton = "";
+    String date ="";
     ImageView imgProfile;
     ImageButton imgBtn;
     private int mYear, mMonth, mDay;
@@ -123,19 +124,20 @@ public class DataDiriFragment extends Fragment {
                 mMonth = c.get(Calendar.MONTH);
                 mDay = c.get(Calendar.DAY_OF_MONTH);
 
-                DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(),
+                DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(),
                         new DatePickerDialog.OnDateSetListener() {
-
                             @Override
                             public void onDateSet(DatePicker view, int year,
                                                   int monthOfYear, int dayOfMonth) {
-                        txtTTL.setText(year + "-" + (monthOfYear + 1) + "-" + dayOfMonth);
-
+                                date = year + "-" + (monthOfYear+ 1) + "-" + dayOfMonth;
+                        txtTTL.setText(date);
                             }
                         }, mYear, mMonth, mDay);
+                Log.d("hay", String.valueOf(mYear) + String.valueOf(mMonth) + String.valueOf(mDay));
                 datePickerDialog.show();
             }
         });
+        Log.d("hay", String.valueOf(mYear) + String.valueOf(mMonth) + String.valueOf(mDay));
 //        rdPria = (RadioButton)rootView.findViewById(R.id.rb_pria);
 //        rdWanita = (RadioButton)rootView.findViewById(R.id.rb_wanita);
 
@@ -175,7 +177,8 @@ public class DataDiriFragment extends Fragment {
             tinggi  = txtTinggi.getText().toString();
             berat   = txtBerat.getText().toString();
             umur    = txtUmur.getText().toString();
-           jenisk  = txtJK.getText().toString();
+            jenisk  = txtJK.getText().toString();
+
 
             tb = Double.parseDouble(tinggi);
             be = Double.parseDouble(berat);
@@ -192,7 +195,7 @@ public class DataDiriFragment extends Fragment {
             Calendar calendar = Calendar.getInstance();
             int year = calendar.get(Calendar.YEAR);
             String umurS = "";
-            String as = users_login.getTtl();
+            String as = date;
             Log.d("haha", String.valueOf(year));
             Log.d("haha", String.valueOf(as));
 

@@ -45,7 +45,7 @@
             <TextView
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
-                android:text="Kkal"
+                android:text="Kkal/mnt"
                 android:layout_marginLeft="5dp"/>
             <TextView
                 android:layout_width="10dp"
@@ -97,12 +97,12 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Tanggal Lahir"
+                android:hint="Set Tanggal"
                 android:id="@+id/tgl"/>
         </LinearLayout>
         <Button
             android:id="@+id/btnSet"
-            android:layout_width="80dp"
+            android:layout_width="wrap_content"
             android:layout_height="50dp"
             android:layout_marginTop="10dp"
             android:layout_marginLeft="5dp"

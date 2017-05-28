@@ -10,7 +10,8 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".LoginActivity"
+        <activity
+            android:name=".LoginActivity"
             android:theme="@style/AppTheme.CustomeTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -38,8 +39,15 @@
             android:label="Detail Olahraga"
             android:theme="@style/AppTheme.CustomeTheme" />
         <activity android:name=".PilihMakananActivity" />
-        <activity android:name=".SetOlahragaActivity"
-            android:theme="@style/AppTheme.CustomeTheme"></activity>
+        <activity
+            android:name=".SetOlahragaActivity"
+            android:theme="@style/AppTheme.CustomeTheme" />
+        <activity android:name=".DetailRecordActivity" />
+
+        <activity android:name=".OlahragaAktif" />
+
+        <activity android:name=".JadwalActivity"
+            android:label="Jadwal"></activity>
     </application>
 
 </manifest>

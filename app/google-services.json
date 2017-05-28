@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "418798078920",
-    "project_id": "kalkulatorgizi"
+    "project_number": "809044177791",
+    "project_id": "kalkulator-gizi"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:418798078920:android:d4804aa22abafe2e",
+        "mobilesdk_app_id": "1:809044177791:android:d4804aa22abafe2e",
         "android_client_info": {
           "package_name": "com.example.sam_boncel.kalkulatorgizi"
         }
       },
       "oauth_client": [
         {
-          "client_id": "418798078920-p24la2p25jb53t7upm447v4h1jeqp1m9.apps.googleusercontent.com",
+          "client_id": "809044177791-jo9dtomc7hncvmguksb7s32lhlhptc8v.apps.googleusercontent.com",
           "client_type": 3
         },
         {
-          "client_id": "418798078920-rkdaf06c5fbje79mn5ig5q5nla5sg0pf.apps.googleusercontent.com",
+          "client_id": "809044177791-oc4hev39554m46vaq1poblkro525725r.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.example.sam_boncel.kalkulatorgizi",
-            "certificate_hash": "7e8bfe86931c1b79c83affcbf085dbfa30f6bd68"
+            "certificate_hash": "623cca793aa558398f76bd35b7386718a02b0258"
           }
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyC9AbBBHbHTWrBf8jBarNqkPGg9D5Ca1yk"
+          "current_key": "AIzaSyDy8Rd16r_uZKLKkoQJw1qrkZKv8MtYagI"
         }
       ],
       "services": {

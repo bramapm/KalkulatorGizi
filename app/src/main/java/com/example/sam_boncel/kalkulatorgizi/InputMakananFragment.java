@@ -10,6 +10,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -57,10 +58,11 @@ public class InputMakananFragment extends Fragment {
     public Button btnPagi, btnSiang, btnMlm, btnLain, btnProses;
     public TextView txtKaloributuh, txtKalorikonsumsi, txtPagi, txtSiang, txtMlm, txtLain;
     public EditText txtSearch;
-    private TextView cobaUmur;
+    private TextView detail1, row1, detail2, row2, detail3, row3, detail4, row4;
 
     String kat_waktu = "";
     String id_mkn = "";
+    String s;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -110,7 +112,24 @@ public class InputMakananFragment extends Fragment {
         // Inflate the layout for this fragment
 
         View rootView = inflater.inflate(R.layout.fragment_input_makanan, container, false);
-        TextView cobaUmur = (TextView) rootView.findViewById(R.id.cobaUmur);
+        detail1 = (TextView) rootView.findViewById(R.id.detail1);
+        row1 = (TextView) rootView.findViewById(R.id.row1);
+        detail2 = (TextView) rootView.findViewById(R.id.detail2);
+        row2 = (TextView) rootView.findViewById(R.id.row2);
+        detail3 = (TextView) rootView.findViewById(R.id.detail3);
+        row3 = (TextView) rootView.findViewById(R.id.row3);
+        detail4 = (TextView) rootView.findViewById(R.id.detail4);
+        row4 = (TextView) rootView.findViewById(R.id.row4);
+
+        txtKaloributuh = (TextView) rootView.findViewById(R.id.kaloributuh);
+        txtKalorikonsumsi = (TextView) rootView.findViewById(R.id.kalorikonsumsi);
+        txtPagi = (TextView) rootView.findViewById(R.id.txtPagi);
+        txtSiang = (TextView) rootView.findViewById(R.id.txtSiang);
+        txtMlm = (TextView) rootView.findViewById(R.id.txtMalam);
+        txtLain = (TextView) rootView.findViewById(R.id.txtLain);
+
+        loadDataUsersLogin();
+
         btnPagi = (Button)rootView.findViewById(R.id.btnPagi);
         btnPagi.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -159,10 +178,8 @@ public class InputMakananFragment extends Fragment {
                 mBuilder.setView(mView);// * popup
                 AlertDialog dialog = mBuilder.create();// * popup
                 dialog.show(); // *akhir popup
-//                Log.d("A", "A");
             }
         });
-
 
         btnSiang = (Button)rootView.findViewById(R.id.btnSiang);
         btnSiang.setOnClickListener(new View.OnClickListener() {
@@ -214,8 +231,7 @@ public class InputMakananFragment extends Fragment {
             }
         });
 
-
-        btnMlm = (Button)rootView.findViewById(R.id.btnMlm);
+        btnMlm = (Button)rootView.findViewById(R.id.btnMalam);
         btnMlm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -316,16 +332,84 @@ public class InputMakananFragment extends Fragment {
             }
         });
 
-        loadDataUsersLogin();
-
         sumKalMkn();
         sumKalMknTotal();
-        txtKaloributuh = (TextView) rootView.findViewById(R.id.kaloributuh);
-        txtKalorikonsumsi = (TextView) rootView.findViewById(R.id.kalorikonsumsi);
-        txtPagi = (TextView) rootView.findViewById(R.id.txtPagi);
-        txtSiang = (TextView) rootView.findViewById(R.id.txtSiang);
-        txtMlm = (TextView) rootView.findViewById(R.id.txtMlm);
-        txtLain = (TextView) rootView.findViewById(R.id.txtLain);
+
+        detail1.setOnClickListener(new View.OnClickListener() {
+                  @Override
+                  public void onClick(View v) {
+                      //row.setText("oke klikked");
+                      kat_waktu = "pagi";
+                      if (detail1.getText().equals("Klik untuk detail")) {
+                          getDetail();
+                          row1.setMovementMethod(new ScrollingMovementMethod());
+                          row1.setText(s);
+                          row1.setVisibility(View.VISIBLE);
+                          detail1.setText("Tutup");
+                      } else {
+                          row1.setVisibility(View.GONE);
+                          detail1.setText("Klik untuk detail");
+                      }
+                  }
+              });
+
+        detail2.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                //row.setText("oke klikked");
+                kat_waktu = "siang";
+                if (detail2.getText().equals("Klik untuk detail")) {
+                    getDetail();
+                    row2.setMovementMethod(new ScrollingMovementMethod());
+                    row2.setText(s);
+                    row2.setVisibility(View.VISIBLE);
+                    detail2.setText("Tutup");
+                } else {
+                    row2.setVisibility(View.GONE);
+                    detail2.setText("Klik untuk detail");
+                }
+            }
+        });
+
+        detail3.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                //row.setText("oke klikked");
+                kat_waktu = "malam";
+                if (detail3.getText().equals("Klik untuk detail")) {
+                    getDetail();
+                    row3.setMovementMethod(new ScrollingMovementMethod());
+                    row3.setText(s);
+                    row3.setVisibility(View.VISIBLE);
+                    detail3.setText("Tutup");
+                } else {
+                    row3.setVisibility(View.GONE);
+                    detail3.setText("Klik untuk detail");
+                }
+            }
+        });
+
+        detail4.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                //row.setText("oke klikked");
+                kat_waktu = "";
+                if (detail4.getText().equals("Klik untuk detail")) {
+                    kat_waktu = "lain";
+                    getDetail();
+                    row4.setMovementMethod(new ScrollingMovementMethod());
+                    row4.setText(s);
+                    row4.setVisibility(View.VISIBLE);
+                    detail4.setText("Tutup");
+                } else {
+                    row4.setVisibility(View.GONE);
+                    detail4.setText("Klik untuk detail");
+                }
+            }
+        });
 
         //DecimalFormat aaa = new DecimalFormat("#.##");
         //Double keb = Double.valueOf(users_login.getKalori());
@@ -348,6 +432,7 @@ public class InputMakananFragment extends Fragment {
         });
         return rootView;
     }
+//    End OncreatView
 
     public void showConfirmationOlg() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
@@ -358,7 +443,10 @@ public class InputMakananFragment extends Fragment {
             public void onClick(DialogInterface dialog, int which) {
                 Toolbar toolbar1 = (Toolbar) getActivity().findViewById(R.id.toolbar);
                 toolbar1.setTitle("Olahraga");
-                PilihOlahragaFragment pilihOlahragaFragment= new PilihOlahragaFragment();
+                PilihOlahragaFragment pilihOlahragaFragment = new PilihOlahragaFragment();
+                Bundle bundle = new Bundle();
+                bundle.putDouble("hasil", hasil);
+                pilihOlahragaFragment.setArguments(bundle);
                 FragmentManager manager = getActivity().getSupportFragmentManager();
                 manager.beginTransaction().replace(
                         R.id.relativelayout_for_fragment,
@@ -397,9 +485,6 @@ public class InputMakananFragment extends Fragment {
         builder.show();
     } //end showconfir
 
-
-
-
     private void onCheckedChanged(CompoundButton button, boolean isCheck){
         int pos = lv.getPositionForView(button);
         if (pos != ListView.INVALID_POSITION){
@@ -428,6 +513,7 @@ public class InputMakananFragment extends Fragment {
             return false;
         }
     }
+
     public void getMakanan(){
         FormData data = new FormData();
         data.add("method", "get_makanan");
@@ -578,5 +664,49 @@ public class InputMakananFragment extends Fragment {
         SimpleDateFormat frmt = new SimpleDateFormat("yyyy-MM-dd");
         String dateString = frmt.format(now);
         return dateString;
+    }
+
+    public void getDetail(){
+        FormData data = new FormData();
+        data.add("method", "getMknWaktu");
+        data.add("kat_waktu", kat_waktu);
+        data.add("tanggal", getTanggal().toString());
+        data.add("id_user", users_login.getId_user().toString());
+        InternetTask uploadTask = new InternetTask("Record", data);
+        uploadTask.setOnInternetTaskFinishedListener(new OnInternetTaskFinishedListener() {
+            @Override
+            public void OnInternetTaskFinished(InternetTask internetTask) {
+                try {
+                    JSONObject jsonObject = new JSONObject(internetTask.getResponseString());
+                    if (jsonObject.get("code").equals(200)){
+
+                        JSONArray nv =jsonObject.getJSONArray("data");
+                        JSONObject Jo = nv.getJSONObject(0);
+
+                        for (int x=0; x<nv.length(); x++){
+                            JSONObject jo = nv.getJSONObject(x);
+                            //s += jo.getString("tanggal");
+                            s = "";
+                            s += ((x+1) + ". ");
+
+                            s += jo.getString("nama_makanan");
+
+                            s += (" konsumsi ");
+                            s += jo.getString("kalori");
+                            s += ("kal " + "\n");
+                        }
+                    }else{
+                        Toast.makeText(getContext(),"Gagal get Data", Toast.LENGTH_SHORT).show();
+                    }
+                } catch (JSONException e) {
+
+                }
+            }
+
+            @Override
+            public void OnInternetTaskFailed(InternetTask internetTask) {
+            }
+        });
+        uploadTask.execute();
     }
 }

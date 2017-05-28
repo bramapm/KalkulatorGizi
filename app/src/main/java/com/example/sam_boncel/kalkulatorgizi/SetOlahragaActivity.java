@@ -24,15 +24,20 @@ import com.google.gson.GsonBuilder;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.Objects;
 
 public class SetOlahragaActivity extends AppCompatActivity {
     TextView txtNama, txtKkal, txtKeterangan, txtTgl;
     ImageView imageView;
-    Button btnSet, btnLahir;
+    Button btnSet, btnTgl;
     private int mYear, mMonth, mDay;
     public User users_login;
     public String id = "";
+    public String hasilKal = "";
+    public String dateString = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,7 +48,7 @@ public class SetOlahragaActivity extends AppCompatActivity {
         imageView = (ImageView) findViewById(R.id.imageView);
         TextView txtUser = (TextView) findViewById(R.id.user);
         btnSet = (Button) findViewById(R.id.btnSet);
-        btnLahir = (Button) findViewById(R.id.btnTgl);
+        btnTgl = (Button) findViewById(R.id.btnTgl);
         txtTgl = (TextView) findViewById(R.id.tgl);
 
         DisplayMetrics dm = new DisplayMetrics();
@@ -53,20 +58,41 @@ public class SetOlahragaActivity extends AppCompatActivity {
         int height = dm.heightPixels;
 
         getWindow().setLayout((int) (witdh * .80), (int) (height * .70));
+
+        Date now = new Date();
+        SimpleDateFormat frmt = new SimpleDateFormat("yyyy-MM-dd");
+        dateString = frmt.format(now);
+        txtTgl.setText(dateString);
+
+        Log.d("hasil2", txtTgl.getText().toString());
+        Log.d("hasil2", dateString.toString());
+        btnSet.setText("Lakukan Sekarang");
+
         showData();
         loadDataUsersLogin();
         txtUser.setText(users_login.getId_user());
     }
     public void showData() {
         Intent i = getIntent();
+        // Ambil String data Intent dari PilihOlahragaFragment
         id = i.getStringExtra("id_olahraga");
         String Nama_olg = i.getStringExtra("nama_olahraga");
         String kkal = i.getStringExtra("kkal");
         String keterangan = i.getStringExtra("keterangan");
+        hasilKal = i.getStringExtra("hasilKal");
+
+        Log.d("hasil", kkal);
+        Log.d("hasil", hasilKal);
+
+        // hasil menit dari kal
+        double hasil = Double.parseDouble(String.valueOf(hasilKal)) / Double.parseDouble(String.valueOf(kkal));
+        Log.d("hasil1", String.valueOf(hasil));
+
         txtNama.setText(Nama_olg);
         txtKkal.setText(kkal);
         txtKeterangan.setText(keterangan);
     }
+
     public boolean loadDataUsersLogin(){
         SharedPreferences sharedPref = getApplicationContext().getSharedPreferences("data_private", 0);
         Log.d("karepmu A", "sakkarepmu A");
@@ -89,8 +115,9 @@ public class SetOlahragaActivity extends AppCompatActivity {
         FormData data = new FormData();
         data.add("method", "insertJadwal");
         data.add("id_user", users_login.getId_user());
-        data.add("id_olahraga", id);//id makanan yang di select
+        data.add("id_olahraga", id);//id olahraga yang di select
         data.add("tanggal", txtTgl.getText().toString());
+        data.add("kalori", hasilKal.toString()); //menyimpan kal kelebihan saat proses perhitungan kal harian
         InternetTask uploadTask = new InternetTask("Jadwal", data);
         uploadTask.setOnInternetTaskFinishedListener(new OnInternetTaskFinishedListener() {
             @Override
@@ -100,7 +127,6 @@ public class SetOlahragaActivity extends AppCompatActivity {
                     if (jsonObject.get("code").equals(200)){
                         //btnRegister.setClickable(false);
                         Toast.makeText(getApplicationContext(),"Sukses", Toast.LENGTH_SHORT).show();
-
                         //Snackbar.make(,"Registrasi Sukses", Snackbar.LENGTH_SHORT).show();
                         //Snackbar.make(this, "Registration Success", Snackbar.LENGTH_SHORT).show();
                     }else{
@@ -111,7 +137,6 @@ public class SetOlahragaActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(),"Error", Toast.LENGTH_SHORT).show();
                 }
             }
-
             @Override
             public void OnInternetTaskFailed(InternetTask internetTask) {
                 //Snackbar.make(clContent, internetTask.getException().getMessage(), Snackbar.LENGTH_SHORT).show();
@@ -119,8 +144,10 @@ public class SetOlahragaActivity extends AppCompatActivity {
         });
         uploadTask.execute();
     }
+
     public void btn_onClick(View v){
-        if (v == btnLahir){
+
+        if (v == btnTgl){
             final Calendar c = Calendar.getInstance();
             mYear = c.get(Calendar.YEAR);
             mMonth = c.get(Calendar.MONTH);
@@ -128,18 +155,29 @@ public class SetOlahragaActivity extends AppCompatActivity {
 
             DatePickerDialog datePickerDialog = new DatePickerDialog(this,
                     new DatePickerDialog.OnDateSetListener() {
-
                         @Override
                         public void onDateSet(DatePicker view, int year,
                                               int monthOfYear, int dayOfMonth) {
+                            txtTgl.setText(year + "-" + 0 +(monthOfYear + 1) + "-" + dayOfMonth);
 
-                            txtTgl.setText(year + "-" + (monthOfYear + 1) + "-" + dayOfMonth);
-
+                            if (txtTgl.getText().toString().equals(dateString.toString())){
+                                btnSet.setText("Lakukan Sekarang");
+                            } else {
+                                btnSet.setText("Set Jadwal");
+                            }
                         }
                     }, mYear, mMonth, mDay);
             datePickerDialog.show();
         }else if(v == btnSet){
-            saveJadwal();
+            if (btnSet.getText().equals("Lakukan Sekarang")){
+                // Melakukan Olhraga sekarang, Sensor diaktifkan, menuju ke activity
+                // OlahragaAktif
+                Intent i = new Intent(getApplicationContext(), OlahragaAktif.class);
+                startActivity(i);
+            } else {
+                //Save Olahraga di jadwal
+                saveJadwal();
+            }
         }
     }
 }
