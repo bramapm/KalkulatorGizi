@@ -1,8 +1,12 @@
 package com.example.sam_boncel.kalkulatorgizi;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -69,20 +73,30 @@ public class LoginActivity extends BaseActivity implements GoogleApiClient.OnCon
             GoogleSignInAccount acct = result.getSignInAccount();
 
             Log.e(TAG, "display name: " + acct.getDisplayName());
-
+//            Log.d("foto", acct.getPhotoUrl().toString());
+            String personPhotoUrl = "https://s-media-cache-ak0.pinimg.com/originals/15/4e/da/154edabc2856e10ba5f8d03e236fe6fc.jpg";
+//            if (!acct.getPhotoUrl().toString().equals("null")){
+//                personPhotoUrl = String.valueOf(getDrawable(R.drawable.ic_user));
+//            }else {
+//                personPhotoUrl = acct.getPhotoUrl().toString();
+//            }
+            try {
+                personPhotoUrl = acct.getPhotoUrl().toString();
+            }catch (NullPointerException npe){
+                personPhotoUrl = "https://s-media-cache-ak0.pinimg.com/originals/15/4e/da/154edabc2856e10ba5f8d03e236fe6fc.jpg";
+            }
+            Log.d("foto", personPhotoUrl);
             String personName = acct.getDisplayName();
             final String idgoogle = acct.getId();
-            String personPhotoUrl = acct.getPhotoUrl().toString();
             String email = acct.getEmail().toString();
 
 
             Log.e(TAG, "Name: " + personName + ", email: " + email
-                    + ", Image: " + personPhotoUrl);
+                    + ", Image: ");
 
             FormData data = new FormData();
             data.add("method", "autgoogle");
             data.add("id_user", idgoogle.toString());
-            Log.d("oyy", idgoogle.toString());
             data.add("nama_user", personName.toString());
             data.add("email", email.toString());
             data.add("foto", personPhotoUrl.toString());
@@ -95,6 +109,7 @@ public class LoginActivity extends BaseActivity implements GoogleApiClient.OnCon
                         JSONObject jsonObject = new JSONObject(internetTask.getResponseString());
                         if (jsonObject.get("code").equals(200)) {
                             JSONArray jsonArray = jsonObject.getJSONArray("data");
+                            Log.d("iloc", jsonArray.getString(0));
                             saveDataUsersLogin(jsonArray.getString(0));
                             Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);//
@@ -116,19 +131,6 @@ public class LoginActivity extends BaseActivity implements GoogleApiClient.OnCon
             uploadTask.execute();
         }
     }
-    private boolean is_parameters_login_valid(){
-        if (txtUsername.getText().toString().equals("")){
-            txtUsername.requestFocus();
-            txtUsername.setError("Please Input Your Username");
-            return false;
-        }else if (txtPassword.getText().toString().equals("")) {
-            txtPassword.requestFocus();
-            txtPassword.setError("Please Input Your Password");
-            return false;
-        }else
-            return true;
-    }
-
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -163,8 +165,16 @@ public class LoginActivity extends BaseActivity implements GoogleApiClient.OnCon
             });
         }
     }
+
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-
+        AlertDialog.Builder builder = new AlertDialog.Builder(getApplicationContext());
+        builder.setMessage("Cek Koneksi Internet Anda");
+        builder.setNegativeButton("Tutup", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
     }
 }

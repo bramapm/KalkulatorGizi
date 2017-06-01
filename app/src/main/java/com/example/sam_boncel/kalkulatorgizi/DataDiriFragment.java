@@ -53,7 +53,7 @@ public class DataDiriFragment extends Fragment {
     public User users_login;
     EditText txtUsername, txtEmail, txtNama, txtTinggi, txtBerat, txtTTL, txtJK, txtUmur;
     private RadioGroup genderRadio;
-    String radioButton = "";
+    RadioButton radioButton, rbLk, rbPr;
     String date ="";
     ImageView imgProfile;
     ImageButton imgBtn;
@@ -106,16 +106,25 @@ public class DataDiriFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+//        Log.d("Arap", String.valueOf(id_gender));
+        loadDataUsersLogin();
         View rootView = inflater.inflate(R.layout.fragment_data_diri, container, false);
         imgProfile = (ImageView) rootView.findViewById(R.id.img_profile);
         txtEmail = (EditText) rootView.findViewById(R.id.txtEmail);
         txtNama = (EditText) rootView.findViewById(R.id.txtNama);
         txtUmur = (EditText) rootView.findViewById(R.id.txtUmur);
-        txtJK = (EditText) rootView.findViewById(R.id.txtJK);
         txtTTL = (EditText) rootView.findViewById(R.id.txtTTL);
         txtTinggi = (EditText) rootView.findViewById(R.id.txtTinggi);
         txtBerat = (EditText) rootView.findViewById(R.id.txtBerat);
         imgBtn = (ImageButton) rootView.findViewById(R.id.imgBtn);
+        genderRadio = (RadioGroup) rootView.findViewById(R.id.rgJk);
+        rbLk = (RadioButton) rootView.findViewById(R.id.rbLk);
+        rbPr = (RadioButton) rootView.findViewById(R.id.rbPr);
+
+        if (!users_login.getTtl().equals("0000-00-00")){
+            date = users_login.getTtl();
+        }
+
         imgBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -138,25 +147,32 @@ public class DataDiriFragment extends Fragment {
             }
         });
         Log.d("hay", String.valueOf(mYear) + String.valueOf(mMonth) + String.valueOf(mDay));
-//        rdPria = (RadioButton)rootView.findViewById(R.id.rb_pria);
-//        rdWanita = (RadioButton)rootView.findViewById(R.id.rb_wanita);
-
-        loadDataUsersLogin();
-        String urlProfileImg = users_login.getFoto().toString();;
+        String urlProfileImg = users_login.getFoto().toString();
+        if(urlProfileImg.equals("")){
+            urlProfileImg = "https://s-media-cache-ak0.pinimg.com/originals/15/4e/da/154edabc2856e10ba5f8d03e236fe6fc.jpg";
+        }
         Glide.with(this).load(urlProfileImg)
                 .crossFade()
                 .thumbnail(0.5f)
                 .bitmapTransform(new CircleTransform(getContext()))
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(imgProfile);
+
         txtEmail.setText(users_login.getEmail());
         txtNama.setText(users_login.getNama_user());
         txtTinggi.setText(users_login.getTinggi());
         txtBerat.setText(users_login.getBerat());
-        txtJK.setText(users_login.getJk());
+
+        if (users_login.getJk().equals("Laki-Laki")){
+            rbLk.setChecked(true);
+        } else if(users_login.getJk().equals("Perempuan")){
+            rbPr.setChecked(true);
+        } else {
+            rbLk.setChecked(true);
+        }
+
         txtTTL.setText(users_login.getTtl());
         txtUmur.setText(users_login.getUmur());
-
         btnSave = (Button) rootView.findViewById(R.id.btnUpdate);
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -169,24 +185,25 @@ public class DataDiriFragment extends Fragment {
 
 
     public void onUpdateAkunClick() {
-        if (is_parameters_update_valid()){
+        if(is_parameters_update_valid()){
             String tinggi, berat, umur, jenisk;
             double tb, be, um;
             double hasila = 0.0;
 
+            int id_gender  = genderRadio.getCheckedRadioButtonId();
+            radioButton = (RadioButton)getActivity().findViewById(id_gender);
             tinggi  = txtTinggi.getText().toString();
             berat   = txtBerat.getText().toString();
             umur    = txtUmur.getText().toString();
-            jenisk  = txtJK.getText().toString();
-
+            jenisk  = radioButton.getText().toString();
 
             tb = Double.parseDouble(tinggi);
             be = Double.parseDouble(berat);
             um = Double.parseDouble(umur);
 
-            if ( jenisk.equals("L")) {
+            if (jenisk.equals("Laki-Laki")) {
                 hasila = 66.42 + (13.75 * be) + (5 *tb) + (6.78 * um);
-            } else if ( jenisk.equals("P")) {
+            } else if ( jenisk.equals("Perempuan")) {
                 hasila = 655.1 + (9.65 * be) + (5 *tb) + (4.68 * um);
             } else {
                 Toast.makeText(getContext(),"Data Jenis Kelamin Kosong!!", Toast.LENGTH_SHORT).show();
@@ -205,12 +222,13 @@ public class DataDiriFragment extends Fragment {
             int hasil = year - Integer.parseInt(umurS);
             Log.d("haha", String.valueOf(hasil));
 
+
             final FormData data = new FormData();
             data.add("method", "update_akun");
             data.add("id_user", users_login.getId_user());
             data.add("email", txtEmail.getText().toString());
             data.add("nama_user",txtNama.getText().toString());
-            data.add("jk",txtJK.getText().toString());
+            data.add("jk",radioButton.getText().toString());
             data.add("ttl",txtTTL.getText().toString());
             data.add("tinggi",txtTinggi.getText().toString());
             data.add("berat",txtBerat.getText().toString());
@@ -222,9 +240,15 @@ public class DataDiriFragment extends Fragment {
                      public void OnInternetTaskFinished(InternetTask internetTask) {
                          try {
                              JSONObject jsonObject = new JSONObject(internetTask.getResponseString());
+                             Log.d("cihuy2", jsonObject.toString());
                              if (jsonObject.get("code").equals(200)){
                                  Toast.makeText(getContext(),"Update Sukses", Toast.LENGTH_SHORT).show();
-
+//                                 deleteDataUsersLogin();
+//                                 JSONArray jsonArray = jsonObject.getJSONArray("data");
+                                 JSONObject js = jsonObject.getJSONObject("data");
+                                 Log.d("cihuy3", js.toString());
+                                 saveDataUsersLogin(js.toString());
+//                                 saveDataUsersLogin(jsonArray.getString(0));
                              }else{
                                  Toast.makeText(getContext(),"Update Gagal", Toast.LENGTH_SHORT).show();
                              }
@@ -260,19 +284,33 @@ public class DataDiriFragment extends Fragment {
     }
 
     private boolean is_parameters_update_valid(){
-//        if (txtUsername.getText().toString().equals("")){
-//            txtUsername.requestFocus();
-//            txtUsername.setError("Please Input Your Username");
-//            return false;
-//        }else if(txtNama.getText().toString().equals("")){
-//            txtNama.requestFocus();
-//            txtNama.setError("Please Input Your Full Name");
-//            return false;
-//        }else if(txtEmail.getText().toString().equals("")){
-//            txtEmail.requestFocus();
-//            txtEmail.setError("Please Input Your Email");
-//            return false;
-//        }else
+        if(txtTinggi.getText().toString().equals("") || txtTinggi.getText().toString().equals("0")){
+            txtTinggi.requestFocus();
+            txtTinggi.setError("Input Data Tinggi Badan");
+            return false;
+        }else if(txtBerat.getText().toString().equals("") || txtBerat.getText().toString().equals("0")){
+            txtBerat.requestFocus();
+            txtBerat.setError("Input Data Berat Badan");
+            return false;
+        }else if (txtTTL.getText().toString().equals("0000-00-00")){
+            txtTTL.requestFocus();
+            txtTTL.setError("Input Data Tanggal Lahir");
+            return false;
+        }
             return true;
+    }
+
+    public void saveDataUsersLogin(String data){
+        SharedPreferences sharedPref = getContext().getSharedPreferences("data_private", 0);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString("data", data);
+        editor.commit();
+    }
+
+    public void deleteDataUsersLogin(){
+        SharedPreferences sharedPref = getContext().getSharedPreferences("data_private", 0);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.remove("data");
+        editor.commit();
     }
 }

@@ -131,8 +131,6 @@ public class PilihOlahragaFragment extends Fragment {
         if (bundle != null){
             hasilKal = bundle.getDouble("hasil");
             Log.d("hasil", String.valueOf(hasilKal));
-            //Log.d("hasil", teks.toString());
-            //teks.setText(String.valueOf(hasil));
         }
 
         this.listOlahraga = new ArrayList<>();

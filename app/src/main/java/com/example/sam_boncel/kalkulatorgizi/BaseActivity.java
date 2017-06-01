@@ -45,6 +45,8 @@ public class BaseActivity extends AppCompatActivity {
         editor.putString("data", data);
         editor.commit();
     }
+
+
     public void deleteDataUsersLogin(){
         SharedPreferences sharedPref = getApplicationContext().getSharedPreferences("data_private", 0);
         SharedPreferences.Editor editor = sharedPref.edit();

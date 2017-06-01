@@ -127,7 +127,7 @@
                 android:layout_height="wrap_content"
                 android:hint="Tinggi"
                 android:editable="false"
-                android:inputType="text" />
+                android:inputType="number" />
         </LinearLayout>
 
         <LinearLayout
@@ -148,7 +148,7 @@
                 android:layout_height="wrap_content"
                 android:hint="Berat"
                 android:editable="false"
-                android:inputType="text" />
+                android:inputType="number" />
         </LinearLayout>
 
         <LinearLayout
@@ -161,12 +161,33 @@
                 android:layout_height="wrap_content"
                 android:text="Jenis Kelamin"
                 android:textStyle="bold"/>
-            <EditText
-                android:id="@+id/txtJK"
-                android:layout_width="match_parent"
+            <!--<EditText-->
+                <!--android:id="@+id/txtJK"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:hint="Jenis Kelamin"-->
+                <!--android:clickable="false" />-->
+            <!---->
+
+            <RadioGroup
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:hint="Jenis Kelamin"
-                android:clickable="false" />
+                android:id="@+id/rgJk"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/rbLk"
+                    android:text="Laki-Laki"/>
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/rbPr"
+                    android:text="Perempuan"/>
+            </RadioGroup>
+
         </LinearLayout>
         <TextView
             android:layout_width="match_parent"
@@ -191,14 +212,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Tanggal Lahir"
-                android:clickable="false" />
+                android:clickable="false"
+                />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingTop="10dp">
+            android:paddingTop="10dp"
+            android:visibility="gone">
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

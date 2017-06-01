@@ -41,8 +41,8 @@ public class OlahragaAktif extends AppCompatActivity implements SensorEventListe
         acelLast = SensorManager.GRAVITY_EARTH;
         shake = 0.00f;
 
-        Toast.makeText(getApplicationContext(), String.valueOf(acelVal), Toast.LENGTH_SHORT).show();
-        Toast.makeText(getApplicationContext(), String.valueOf(acelLast), Toast.LENGTH_SHORT).show();
+//        Toast.makeText(getApplicationContext(), String.valueOf(acelVal), Toast.LENGTH_SHORT).show();
+//        Toast.makeText(getApplicationContext(), String.valueOf(acelLast), Toast.LENGTH_SHORT).show();
 
         countDownTimer = new myCountDown(30000, 1000);
         progress.setText(String.valueOf(30000/1000));
@@ -55,10 +55,11 @@ public class OlahragaAktif extends AppCompatActivity implements SensorEventListe
             float xc = event.values[0];
             float yc = event.values[1];
             float zc = event.values[2];
+            float step = event.values.length;
 
             xcoor.setText("X : " +xc* -1);
             ycoor.setText("Y : " +yc* -1);
-            zcoor.setText("Z : " +zc* -1);
+            zcoor.setText("Z : " +zc* -1 + step);
 
             acelLast = acelVal;
             acelVal = ((float) Math.sqrt((double) (xc*xc) + (yc*yc) + (zc*zc)));
@@ -74,7 +75,7 @@ public class OlahragaAktif extends AppCompatActivity implements SensorEventListe
                 double kalori =0 , kkal =0;
                 kal = kalori + (kkal / 0.5);
             } else if (shake > 7){ //Menjalankan kondisi jika gerakan keras terdeteksi
-                //Log.d("shake2", String.valueOf(shake));
+                Log.d("shake2", String.valueOf(shake));
 //                progress.setText("Gerak Cepat");
                 double kalori =0 , kkal =0;
                 kal = kalori + (kkal);

@@ -2,6 +2,7 @@ package com.example.sam_boncel.kalkulatorgizi;
 
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -127,34 +128,24 @@ public class InputMakananFragment extends Fragment {
         txtSiang = (TextView) rootView.findViewById(R.id.txtSiang);
         txtMlm = (TextView) rootView.findViewById(R.id.txtMalam);
         txtLain = (TextView) rootView.findViewById(R.id.txtLain);
-
+        row1.setVisibility(View.GONE);
+        row2.setVisibility(View.GONE);
+        row3.setVisibility(View.GONE);
+        row4.setVisibility(View.GONE);
         loadDataUsersLogin();
+        
 
         btnPagi = (Button)rootView.findViewById(R.id.btnPagi);
         btnPagi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //alertdialog buat popup
-                AlertDialog.Builder mBuilder = new AlertDialog.Builder(getActivity());
+                final AlertDialog.Builder mBuilder = new AlertDialog.Builder(getActivity());
                 View mView = getLayoutInflater(savedInstanceState).inflate(R.layout.activity_pilih_makanan, null);
                 kat_waktu = "pagi";
-                Button btnSimpan = (Button) mView.findViewById(R.id.btnSimpan);
-                btnSimpan.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        saveRecordMkn();
-                    }
-                });
                 lv = (ListView) mView.findViewById(R.id.listViewMkn);
-                lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                      @Override
-                      public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                          Makanan selecetedMakanan = listMakanan.get(position);
-                          String ss = selecetedMakanan.getId_makanan().toString();
-                          Toast.makeText(getContext(), "Yang dipilih 3"+ ss, Toast.LENGTH_SHORT).show();
-                          id_mkn = ss;
-                      }
-                  });
+                mBuilder.setView(mView);// * popup
+                final AlertDialog dialog = mBuilder.create();// * popup
                 txtSearch = (EditText) mView.findViewById(R.id.search);
                 //buat search
                 txtSearch.addTextChangedListener(new TextWatcher() {
@@ -175,9 +166,17 @@ public class InputMakananFragment extends Fragment {
                 });
                 listMakanan = new ArrayList<>();
                 getMakanan();
-                mBuilder.setView(mView);// * popup
-                AlertDialog dialog = mBuilder.create();// * popup
                 dialog.show(); // *akhir popup
+                lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        Makanan selecetedMakanan = listMakanan.get(position);
+                        String ss = selecetedMakanan.getId_makanan().toString();
+                        id_mkn = ss;
+                        saveRecordMkn();
+                        dialog.dismiss();
+                    }
+                });
             }
         });
 
@@ -201,7 +200,6 @@ public class InputMakananFragment extends Fragment {
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                         Makanan selecetedMakanan = listMakanan.get(position);
                         String ss = selecetedMakanan.getId_makanan().toString();
-                        Toast.makeText(getContext(), "Yang dipilih 3"+ ss, Toast.LENGTH_SHORT).show();
                         id_mkn = ss;
                     }
                 });
@@ -251,7 +249,6 @@ public class InputMakananFragment extends Fragment {
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                         Makanan selecetedMakanan = listMakanan.get(position);
                         String ss = selecetedMakanan.getId_makanan().toString();
-                        Toast.makeText(getContext(), "Yang dipilih 3"+ ss, Toast.LENGTH_SHORT).show();
                         id_mkn = ss;
                     }
                 });
@@ -302,7 +299,6 @@ public class InputMakananFragment extends Fragment {
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                         Makanan selecetedMakanan = listMakanan.get(position);
                         String ss = selecetedMakanan.getId_makanan().toString();
-                        Toast.makeText(getContext(), "Yang dipilih 3"+ ss, Toast.LENGTH_SHORT).show();
                         id_mkn = ss;
                     }
                 });
@@ -339,9 +335,9 @@ public class InputMakananFragment extends Fragment {
                   @Override
                   public void onClick(View v) {
                       //row.setText("oke klikked");
-                      kat_waktu = "pagi";
                       if (detail1.getText().equals("Klik untuk detail")) {
-                          getDetail();
+                          kat_waktu = "pagi";
+                          getDetail(kat_waktu);
                           row1.setMovementMethod(new ScrollingMovementMethod());
                           row1.setText(s);
                           row1.setVisibility(View.VISIBLE);
@@ -358,9 +354,9 @@ public class InputMakananFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 //row.setText("oke klikked");
-                kat_waktu = "siang";
                 if (detail2.getText().equals("Klik untuk detail")) {
-                    getDetail();
+                    kat_waktu = "siang";
+                    getDetail(kat_waktu);
                     row2.setMovementMethod(new ScrollingMovementMethod());
                     row2.setText(s);
                     row2.setVisibility(View.VISIBLE);
@@ -377,9 +373,9 @@ public class InputMakananFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 //row.setText("oke klikked");
-                kat_waktu = "malam";
                 if (detail3.getText().equals("Klik untuk detail")) {
-                    getDetail();
+                    kat_waktu = "malam";
+                    getDetail(kat_waktu);
                     row3.setMovementMethod(new ScrollingMovementMethod());
                     row3.setText(s);
                     row3.setVisibility(View.VISIBLE);
@@ -396,10 +392,9 @@ public class InputMakananFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 //row.setText("oke klikked");
-                kat_waktu = "";
                 if (detail4.getText().equals("Klik untuk detail")) {
                     kat_waktu = "lain";
-                    getDetail();
+                    getDetail(kat_waktu);
                     row4.setMovementMethod(new ScrollingMovementMethod());
                     row4.setText(s);
                     row4.setVisibility(View.VISIBLE);
@@ -565,10 +560,8 @@ public class InputMakananFragment extends Fragment {
                     try {
                         JSONObject jsonObject = new JSONObject(internetTask.getResponseString());
                         if (jsonObject.get("code").equals(200)){
-                            //btnRegister.setClickable(false);
+                            Toast.makeText(getContext(),"Sukses Insert Data", Toast.LENGTH_SHORT).show();
 
-                            //Snackbar.make(,"Registrasi Sukses", Snackbar.LENGTH_SHORT).show();
-                            //Snackbar.make(this, "Registration Success", Snackbar.LENGTH_SHORT).show();
                         }else{
                             Toast.makeText(getContext(),"Gagal", Toast.LENGTH_SHORT).show();
                         }
@@ -666,10 +659,10 @@ public class InputMakananFragment extends Fragment {
         return dateString;
     }
 
-    public void getDetail(){
+    public void getDetail(String wkt){
         FormData data = new FormData();
         data.add("method", "getMknWaktu");
-        data.add("kat_waktu", kat_waktu);
+        data.add("kat_waktu", wkt);
         data.add("tanggal", getTanggal().toString());
         data.add("id_user", users_login.getId_user().toString());
         InternetTask uploadTask = new InternetTask("Record", data);
@@ -682,11 +675,11 @@ public class InputMakananFragment extends Fragment {
 
                         JSONArray nv =jsonObject.getJSONArray("data");
                         JSONObject Jo = nv.getJSONObject(0);
-
+                        s = "";
                         for (int x=0; x<nv.length(); x++){
                             JSONObject jo = nv.getJSONObject(x);
                             //s += jo.getString("tanggal");
-                            s = "";
+
                             s += ((x+1) + ". ");
 
                             s += jo.getString("nama_makanan");
@@ -701,6 +694,7 @@ public class InputMakananFragment extends Fragment {
                 } catch (JSONException e) {
 
                 }
+//                kat_waktu = "";
             }
 
             @Override

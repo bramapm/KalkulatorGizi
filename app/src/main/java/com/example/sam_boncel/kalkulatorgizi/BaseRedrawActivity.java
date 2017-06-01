@@ -16,9 +16,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -64,7 +62,6 @@ ImageView img;
                 if (id == R.id.nav_home) {
                     Toolbar toolbar1 = (Toolbar) findViewById(R.id.toolbar);
                     toolbar1.setTitle("Beranda");
-                    Toast.makeText(getApplicationContext(), "Beranda", Toast.LENGTH_SHORT).show();
                     BerandaFragment berandaFragment = new BerandaFragment();
                     FragmentManager manager = getSupportFragmentManager();
                     manager.beginTransaction().replace(
@@ -75,7 +72,6 @@ ImageView img;
                 } else if (id == R.id.nav_makanan) {
                     Toolbar toolbar1 = (Toolbar) findViewById(R.id.toolbar);
                     toolbar1.setTitle("Makanan");
-                    Toast.makeText(getApplicationContext(), "Makanan", Toast.LENGTH_SHORT).show();
                     MakananFragment makananFragment = new MakananFragment();
                     FragmentManager manager = getSupportFragmentManager();
                     manager.beginTransaction().replace(
@@ -85,7 +81,6 @@ ImageView img;
                 } else if (id == R.id.nav_olahraga) {
                     Toolbar toolbar1 = (Toolbar) findViewById(R.id.toolbar);
                     toolbar1.setTitle("Olahraga");
-                    Toast.makeText(getApplicationContext(), "Olahraga", Toast.LENGTH_SHORT).show();
                     OlahragaFragment olahragaFragment= new OlahragaFragment();
                     FragmentManager manager = getSupportFragmentManager();
                     manager.beginTransaction().replace(
@@ -95,8 +90,6 @@ ImageView img;
                 } else if (id == R.id.nav_manage) {
                     Toolbar toolbar1 = (Toolbar) findViewById(R.id.toolbar);
                     toolbar1.setTitle("Pengaturan");
-                    //shNtif();
-                    Toast.makeText(getApplicationContext(), "Pengaturan", Toast.LENGTH_SHORT).show();
                     PengaturanFragment pengaturanFragment = new PengaturanFragment();
                     FragmentManager manager = getSupportFragmentManager();
                     manager.beginTransaction().replace(

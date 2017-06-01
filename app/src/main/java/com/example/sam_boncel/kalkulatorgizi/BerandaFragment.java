@@ -4,10 +4,12 @@ package com.example.sam_boncel.kalkulatorgizi;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.DialogPreference;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.NotificationCompat;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -61,10 +63,10 @@ public class BerandaFragment extends Fragment {
         txtKalori.setText(users_login.getKalori());
 
         if ((users_login.getKalori().toString().length() <= 1)) {
-            Toast.makeText(getContext(), "Data 0 atau null", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "Data Kalori Kosong", Toast.LENGTH_SHORT).show();
             showConfirmation();
         } else {
-            Toast.makeText(getContext(), "Sudah ada Data", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "Sudah ada Data Kalori", Toast.LENGTH_SHORT).show();
             showInputMakanan();
         }
         kalorimkn.setText("-");
@@ -195,8 +197,8 @@ public class BerandaFragment extends Fragment {
 
     public boolean loadDataUsersLogin(){
         SharedPreferences sharedPref = getContext().getSharedPreferences("data_private", 0);
-        Log.d("karepmu A", "sakkarepmu A");
         String data = sharedPref.getString("data", "");
+        Log.d("cihuy", data);
         if (data != ""){
             Log.d("karepmu B", "sakkarepmu B");
             Gson gson = new GsonBuilder()
@@ -258,8 +260,14 @@ public class BerandaFragment extends Fragment {
 
     public void showInputMakanan() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setMessage("Sudah makan apa saja hari ini?");
-        builder.setPositiveButton("Input", new DialogInterface.OnClickListener() {
+        builder.setMessage("Anda Belum Menginputkan Makanan Yang Dikonsumsi dalam Sehari, Lakukan Sekarang ?");
+        builder.setNegativeButton("Nanti", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        builder.setPositiveButton("Ya", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 Toolbar toolbar1 = (Toolbar) getActivity().findViewById(R.id.toolbar);
