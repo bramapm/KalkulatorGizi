@@ -1,5 +1,6 @@
 package com.example.sam_boncel.kalkulatorgizi;
 
+import android.content.Intent;
 import android.hardware.SensorEvent;
 import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
@@ -21,6 +22,7 @@ public class OlahragaAktif extends AppCompatActivity implements SensorEventListe
     private float acelVal, acelLast, shake;
     String str = "";
     Double kal;
+    String id, Nama_olg, kkal, keterangan, hasilKal;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,14 +35,20 @@ public class OlahragaAktif extends AppCompatActivity implements SensorEventListe
         totalcoor = (TextView)findViewById(R.id.totalcoor);
         progress =(TextView)findViewById(R.id.progress);
 
+        Intent a = getIntent();
+        // Ambil String data Intent dari setOlahragaActivity
+        String id = a.getStringExtra("id_olahraga");
+        String Nama_olg = a.getStringExtra("nama_olahraga");
+        String kkal = a.getStringExtra("kkal");
+        String keterangan = a.getStringExtra("keterangan");
+        String hasilKal = a.getStringExtra("hasilKal");
+
         sensorManager = (SensorManager)getSystemService(SENSOR_SERVICE);
         sensorManager.registerListener(this, sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
         SensorManager.SENSOR_DELAY_NORMAL);
-
         acelVal = SensorManager.GRAVITY_EARTH;
         acelLast = SensorManager.GRAVITY_EARTH;
         shake = 0.00f;
-
 //        Toast.makeText(getApplicationContext(), String.valueOf(acelVal), Toast.LENGTH_SHORT).show();
 //        Toast.makeText(getApplicationContext(), String.valueOf(acelLast), Toast.LENGTH_SHORT).show();
 
@@ -69,17 +77,16 @@ public class OlahragaAktif extends AppCompatActivity implements SensorEventListe
             if (shake > 0 && shake <= 2) { //tidak melakukan apa" atau bergerak sangat pelan
                 //progress.setText("Berhenti");
             countDownTimer.start();
-            } else if (shake > 2 && shake <= 7){ //Menjalankan kondisi jika gerakan pelan terdeteksi
+            } else if (shake > 2 && shake <= 7){ // Menjalankan kondisi jika gerakan pelan terdeteksi
                 //Log.d("shake2111", String.valueOf(shake));
-//                progress.setText("Bergerak pelan");
-                double kalori =0 , kkal =0;
+                //progress.setText("Bergerak pelan");
+                double kalori = 0 , kkal = 0;
                 kal = kalori + (kkal / 0.5);
             } else if (shake > 7){ //Menjalankan kondisi jika gerakan keras terdeteksi
                 Log.d("shake2", String.valueOf(shake));
-//                progress.setText("Gerak Cepat");
-                double kalori =0 , kkal =0;
+                //progress.setText("Gerak Cepat");
+                double kalori = 0 , kkal = 0;
                 kal = kalori + (kkal);
-
             } else {
 
             }

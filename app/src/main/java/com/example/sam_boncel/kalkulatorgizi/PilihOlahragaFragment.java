@@ -95,6 +95,13 @@ public class PilihOlahragaFragment extends Fragment {
         View rootView =  inflater.inflate(R.layout.fragment_pilih_olahraga, container, false);
         listView = (ListView) rootView.findViewById(R.id.listView);
         txtSearch = (EditText) rootView.findViewById(R.id.search);
+
+        Bundle bundle = getArguments();
+        if (bundle != null){
+            hasilKal = bundle.getDouble("hasil");
+            Log.d("hasil", String.valueOf(hasilKal));
+        }
+
         //buat search
         txtSearch.addTextChangedListener(new TextWatcher() {
             @Override
@@ -112,6 +119,7 @@ public class PilihOlahragaFragment extends Fragment {
 
             } //akhir search
         });
+
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -126,12 +134,6 @@ public class PilihOlahragaFragment extends Fragment {
                 startActivity(i);
             }
         });
-
-        Bundle bundle = getArguments();
-        if (bundle != null){
-            hasilKal = bundle.getDouble("hasil");
-            Log.d("hasil", String.valueOf(hasilKal));
-        }
 
         this.listOlahraga = new ArrayList<>();
         getOlahraga();

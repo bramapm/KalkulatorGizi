@@ -49,7 +49,7 @@ import java.util.Date;
  * Use the {@link InputMakananFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class InputMakananFragment extends Fragment {
+public class InputMakananFragment extends Fragment{
     public User users_login;
     public Makanan makanan;
     public Record_mkn record_mkn;
@@ -133,7 +133,7 @@ public class InputMakananFragment extends Fragment {
         row3.setVisibility(View.GONE);
         row4.setVisibility(View.GONE);
         loadDataUsersLogin();
-        
+
 
         btnPagi = (Button)rootView.findViewById(R.id.btnPagi);
         btnPagi.setOnClickListener(new View.OnClickListener() {
@@ -146,6 +146,13 @@ public class InputMakananFragment extends Fragment {
                 lv = (ListView) mView.findViewById(R.id.listViewMkn);
                 mBuilder.setView(mView);// * popup
                 final AlertDialog dialog = mBuilder.create();// * popup
+                dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialog) {
+                       sumKalMkn();
+                        sumKalMknTotal();
+                    }
+                });
                 txtSearch = (EditText) mView.findViewById(R.id.search);
                 //buat search
                 txtSearch.addTextChangedListener(new TextWatcher() {
@@ -187,24 +194,18 @@ public class InputMakananFragment extends Fragment {
                 AlertDialog.Builder mBuilder = new AlertDialog.Builder(getActivity());
                 View mView = getLayoutInflater(savedInstanceState).inflate(R.layout.activity_pilih_makanan, null);
                 kat_waktu = "siang";
-                Button btnSimpan = (Button) mView.findViewById(R.id.btnSimpan);
-                btnSimpan.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        saveRecordMkn();
-                    }
-                });
                 lv = (ListView) mView.findViewById(R.id.listViewMkn);
-                lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                mBuilder.setView(mView);// * popup
+                final AlertDialog dialog = mBuilder.create();// * popup
+                dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
                     @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        Makanan selecetedMakanan = listMakanan.get(position);
-                        String ss = selecetedMakanan.getId_makanan().toString();
-                        id_mkn = ss;
+                    public void onDismiss(DialogInterface dialog) {
+                        sumKalMkn();
+                        sumKalMknTotal();
                     }
                 });
-                txtSearch = (EditText) mView.findViewById(R.id.search);
                 //buat search
+                txtSearch = (EditText) mView.findViewById(R.id.search);
                 txtSearch.addTextChangedListener(new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -223,9 +224,17 @@ public class InputMakananFragment extends Fragment {
                 });
                 listMakanan = new ArrayList<>();
                 getMakanan();
-                mBuilder.setView(mView);// * popup
-                AlertDialog dialog = mBuilder.create();// * popup
                 dialog.show(); // *akhir popup
+                lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        Makanan selecetedMakanan = listMakanan.get(position);
+                        String ss = selecetedMakanan.getId_makanan().toString();
+                        id_mkn = ss;
+                        saveRecordMkn();
+                        dialog.dismiss();
+                    }
+                });
             }
         });
 
@@ -236,24 +245,18 @@ public class InputMakananFragment extends Fragment {
                 AlertDialog.Builder mBuilder = new AlertDialog.Builder(getActivity());
                 View mView = getLayoutInflater(savedInstanceState).inflate(R.layout.activity_pilih_makanan, null);
                 kat_waktu = "malam";
-                Button btnSimpan = (Button) mView.findViewById(R.id.btnSimpan);
-                btnSimpan.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        saveRecordMkn();
-                    }
-                });
                 lv = (ListView) mView.findViewById(R.id.listViewMkn);
-                lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                mBuilder.setView(mView);// * popup
+                final AlertDialog dialog = mBuilder.create();// * popup
+                dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
                     @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        Makanan selecetedMakanan = listMakanan.get(position);
-                        String ss = selecetedMakanan.getId_makanan().toString();
-                        id_mkn = ss;
+                    public void onDismiss(DialogInterface dialog) {
+                        sumKalMkn();
+                        sumKalMknTotal();
                     }
                 });
-                txtSearch = (EditText) mView.findViewById(R.id.search);
                 //buat search
+                txtSearch = (EditText) mView.findViewById(R.id.search);
                 txtSearch.addTextChangedListener(new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -272,12 +275,19 @@ public class InputMakananFragment extends Fragment {
                 });
                 listMakanan = new ArrayList<>();
                 getMakanan();
-                mBuilder.setView(mView);// * popup
-                AlertDialog dialog = mBuilder.create();// * popup
                 dialog.show(); // *akhir popup
+                lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        Makanan selecetedMakanan = listMakanan.get(position);
+                        String ss = selecetedMakanan.getId_makanan().toString();
+                        id_mkn = ss;
+                        saveRecordMkn();
+                        dialog.dismiss();
+                    }
+                });
             }
         });
-
 
         btnLain = (Button) rootView.findViewById(R.id.btnLain);
         btnLain.setOnClickListener(new View.OnClickListener() {
@@ -286,24 +296,18 @@ public class InputMakananFragment extends Fragment {
                 AlertDialog.Builder mBuilder = new AlertDialog.Builder(getActivity());
                 View mView = getLayoutInflater(savedInstanceState).inflate(R.layout.activity_pilih_makanan, null);
                 kat_waktu = "lain";
-                Button btnSimpan = (Button) mView.findViewById(R.id.btnSimpan);
-                btnSimpan.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        saveRecordMkn();
-                    }
-                });
                 lv = (ListView) mView.findViewById(R.id.listViewMkn);
-                lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                mBuilder.setView(mView);// * popup
+                final AlertDialog dialog = mBuilder.create();// * popup
+                dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
                     @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        Makanan selecetedMakanan = listMakanan.get(position);
-                        String ss = selecetedMakanan.getId_makanan().toString();
-                        id_mkn = ss;
+                    public void onDismiss(DialogInterface dialog) {
+                        sumKalMkn();
+                        sumKalMknTotal();
                     }
                 });
-                txtSearch = (EditText) mView.findViewById(R.id.search);
                 //buat search
+                txtSearch = (EditText) mView.findViewById(R.id.search);
                 txtSearch.addTextChangedListener(new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -322,9 +326,17 @@ public class InputMakananFragment extends Fragment {
                 });
                 listMakanan = new ArrayList<>();
                 getMakanan();
-                mBuilder.setView(mView);// * popup
-                AlertDialog dialog = mBuilder.create();// * popup
                 dialog.show(); // *akhir popup
+                lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        Makanan selecetedMakanan = listMakanan.get(position);
+                        String ss = selecetedMakanan.getId_makanan().toString();
+                        id_mkn = ss;
+                        saveRecordMkn();
+                        dialog.dismiss();
+                    }
+                });
             }
         });
 
@@ -335,8 +347,8 @@ public class InputMakananFragment extends Fragment {
                   @Override
                   public void onClick(View v) {
                       //row.setText("oke klikked");
+                      kat_waktu = "pagi";
                       if (detail1.getText().equals("Klik untuk detail")) {
-                          kat_waktu = "pagi";
                           getDetail(kat_waktu);
                           row1.setMovementMethod(new ScrollingMovementMethod());
                           row1.setText(s);
@@ -354,8 +366,8 @@ public class InputMakananFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 //row.setText("oke klikked");
+                kat_waktu = "siang";
                 if (detail2.getText().equals("Klik untuk detail")) {
-                    kat_waktu = "siang";
                     getDetail(kat_waktu);
                     row2.setMovementMethod(new ScrollingMovementMethod());
                     row2.setText(s);
@@ -373,8 +385,8 @@ public class InputMakananFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 //row.setText("oke klikked");
+                kat_waktu = "malam";
                 if (detail3.getText().equals("Klik untuk detail")) {
-                    kat_waktu = "malam";
                     getDetail(kat_waktu);
                     row3.setMovementMethod(new ScrollingMovementMethod());
                     row3.setText(s);
@@ -388,12 +400,11 @@ public class InputMakananFragment extends Fragment {
         });
 
         detail4.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View v) {
                 //row.setText("oke klikked");
+                kat_waktu = "lain";
                 if (detail4.getText().equals("Klik untuk detail")) {
-                    kat_waktu = "lain";
                     getDetail(kat_waktu);
                     row4.setMovementMethod(new ScrollingMovementMethod());
                     row4.setText(s);
@@ -703,4 +714,5 @@ public class InputMakananFragment extends Fragment {
         });
         uploadTask.execute();
     }
+
 }

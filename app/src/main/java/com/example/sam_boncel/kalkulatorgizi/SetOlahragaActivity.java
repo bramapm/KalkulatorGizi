@@ -79,7 +79,7 @@ public class SetOlahragaActivity extends AppCompatActivity {
         String Nama_olg = i.getStringExtra("nama_olahraga");
         String kkal = i.getStringExtra("kkal");
         String keterangan = i.getStringExtra("keterangan");
-        hasilKal = i.getStringExtra("hasilKal");
+        String hasilKal = i.getStringExtra("hasilKal");
 
         Log.d("hasil", kkal);
         Log.d("hasil", hasilKal);
@@ -89,7 +89,7 @@ public class SetOlahragaActivity extends AppCompatActivity {
         Log.d("hasil1", String.valueOf(hasil));
 
         txtNama.setText(Nama_olg);
-        txtKkal.setText(kkal);
+        txtKkal.setText(kkal + "(" + hasil + " menit untuk membakar selisih kalori)");
         txtKeterangan.setText(keterangan);
     }
 
@@ -127,13 +127,10 @@ public class SetOlahragaActivity extends AppCompatActivity {
                     if (jsonObject.get("code").equals(200)){
                         //btnRegister.setClickable(false);
                         Toast.makeText(getApplicationContext(),"Sukses", Toast.LENGTH_SHORT).show();
-                        //Snackbar.make(,"Registrasi Sukses", Snackbar.LENGTH_SHORT).show();
-                        //Snackbar.make(this, "Registration Success", Snackbar.LENGTH_SHORT).show();
                     }else{
                         Toast.makeText(getApplicationContext(),"Gagal", Toast.LENGTH_SHORT).show();
                     }
                 } catch (JSONException e) {
-                    //Snackbar.make(clContent, e.getMessage(), Snackbar.LENGTH_SHORT).show();
                     Toast.makeText(getApplicationContext(),"Error", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -146,7 +143,6 @@ public class SetOlahragaActivity extends AppCompatActivity {
     }
 
     public void btn_onClick(View v){
-
         if (v == btnTgl){
             final Calendar c = Calendar.getInstance();
             mYear = c.get(Calendar.YEAR);
@@ -159,7 +155,6 @@ public class SetOlahragaActivity extends AppCompatActivity {
                         public void onDateSet(DatePicker view, int year,
                                               int monthOfYear, int dayOfMonth) {
                             txtTgl.setText(year + "-" + 0 +(monthOfYear + 1) + "-" + dayOfMonth);
-
                             if (txtTgl.getText().toString().equals(dateString.toString())){
                                 btnSet.setText("Lakukan Sekarang");
                             } else {
@@ -172,12 +167,45 @@ public class SetOlahragaActivity extends AppCompatActivity {
             if (btnSet.getText().equals("Lakukan Sekarang")){
                 // Melakukan Olhraga sekarang, Sensor diaktifkan, menuju ke activity
                 // OlahragaAktif
+                Intent a = getIntent();
+                // Ambil String data Intent dari PilihOlahragaFragment
+                //id = a.getStringExtra("id_olahraga");
+                String Nama_olg = a.getStringExtra("nama_olahraga");
+                String kkal = a.getStringExtra("kkal");
+                String keterangan = a.getStringExtra("keterangan");
+                String hasilKal = a.getStringExtra("hasilKal");
+
                 Intent i = new Intent(getApplicationContext(), OlahragaAktif.class);
+                i.putExtra("id_olahraga", id);
+                i.putExtra("nama_olahraga", Nama_olg);
+                i.putExtra("kkal", kkal);
+                i.putExtra("keterangan", keterangan);
+                //i.putExtra("foto", selectedOlahraga.getFoto());
+                i.putExtra("hasilKal", String.valueOf(hasilKal));
                 startActivity(i);
             } else {
                 //Save Olahraga di jadwal
+                String ab = getTanggal().toString().substring(0,4);
+                String cd = txtTgl.getText().toString().substring(0,4);
+                Log.d("tahun", String.valueOf(ab) +","+ String.valueOf(cd));
+
+                String ab1 = getTanggal().toString().substring(5,6);
+                String cd1 = txtTgl.getText().toString().substring(5,6);
+                Log.d("tahun", String.valueOf(ab1) +","+ String.valueOf(cd1));
+
+                String ab2 = getTanggal().toString().substring(5,6);
+                String cd2 = txtTgl.getText().toString().substring(8,9);
+                Log.d("tahun", String.valueOf(ab2) +","+ String.valueOf(cd2));
+
                 saveJadwal();
             }
         }
+    }
+
+    private String getTanggal() {
+        Date now = new Date();
+        SimpleDateFormat frmt = new SimpleDateFormat("yyyy-MM-dd");
+        String dateString = frmt.format(now);
+        return dateString;
     }
 }

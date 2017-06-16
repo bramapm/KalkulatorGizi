@@ -22,6 +22,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.sam_boncel.kalkulatorgizi.other.CircleTransform;
 import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
@@ -30,9 +31,9 @@ import com.google.android.gms.common.api.Status;
  * Created by Sam_Boncel on 19/03/2017.
  */
 
-public class BaseRedrawActivity extends BaseActivity {
+public class BaseRedrawActivity extends BaseActivity{
 ImageView img;
-    private GoogleApiClient mGoogleApiClient;
+
     @Override
     public void setContentView(int layout){
         super.setContentView(layout);
@@ -97,19 +98,7 @@ ImageView img;
                             pengaturanFragment,
                             pengaturanFragment.getTag()).commit();
                 } else if (id == R.id.nav_logout){
-
-                    Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
-                            new ResultCallback<Status>() {
-                                @Override
-                                public void onResult(Status status) {
-                                    mGoogleApiClient.connect();
-                                }
-                            });
-//                    deleteDataUsersLogin();
-//                    Intent intent = new Intent(BaseRedrawActivity.this, LoginActivity.class);
-//                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-//                    startActivity(intent);
+                    BaseRedrawActivity.super.signOut();
                 }
 
                 DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -172,6 +161,16 @@ ImageView img;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onClick(View v) {
+
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
     }
 
 //    public void shNtif() {
