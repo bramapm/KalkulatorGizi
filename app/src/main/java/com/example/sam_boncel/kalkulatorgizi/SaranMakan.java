@@ -3,17 +3,22 @@ package com.example.sam_boncel.kalkulatorgizi;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.renderscript.ScriptGroup;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.sam_boncel.kalkulatorgizi.entities.Makanan;
+import com.example.sam_boncel.kalkulatorgizi.entities.Olahraga;
 import com.example.sam_boncel.kalkulatorgizi.lib.FormData;
 import com.example.sam_boncel.kalkulatorgizi.lib.InternetTask;
 import com.example.sam_boncel.kalkulatorgizi.lib.OnInternetTaskFinishedListener;
@@ -42,7 +47,8 @@ public class SaranMakan extends Fragment {
     public ArrayAdapter<String> adapter;
     public ListView lv;
     public TextView teks;
-    double hasil;
+    Button btnSubmit;
+    String hasil;
 
     public SaranMakan() {
         // Required empty public constructor
@@ -82,9 +88,11 @@ public class SaranMakan extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View rootView = inflater.inflate(R.layout.fragment_saran_makan, container, false);
+        final View rootView = inflater.inflate(R.layout.fragment_saran_makan, container, false);
         teks = (TextView) rootView.findViewById(R.id.teks);
         lv = (ListView)rootView.findViewById(R.id.listView);
+        btnSubmit = (Button)rootView.findViewById(R.id.btnSubmit);
+
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -110,14 +118,28 @@ public class SaranMakan extends Fragment {
         });
         this.listSaranMkn= new ArrayList<>();
 
-        Bundle bundle = getArguments();
+        final Bundle bundle = getArguments();
         if (bundle != null){
-            hasil = bundle.getDouble("hasil");
+            hasil = bundle.getString("hasil");
             Log.d("hasil", String.valueOf(hasil));
             //Log.d("hasil", teks.toString());
-            teks.setText(String.valueOf(hasil));
+            //teks.setText(String.valueOf(hasil));
         }
         getSaran();
+
+        btnSubmit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toolbar toolbar1 = (Toolbar) getActivity().findViewById(R.id.toolbar);
+                toolbar1.setTitle("Input Makanan");
+                InputMakananFragment inputMakananFragment= new InputMakananFragment();
+                FragmentManager manager = getActivity().getSupportFragmentManager();
+                manager.beginTransaction().replace(
+                        R.id.relativelayout_for_fragment,
+                        inputMakananFragment,
+                        inputMakananFragment.getTag()).commit();
+            }
+        });
 
         return rootView;
     }

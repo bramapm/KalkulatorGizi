@@ -2,7 +2,6 @@ package com.example.sam_boncel.kalkulatorgizi;
 
 
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -38,9 +37,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 
 
@@ -443,7 +442,11 @@ public class InputMakananFragment extends Fragment{
     public void showConfirmationOlg() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         final double hasil = Double.parseDouble(txtKalorikonsumsi.getText().toString()) - Double.parseDouble(txtKaloributuh.getText().toString());
-        builder.setMessage("Kalori Anda Kelebihan " + hasil + " Silahkan Pilih Saran Olahraga");
+
+        DecimalFormat df = new DecimalFormat("0.00");
+        final String hasilAkhir = df.format(hasil);
+
+        builder.setMessage("Kalori Anda Kelebihan " + hasilAkhir + " Silahkan Pilih Saran Olahraga");
         builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -451,7 +454,7 @@ public class InputMakananFragment extends Fragment{
                 toolbar1.setTitle("Olahraga");
                 PilihOlahragaFragment pilihOlahragaFragment = new PilihOlahragaFragment();
                 Bundle bundle = new Bundle();
-                bundle.putDouble("hasil", hasil);
+                bundle.putString("hasil", hasilAkhir);
                 pilihOlahragaFragment.setArguments(bundle);
                 FragmentManager manager = getActivity().getSupportFragmentManager();
                 manager.beginTransaction().replace(
@@ -469,9 +472,12 @@ public class InputMakananFragment extends Fragment{
         if (hasil < 0.0){
             hasil *= (-1);
         }
-        builder.setMessage("Anda Kekurangan Kalori Sebanyak " + hasil + " Silahkan Pilih Saran Makanan");
-        final double finalHasil = hasil;
-        Log.d("KEM", "KON:"+String.valueOf(finalHasil));
+
+        DecimalFormat df = new DecimalFormat("0.00");
+        final String hasilAkhir = df.format(hasil);
+
+        builder.setMessage("Anda Kekurangan Kalori Sebanyak " + hasilAkhir + " Silahkan Pilih Saran Makanan");
+//        Log.d("KEM", "KON:"+String.valueOf(finalHasil));
         Log.d("KEM", "KON:"+String.valueOf(hasil));
         builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             @Override
@@ -480,7 +486,7 @@ public class InputMakananFragment extends Fragment{
                 toolbar1.setTitle("Saran Makanan");
                 SaranMakan SaranMknFragment = new SaranMakan();
                 Bundle bundle = new Bundle();
-                bundle.putDouble("hasil", finalHasil);
+                bundle.putString("hasil", hasilAkhir);
                 SaranMknFragment.setArguments(bundle);
                 FragmentManager manager = getActivity().getSupportFragmentManager();
                 manager.beginTransaction().replace(

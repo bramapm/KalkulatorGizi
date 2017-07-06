@@ -14,6 +14,8 @@ public class Record_olg {
     private String kat_waktu;
     private String tanggal;
     private String kalori;
+    private String waktu;
+
 
     private JSONObject json;
 
@@ -25,6 +27,7 @@ public class Record_olg {
         this.kat_waktu = this.json.getString("kat_waktu");
         this.tanggal = this.json.getString("tanggal");
         this.kalori = this.json.getString("kalori");
+        this.waktu = this.json.getString("waktu");
     }
 
     public String getId_recordolg() {
@@ -73,5 +76,13 @@ public class Record_olg {
 
     public void setKalori(String kalori) {
         this.kalori = kalori;
+    }
+
+    public String getWaktu() {
+        return kalori;
+    }
+
+    public void setWaktu(String waktu) {
+        this.waktu = waktu;
     }
 }

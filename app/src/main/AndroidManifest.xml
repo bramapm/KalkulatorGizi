@@ -43,11 +43,11 @@
             android:name=".SetOlahragaActivity"
             android:theme="@style/AppTheme.CustomeTheme" />
         <activity android:name=".DetailRecordActivity" />
-
         <activity android:name=".OlahragaAktif" />
-
-        <activity android:name=".JadwalActivity"
-            android:label="Jadwal"></activity>
+        <activity
+            android:name=".JadwalActivity"
+            android:label="Jadwal" />
+        <activity android:name=".reportOlahragaAktif"></activity>
     </application>
 
 </manifest>

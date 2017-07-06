@@ -24,13 +24,14 @@ import com.google.gson.GsonBuilder;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Objects;
 
 public class SetOlahragaActivity extends AppCompatActivity {
-    TextView txtNama, txtKkal, txtKeterangan, txtTgl;
+    TextView txtNama, txtKkal, txtKeterangan, txtTgl, txtWaktu;
     ImageView imageView;
     Button btnSet, btnTgl;
     private int mYear, mMonth, mDay;
@@ -38,6 +39,7 @@ public class SetOlahragaActivity extends AppCompatActivity {
     public String id = "";
     public String hasilKal = "";
     public String dateString = "";
+    double waktu;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,6 +52,7 @@ public class SetOlahragaActivity extends AppCompatActivity {
         btnSet = (Button) findViewById(R.id.btnSet);
         btnTgl = (Button) findViewById(R.id.btnTgl);
         txtTgl = (TextView) findViewById(R.id.tgl);
+        txtWaktu = (TextView) findViewById(R.id.txtwaktu);
 
         DisplayMetrics dm = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dm);
@@ -57,7 +60,7 @@ public class SetOlahragaActivity extends AppCompatActivity {
         int witdh = dm.widthPixels;
         int height = dm.heightPixels;
 
-        getWindow().setLayout((int) (witdh * .80), (int) (height * .70));
+        getWindow().setLayout((int) (witdh * .80), (int) (height * .80));
 
         Date now = new Date();
         SimpleDateFormat frmt = new SimpleDateFormat("yyyy-MM-dd");
@@ -85,11 +88,16 @@ public class SetOlahragaActivity extends AppCompatActivity {
         Log.d("hasil", hasilKal);
 
         // hasil menit dari kal
-        double hasil = Double.parseDouble(String.valueOf(hasilKal)) / Double.parseDouble(String.valueOf(kkal));
-        Log.d("hasil1", String.valueOf(hasil));
+        waktu = Double.parseDouble(String.valueOf(hasilKal)) / Double.parseDouble(String.valueOf(kkal));
+        Log.d("hasil1", String.valueOf(waktu));
 
+        DecimalFormat df = new DecimalFormat("0.00");
+        final String hasilAkhir = df.format(waktu);
+
+        waktu = Double.parseDouble(hasilAkhir);
         txtNama.setText(Nama_olg);
-        txtKkal.setText(kkal + "(" + hasil + " menit untuk membakar selisih kalori)");
+        txtKkal.setText(kkal + "kal");
+        txtWaktu.setText(String.valueOf("-+ " +waktu+ " menit"));
         txtKeterangan.setText(keterangan);
     }
 
@@ -180,6 +188,7 @@ public class SetOlahragaActivity extends AppCompatActivity {
                 i.putExtra("nama_olahraga", Nama_olg);
                 i.putExtra("kkal", kkal);
                 i.putExtra("keterangan", keterangan);
+                i.putExtra("waktu", String.valueOf(waktu));
                 //i.putExtra("foto", selectedOlahraga.getFoto());
                 i.putExtra("hasilKal", String.valueOf(hasilKal));
                 startActivity(i);

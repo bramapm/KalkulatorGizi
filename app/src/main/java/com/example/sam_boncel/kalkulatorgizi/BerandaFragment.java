@@ -2,6 +2,7 @@ package com.example.sam_boncel.kalkulatorgizi;
 
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.DialogPreference;
@@ -32,16 +33,19 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class BerandaFragment extends Fragment {
-    TextView txtNama, txtKalori, txtMkn, txtOlg, kalorimkn, kaloridibakar, tvdetail;
+    TextView txtNama, txtKalori, txtMkn, txtOlg, kalorimkn, kaloridibakar, tvdetail, txtInput, iconJadwal;
     public User users_login;
     public String klikTgl = "";
+    String konsumsi;
     public BerandaFragment() {
         // Required empty public constructor
     }
@@ -56,8 +60,15 @@ public class BerandaFragment extends Fragment {
         kalorimkn = (TextView)rootView.findViewById(R.id.kalorimkn);
         kaloridibakar = (TextView)rootView.findViewById(R.id.kaloriolg);
         tvdetail = (TextView)rootView.findViewById(R.id.tvdetail);
+        txtInput = (TextView)rootView.findViewById(R.id.txtInputMkn);
+        iconJadwal = (TextView) rootView.findViewById(R.id.iconJadwal);
 
         loadDataUsersLogin();
+        sumKalMknTotal();
+        getTanggal();
+        Log.d("kalori2", String.valueOf(konsumsi));
+        Log.d("kalori2", getTanggal());
+        Log.d("kalori2", users_login.getId_user().toString());
 
         txtNama.setText(users_login.getNama_user());
         txtKalori.setText(users_login.getKalori());
@@ -65,10 +76,13 @@ public class BerandaFragment extends Fragment {
         if ((users_login.getKalori().toString().length() <= 1)) {
             Toast.makeText(getContext(), "Data Kalori Kosong", Toast.LENGTH_SHORT).show();
             showConfirmation();
-        } else {
-            Toast.makeText(getContext(), "Sudah ada Data Kalori", Toast.LENGTH_SHORT).show();
-            showInputMakanan();
         }
+//        else {
+//            Toast.makeText(getContext(), "Sudah ada Data Kalori", Toast.LENGTH_SHORT).show();
+//            if (konsumsi==null || konsumsi.equals("0")){
+//                showInputMakanan();
+//            }
+//        }
         kalorimkn.setText("-");
         kaloridibakar.setText("-");
         CalendarView calendarView=(CalendarView) rootView.findViewById(R.id.kalender);
@@ -81,6 +95,27 @@ public class BerandaFragment extends Fragment {
                 klikTgl = year +"-"+ (month+1) +"-"+ dayOfMonth;
                 //Log.d("tes", klikTgl);
                 kalOnClick();
+            }
+        });
+
+        txtInput.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toolbar toolbar1 = (Toolbar) getActivity().findViewById(R.id.toolbar);
+                toolbar1.setTitle("Input Makanan");
+                InputMakananFragment imFragment = new InputMakananFragment();
+                FragmentManager manager = getActivity().getSupportFragmentManager();
+                manager.beginTransaction().replace(
+                        R.id.relativelayout_for_fragment,
+                imFragment).commit();
+            }
+        });
+
+        iconJadwal.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                Intent i = new Intent(getContext(), JadwalActivity.class);
+                startActivity(i);
             }
         });
         return rootView;
@@ -282,4 +317,47 @@ public class BerandaFragment extends Fragment {
 
         builder.show();
     } //end show input makanan
+
+    private void sumKalMknTotal(){
+        FormData data = new FormData();
+        data.add("method", "countKaloriMknTotal");
+        data.add("id_user", users_login.getId_user());
+        data.add("tanggal", getTanggal());
+        InternetTask uploadTask = new InternetTask("Record", data);
+        uploadTask.setOnInternetTaskFinishedListener(new OnInternetTaskFinishedListener() {
+            @Override
+            public void OnInternetTaskFinished(InternetTask internetTask) {
+                try {
+                    JSONObject jsonObject = new JSONObject(internetTask.getResponseString());
+                    if (jsonObject.get("code").equals(200)){
+                        JSONArray nv = jsonObject.getJSONArray("data");
+                        JSONObject jo = nv.getJSONObject(0);
+                        String ss = jo.getString("kalori");
+//                        konsumsi = ss;
+                        Log.d("kalori2", String.valueOf(ss));
+                        if (ss.equals("null")){
+                            showInputMakanan();
+                        }
+                    }else{
+                        Toast.makeText(getContext(),"Gagal get Data", Toast.LENGTH_SHORT).show();
+                    }
+                } catch (JSONException e) {
+                    //Snackbar.make(clContent, e.getMessage(), Snackbar.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void OnInternetTaskFailed(InternetTask internetTask) {
+                //Snackbar.make(clContent, internetTask.getException().getMessage(), Snackbar.LENGTH_SHORT).show();
+            }
+        });
+        uploadTask.execute();
+    }
+
+    private String getTanggal() {
+        Date now = new Date();
+        SimpleDateFormat frmt = new SimpleDateFormat("yyyy-MM-dd");
+        String dateString = frmt.format(now);
+        return dateString;
+    }
 }

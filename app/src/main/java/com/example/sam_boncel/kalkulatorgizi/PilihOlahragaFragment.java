@@ -43,7 +43,7 @@ public class PilihOlahragaFragment extends Fragment {
     TextView txtNama, txtKkal, txtKeterangan;
     EditText txtSearch;
     ImageView imageView;
-    double hasilKal;
+    String hasilKal;
     public ArrayAdapter<String> adapter;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -98,7 +98,7 @@ public class PilihOlahragaFragment extends Fragment {
 
         Bundle bundle = getArguments();
         if (bundle != null){
-            hasilKal = bundle.getDouble("hasil");
+            hasilKal = bundle.getString("hasil");
             Log.d("hasil", String.valueOf(hasilKal));
         }
 

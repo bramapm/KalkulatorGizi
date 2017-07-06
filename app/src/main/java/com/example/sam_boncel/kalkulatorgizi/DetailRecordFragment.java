@@ -141,7 +141,10 @@ public class DetailRecordFragment extends Fragment {
 
                             s += (" membakar ");
                             s += jo.getString("kalori");
-                            s += ("kal " + "\n");
+                            s += ("kal ");
+                            s += ("selama ");
+                            s += jo.getString("waktu");
+                            s += (" menit" + "\n");
                         }
                         rowolg.setMovementMethod(new ScrollingMovementMethod());
                         rowolg.setText(s);
