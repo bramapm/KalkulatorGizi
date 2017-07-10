@@ -27,8 +27,8 @@ public class reportOlahragaAktif extends AppCompatActivity {
 
     TextView txtNamaOlahraga, txtKalTerbakar, txtWaktu, txt2;
     Button btnCentang;
-    String id_olahraga, nama_olahraga, kkalTerbakar;
-    Double waktu;
+    String id_olahraga, nama_olahraga, kkalTerbakar, waktu;
+
     public User users_login;
 
     @Override
@@ -47,7 +47,7 @@ public class reportOlahragaAktif extends AppCompatActivity {
         id_olahraga = i.getStringExtra("id_olahraga");
         nama_olahraga = i.getStringExtra("nama_olahraga");
         kkalTerbakar = i.getStringExtra("kkalTerbakar");
-        waktu = Double.parseDouble(i.getStringExtra("waktu"));
+        waktu = i.getStringExtra("waktu");
 
         txtNamaOlahraga.setText(nama_olahraga);
         txtKalTerbakar.setText(kkalTerbakar);

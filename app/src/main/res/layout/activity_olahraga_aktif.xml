@@ -111,18 +111,46 @@
             android:text="Estimasi Waktu : "
             />
 
-        <TextView
-            android:id="@+id/txtwaktu"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="00:11"
-            />
+            <TextView
+                android:id="@+id/txtJam"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="00"
+                />
         </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginTop="10dp"
+            >
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/btnMulai"
+                android:background="@drawable/btnsingin"
+                android:text="Mulai"
+                android:layout_marginRight="10dp"
+                android:textColor="#fff"
+                android:textStyle="bold"
+                />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/btnHenti"
+                android:background="@drawable/btnsingin"
+                android:textColor="#fff"
+                android:textStyle="bold"
+                android:text="Stop"/>
+        </LinearLayout>
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="15dp"
             android:text="Kalori terbakar"
             android:layout_gravity="center_horizontal"
             android:textStyle="bold"

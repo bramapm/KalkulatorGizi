@@ -136,15 +136,18 @@ public class DetailRecordFragment extends Fragment {
                         for (int x=0; x<nv.length(); x++){
                             JSONObject jo = nv.getJSONObject(x);
                             //s += jo.getString("tanggal");
-                            s += ("Olahraga ");
+                            s += ("Olahraga : ");
                             s += jo.getString("nama_olahraga");
+                            s += ("\n");
 
-                            s += (" membakar ");
+                            s += (" membakar : ");
                             s += jo.getString("kalori");
                             s += ("kal ");
-                            s += ("selama ");
+                            s += ("\n");
+
+                            s += ("Durasi : ");
                             s += jo.getString("waktu");
-                            s += (" menit" + "\n");
+                            s += ("\n");
                         }
                         rowolg.setMovementMethod(new ScrollingMovementMethod());
                         rowolg.setText(s);

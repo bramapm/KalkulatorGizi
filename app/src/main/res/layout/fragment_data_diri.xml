@@ -104,11 +104,7 @@
                 android:textSize="15dp"
                 android:textStyle="bold"/>
         </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:layout_marginTop="5dp"
-            android:background="@color/colorPrimary"></LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -234,6 +230,42 @@
                 android:hint="Umur"
                 android:enabled="false"
                 android:inputType="text" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="10dp">
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/RB1"
+                    android:text="Aktifitas ringan"/>
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/RB2"
+                    android:text="Aktifitas sedang"/>
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/RB3"
+                    android:text="Aktifitas berat"/>
+            </RadioGroup>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/btnjoin">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/txtRB"
+                android:text="Aktifitas sedang : Keseharian anda 75% waktu digunakan untuk duduk atau istirahat, dan 25% digunakan untuk berdiri atau beraktifitas."/>
         </LinearLayout>
     </LinearLayout>
                 <Button

@@ -5,6 +5,7 @@ import android.hardware.SensorEvent;
 import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.os.Handler;
 import android.hardware.Sensor;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
@@ -15,37 +16,40 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.text.DecimalFormat;
-import java.util.Timer;
-import java.util.TimerTask;
-
-import static android.R.attr.x;
 
 public class OlahragaAktif extends AppCompatActivity implements SensorEventListener{
     private SensorManager sensorManager;
     private CountDownTimer countDownTimer;
-    TextView xcoor, ycoor, zcoor, totalcoor, progress, txtKalori, txtWaktu, txtKalTerbakar, txtNamaOlahraga;
-    Button btnOlahraga;
+    TextView totalcoor, progress, txtKalori,txtKalTerbakar, txtNamaOlahraga;
+    TextView txtJam;
+    Button btnOlahraga, btnMulai, btnHenti;
     private float acelVal, acelLast, shake;
     String str = "";
     Double hasilKal, kkal, waktu;
     String id, Nama_olg, keterangan;
     double kkaljd = 0.0;
 
+    int buttonState, lapsCount;
+    String laps;
+    private Handler mHandler;
+    private boolean mStarted;
+    long start_time;
+    long old_degree;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_olahraga_aktif);
-
-        xcoor = (TextView)findViewById(R.id.xcoor);
-        ycoor = (TextView)findViewById(R.id.ycoor);
-        zcoor = (TextView)findViewById(R.id.zcoor);
         txtKalori = (TextView)findViewById(R.id.txtKalori);
         txtKalTerbakar = (TextView)findViewById(R.id.txtKalTerbakar);
-        txtWaktu = (TextView)findViewById(R.id.txtwaktu);
         txtNamaOlahraga = (TextView)findViewById(R.id.txtNamaOlahraga);
         totalcoor = (TextView)findViewById(R.id.totalcoor);
         progress =(TextView)findViewById(R.id.progress);
         btnOlahraga = (Button)findViewById(R.id.btnOlahragaAktif);
+        btnHenti = (Button)findViewById(R.id.btnHenti);
+        btnMulai = (Button)findViewById(R.id.btnMulai);
+        txtJam =(TextView)findViewById(R.id.txtJam);
 
         Intent a = getIntent();
         // Ambil String data Intent dari setOlahragaActivity
@@ -72,11 +76,59 @@ public class OlahragaAktif extends AppCompatActivity implements SensorEventListe
                 i.putExtra("id_olahraga", id);
                 i.putExtra("nama_olahraga", Nama_olg);
                 i.putExtra("kkalTerbakar", txtKalTerbakar.getText().toString());
-                i.putExtra("waktu", waktu);
+                i.putExtra("waktu", txtJam.getText().toString());
                 startActivity(i);
             }
         });
+
+        mHandler = new Handler();
+
+        btnMulai.setEnabled(true);
+        buttonState = 1;
+        laps = "";
+        lapsCount = 0;
+
+        btnMulai.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (buttonState == 1){
+                    mStarted = true;
+                    mHandler.postDelayed(mRunnable, 10L);
+                    start_time = System.currentTimeMillis();
+                    laps = "";
+
+                    btnMulai.setText("Stop");
+                    buttonState = 2;
+                }else if (buttonState == 2){
+                    mStarted = false;
+                    mHandler.removeCallbacks(mRunnable);
+
+                    btnMulai.setText("Reset");
+                    buttonState = 3;
+                } else if (buttonState == 3){
+                    txtJam.setText(String.format("%02d:%02d", 0, 0));
+                    laps = "";
+                    lapsCount = 0;
+
+                    btnMulai.setText("Mulai");
+                    buttonState = 1;
+                }
+            }
+        });
     }
+
+    final Runnable mRunnable = new Runnable() {
+        @Override
+        public void run() {
+            if (mStarted){
+                long millis = (System.currentTimeMillis() - start_time);
+                long seconds = millis / 1000;
+                txtJam.setText(String.format("%02d:%02d", seconds / 60, seconds % 60));
+                mHandler.postDelayed(mRunnable, 10L);
+
+            }
+        }
+    };
 
     @Override
     public void onSensorChanged(SensorEvent event) {
@@ -87,24 +139,12 @@ public class OlahragaAktif extends AppCompatActivity implements SensorEventListe
             float zc = event.values[2];
             float step = event.values.length;
 
-            xcoor.setText("X : " +xc* -1);
-            ycoor.setText("Y : " +yc* -1);
-            zcoor.setText("Z : " +zc* -1 + step);
-
             acelLast = acelVal;
             acelVal = ((float) Math.sqrt((double) (xc*xc) + (yc*yc) + (zc*zc)));
             float delta = acelVal - acelLast;
             shake = shake * 0.9f + delta;
 
             double a = kkal / 60;
-//            Log.d("shake3", String.valueOf(a));
-//
-//            DecimalFormat df = new DecimalFormat("0.00");
-//            final String kkaldetik = df.format(a);
-//            String abc = df.format(kkaljd);
-//
-//            final double satu = Double.parseDouble(String.valueOf(kkaldetik));
-//            final double dua = Double.parseDouble(String.valueOf(abc));
             String ab = txtKalTerbakar.getText().toString();
 
             if (Double.parseDouble(ab) > hasilKal){
@@ -112,27 +152,13 @@ public class OlahragaAktif extends AppCompatActivity implements SensorEventListe
 //                txtKalTerbakar.setText("0.0");
             } else {
                 countKal(true);
-//                if (shake > 0 && shake <= 2) { //tidak melakukan apa" atau bergerak sangat pelan
-//
-//                } else if (shake > 2 && shake <= 7) { // Menjalankan kondisi jika gerakan pelan terdeteksi
-//
-//                } else if (shake > 7) { //Menjalankan kondisi jika gerakan keras terdeteksi
-//                    Log.d("shake2", String.valueOf(shake));
-//                    Log.d("shake3", String.valueOf(satu));
-//                    Log.d("shake3", String.valueOf(kkaljd));
-//                    kkaljd = satu + dua;
-//                    txtKalTerbakar.setText(String.valueOf(kkaljd));
-//                } else {
-//                }
             }
 
             float total = event.values[0] + event.values[1] + event.values[2];
             totalcoor.setText("shake" + shake + "\n" + "total : " +total);
 
         } else {
-            xcoor.setText("X : -");
-            ycoor.setText("Y : -");
-            zcoor.setText("Z : -" + "\n" + "Perangkat ini tidak mendukung sensor Accelerometer");
+            txtKalTerbakar.setText("Perangkat tidak mendukung sensor gerak");
         }
     }
 
@@ -145,7 +171,6 @@ public class OlahragaAktif extends AppCompatActivity implements SensorEventListe
         txtNamaOlahraga.setText(Nama_olg);
         txtKalori.setText(String.valueOf(hasilKal));
         txtKalTerbakar.setText("0");
-        txtWaktu.setText(String.valueOf(waktu));
     }
 
     public void countKal(boolean b){
