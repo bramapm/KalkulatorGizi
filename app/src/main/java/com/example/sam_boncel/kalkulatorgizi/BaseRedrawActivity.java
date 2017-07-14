@@ -90,13 +90,13 @@ ImageView img;
                             olahragaFragment.getTag()).commit();
                 } else if (id == R.id.nav_manage) {
                     Toolbar toolbar1 = (Toolbar) findViewById(R.id.toolbar);
-                    toolbar1.setTitle("Pengaturan");
-                    PengaturanFragment pengaturanFragment = new PengaturanFragment();
+                    toolbar1.setTitle("Data Diri");
+                    DataDiriFragment dataDiriFragment= new DataDiriFragment();
                     FragmentManager manager = getSupportFragmentManager();
                     manager.beginTransaction().replace(
                             R.id.relativelayout_for_fragment,
-                            pengaturanFragment,
-                            pengaturanFragment.getTag()).commit();
+                            dataDiriFragment,
+                            dataDiriFragment.getTag()).commit();
                 } else if (id == R.id.nav_logout){
                     BaseRedrawActivity.super.signOut();
                 }

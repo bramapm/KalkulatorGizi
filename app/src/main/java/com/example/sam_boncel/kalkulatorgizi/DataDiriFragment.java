@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.support.annotation.IdRes;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.NotificationCompat;
@@ -20,12 +21,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -42,7 +45,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Array;
+import java.text.DecimalFormat;
 import java.util.Calendar;
+
+import static android.content.Context.MODE_PRIVATE;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -54,7 +61,11 @@ public class DataDiriFragment extends Fragment {
     EditText txtUsername, txtEmail, txtNama, txtTinggi, txtBerat, txtTTL, txtJK, txtUmur;
     private RadioGroup genderRadio;
     RadioButton radioButton, rbLk, rbPr;
+    private RadioGroup rgAktifitas;
+    RadioButton RB1, RB2, RB3;
+    TextView txtRB;
     String date ="";
+    Double BBI, IMT;
     ImageView imgProfile;
     ImageButton imgBtn;
     private int mYear, mMonth, mDay;
@@ -121,6 +132,12 @@ public class DataDiriFragment extends Fragment {
         rbLk = (RadioButton) rootView.findViewById(R.id.rbLk);
         rbPr = (RadioButton) rootView.findViewById(R.id.rbPr);
 
+
+        rgAktifitas = (RadioGroup) rootView.findViewById(R.id.rgAktifitas);
+        RB1 = (RadioButton) rootView.findViewById(R.id.RB1);
+        RB2 = (RadioButton) rootView.findViewById(R.id.RB2);
+        RB3 = (RadioButton) rootView.findViewById(R.id.RB3);
+        txtRB = (TextView) rootView.findViewById(R.id.txtRB);
         if (!users_login.getTtl().equals("0000-00-00")){
             date = users_login.getTtl();
         }
@@ -171,6 +188,25 @@ public class DataDiriFragment extends Fragment {
             rbLk.setChecked(true);
         }
 
+        RB1.setChecked(true);
+        rgAktifitas.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
+                //checkedId = rgAktifitas.getCheckedRadioButtonId();
+                Log.d("testes", String.valueOf(R.id.RB1));
+                if (checkedId == R.id.RB1){
+                    txtRB.setText("Aktifitas baik : Keseharian anda 75% waktu digunakan untuk duduk atau istirahat," +
+                            " dan 25% digunakan untuk berdiri atau beraktifitas.");
+                } else if (checkedId == R.id.RB2){
+                    txtRB.setText("Aktifitas sedang : Keseharian anda 60% waktu digunakan untuk duduk atau istirahat," +
+                            " dan 40% digunakan untuk berdiri atau beraktifitas.");
+                } else if (checkedId == R.id.RB3){
+                    txtRB.setText("Aktifitas berat : Keseharian anda 25% waktu digunakan untuk duduk atau istirahat," +
+                            " dan 75% digunakan untuk berdiri atau beraktifitas.");
+                }
+            }
+        });
+
         txtTTL.setText(users_login.getTtl());
         txtUmur.setText(users_login.getUmur());
         btnSave = (Button) rootView.findViewById(R.id.btnUpdate);
@@ -197,16 +233,43 @@ public class DataDiriFragment extends Fragment {
             umur    = txtUmur.getText().toString();
             jenisk  = radioButton.getText().toString();
 
+            Double fAktifitasLk = 0.0;
+            Double fAktifitasPr = 0.0;
+            if (RB1.isChecked()){
+                fAktifitasLk = 1.56;
+                fAktifitasPr = 1.55;
+            } else if (RB2.isChecked()){
+                fAktifitasLk = 1.76;
+                fAktifitasPr = 1.70;
+            } else if (RB3.isChecked()){
+                fAktifitasLk = 2.10;
+                fAktifitasPr = 2.00;
+            }
+
             tb = Double.parseDouble(tinggi);
             be = Double.parseDouble(berat);
             um = Double.parseDouble(umur);
 
+            BBI = ((tb - 100) - ((tb - 100) * 10/100));
+            IMT = (be / ((tb/100)*(tb/100)));
             if (jenisk.equals("Laki-Laki")) {
-                hasila = 66.42 + (13.75 * be) + (5 *tb) + (6.78 * um);
-            } else if ( jenisk.equals("Perempuan")) {
-                hasila = 655.1 + (9.65 * be) + (5 *tb) + (4.68 * um);
+                hasila = ((66.42 + (13.75 * be) + (5 *tb) + (6.78 * um)) * fAktifitasLk);
+                DecimalFormat df = new DecimalFormat("0.00");
+                Double abc = Double.valueOf(df.format(hasila));
+                hasila = abc;
+            } else if (jenisk.equals("Perempuan")) {
+                hasila = ((655.1 + (9.65 * be) + (5 *tb) + (4.68 * um)) * fAktifitasPr);
+                DecimalFormat df = new DecimalFormat("0.00");
+                Double abc = Double.valueOf(df.format(hasila));
+                hasila = abc;
             } else {
                 Toast.makeText(getContext(),"Data Jenis Kelamin Kosong!!", Toast.LENGTH_SHORT).show();
+            }
+
+            if ( hasila < BBI){
+                hasila = hasila + 500;
+            } else {
+                hasila = hasila - 500;
             }
 
             Calendar calendar = Calendar.getInstance();
@@ -222,6 +285,14 @@ public class DataDiriFragment extends Fragment {
             int hasil = year - Integer.parseInt(umurS);
             Log.d("haha", String.valueOf(hasil));
 
+            SharedPreferences.Editor editor = getContext().getSharedPreferences("data2", MODE_PRIVATE).edit();
+            editor.putString("BBI", String.valueOf(BBI));
+            editor.putString("IMT", String.valueOf(IMT));
+            editor.apply();
+
+//            data2.add("aktifitas", String.valueOf(rgAktifitas.getCheckedRadioButtonId()));
+//            data2.add("BBI", String.valueOf(BBI));
+//            data2.add("IMT", String.valueOf(IMT));
 
             final FormData data = new FormData();
             data.add("method", "update_akun");
@@ -234,21 +305,32 @@ public class DataDiriFragment extends Fragment {
             data.add("berat",txtBerat.getText().toString());
             data.add("umur", String.valueOf(hasil));
             data.add("kalori", String.valueOf(hasila));
+            data.add("aktifitas", String.valueOf(rgAktifitas.getCheckedRadioButtonId()));
+            data.add("BBI", String.valueOf(BBI));
+            data.add("IMT", String.valueOf(IMT));
             InternetTask uploadTask = new InternetTask("Users", data);
             uploadTask.setOnInternetTaskFinishedListener(new OnInternetTaskFinishedListener() {
                      @Override
                      public void OnInternetTaskFinished(InternetTask internetTask) {
                          try {
                              JSONObject jsonObject = new JSONObject(internetTask.getResponseString());
-                             Log.d("cihuy2", jsonObject.toString());
+                             Log.d("cihuy2", jsonObject.toString());;
                              if (jsonObject.get("code").equals(200)){
                                  Toast.makeText(getContext(),"Update Sukses", Toast.LENGTH_SHORT).show();
-//                                 deleteDataUsersLogin();
-//                                 JSONArray jsonArray = jsonObject.getJSONArray("data");
                                  JSONObject js = jsonObject.getJSONObject("data");
                                  Log.d("cihuy3", js.toString());
+                                 Log.d("cihuy3", data.toString());
                                  saveDataUsersLogin(js.toString());
-//                                 saveDataUsersLogin(jsonArray.getString(0));
+                                 //saveDataUsersLogin(js.toString());
+                                 BerandaFragment berandaFragment = new BerandaFragment();
+                                 Bundle bundle = new Bundle();
+//                                 bundle.putString("BBI", String.valueOf(BBI));
+//                                 bundle.putString("IMT", String.valueOf(IMT));
+                                 berandaFragment.setArguments(bundle);
+                                 FragmentManager manager = getActivity().getSupportFragmentManager();
+                                 manager.beginTransaction().replace(
+                                         R.id.relativelayout_for_fragment,
+                                         berandaFragment).commit();
                              }else{
                                  Toast.makeText(getContext(),"Update Gagal", Toast.LENGTH_SHORT).show();
                              }
@@ -304,6 +386,13 @@ public class DataDiriFragment extends Fragment {
         SharedPreferences sharedPref = getContext().getSharedPreferences("data_private", 0);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString("data", data);
+        editor.commit();
+    }
+
+    public void saveDataUsers(String data){
+        SharedPreferences sharedPref = getContext().getSharedPreferences("data_private2", 0);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString("data2", data);
         editor.commit();
     }
 

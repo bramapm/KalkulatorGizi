@@ -103,7 +103,7 @@ public class SaranOlahraga extends Fragment {
                 startActivity(i);
             }
         });
-        this.listSaranOlg= new ArrayList<>();
+        this.listSaranOlg = new ArrayList<>();
 
         Bundle bundle = getArguments();
         if (bundle != null){
@@ -112,10 +112,7 @@ public class SaranOlahraga extends Fragment {
             //Log.d("hasil", teks.toString());
             teks.setText(String.valueOf(hasil));
         }
-
-
         getSaran();
-
         return rootView;
     }
 

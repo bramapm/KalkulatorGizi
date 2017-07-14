@@ -1,9 +1,12 @@
 package com.example.sam_boncel.kalkulatorgizi;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -33,10 +36,29 @@ public class JadwalActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_jadwal);
-        this.listJadwal = new ArrayList<>();
         listView = (ListView) findViewById(R.id.listView1);
         loadDataUsersLogin();
+
+        this.listJadwal = new ArrayList<>();
         getJadwal();
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Jadwal selectedJadwal = listJadwal.get(position);
+                Log.d("posisi", selectedJadwal.toString());
+//                Log.d("posisi", selectedJadwal.getId_jadwal());
+//                Log.d("posisi", selectedJadwal.getId_olahraga());
+//                Log.d("posisi", selectedJadwal.getKalori());
+
+                Intent i = new Intent(getApplicationContext(), DetailJadwal.class);
+                i.putExtra("id_jadwal", selectedJadwal.getId_jadwal());
+                i.putExtra("id_olahraga", selectedJadwal.getId_olahraga());
+                i.putExtra("tanggal", selectedJadwal.getTanggal());
+                i.putExtra("kalori", selectedJadwal.getKalori());
+                startActivity(i);
+            }
+        });
     }
 
     public void getJadwal(){

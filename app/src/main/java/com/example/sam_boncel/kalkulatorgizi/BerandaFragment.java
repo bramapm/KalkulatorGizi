@@ -37,15 +37,20 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import static android.content.Context.MODE_PRIVATE;
+
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class BerandaFragment extends Fragment {
     TextView txtNama, txtKalori, txtMkn, txtOlg, kalorimkn, kaloridibakar, tvdetail, txtInput, iconJadwal;
-    public User users_login;
-    public String klikTgl = "";
+    TextView txtBB, txtBBI;
+    User users_login;
+    String klikTgl = "";
+    String kondisi;
     String konsumsi;
+    String IMT, BBI;
     public BerandaFragment() {
         // Required empty public constructor
     }
@@ -62,13 +67,20 @@ public class BerandaFragment extends Fragment {
         tvdetail = (TextView)rootView.findViewById(R.id.tvdetail);
         txtInput = (TextView)rootView.findViewById(R.id.txtInputMkn);
         iconJadwal = (TextView) rootView.findViewById(R.id.iconJadwal);
+        txtBB  = (TextView) rootView.findViewById(R.id.txtBB);
+        txtBBI = (TextView) rootView.findViewById(R.id.txtBBI);
 
         loadDataUsersLogin();
         sumKalMknTotal();
         getTanggal();
-        Log.d("kalori2", String.valueOf(konsumsi));
-        Log.d("kalori2", getTanggal());
-        Log.d("kalori2", users_login.getId_user().toString());
+
+        SharedPreferences prefs = getContext().getSharedPreferences("data2", MODE_PRIVATE);
+        String restoredText = prefs.getString("BBI", null);
+        if (restoredText != null) {
+            BBI = prefs.getString("BBI", "");//"No name defined" is the default value.
+            IMT = prefs.getString("IMT", "");//"No name defined" is the default value.
+            Log.d("huhuy", BBI + IMT);
+        }
 
         txtNama.setText(users_login.getNama_user());
         txtKalori.setText(users_login.getKalori());
@@ -77,12 +89,27 @@ public class BerandaFragment extends Fragment {
             Toast.makeText(getContext(), "Data Kalori Kosong", Toast.LENGTH_SHORT).show();
             showConfirmation();
         }
-//        else {
-//            Toast.makeText(getContext(), "Sudah ada Data Kalori", Toast.LENGTH_SHORT).show();
-//            if (konsumsi==null || konsumsi.equals("0")){
-//                showInputMakanan();
-//            }
-//        }
+        if (IMT != null) {
+            Double dIMT = Double.parseDouble(IMT);;
+
+            if (dIMT < 17.0){
+                kondisi = "sangat kurus";
+            } else if (dIMT >= 17.0 && dIMT <= 18.4){
+                kondisi = "kurus";
+            } else if (dIMT >= 18.5 && dIMT <= 24.9){
+                kondisi = "normal";
+            } else if (dIMT >= 25.0 && dIMT <= 26.9){
+                kondisi = "kelebihan berat badan";
+            } else if (dIMT >= 27.0 && dIMT <= 28.9){
+                kondisi = "gemuk";
+            } else if (dIMT > 29.0){
+                kondisi = "obsitas";
+            }
+            txtBBI.setText("Berat badan ideal anda "+BBI+", berat badan anda "+users_login.getBerat().toString()+" kondisi" +
+                    " badan anda tergolong "+kondisi);
+        }
+
+        //if (users_login.getKalori().toString())
         kalorimkn.setText("-");
         kaloridibakar.setText("-");
         CalendarView calendarView=(CalendarView) rootView.findViewById(R.id.kalender);
@@ -242,6 +269,20 @@ public class BerandaFragment extends Fragment {
                     .enableComplexMapKeySerialization()
                     .create();
             users_login = gson.fromJson(data, User.class);
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    public boolean loadDataUsers(){
+        SharedPreferences sharedPref = getContext().getSharedPreferences("data_private2", 0);
+        Log.d("karepmu A", "sakkarepmu A");
+        String data = sharedPref.getString("data2", "");
+        if (data != ""){
+            IMT = sharedPref.getString("data2", "IMT");
+            BBI = sharedPref.getString("data2", "BBI");
+            //IMT = sharedPref.getString("data2", "IMT");
             return true;
         }else{
             return false;

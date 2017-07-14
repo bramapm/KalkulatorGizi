@@ -21,6 +21,11 @@ public class User {
     private String status;
     private String kalori;
     private String foto;
+    private String BBI;
+    private String IMT;
+    private String Aktifitas;
+
+
 
     private JSONObject json;
 
@@ -39,6 +44,10 @@ public class User {
         this.kalori = this.json.getString("kalori");
         this.status = this.json.getString("status");
         this.foto = this.json.getString("foto");
+        this.BBI= this.json.getString("BBI");
+        this.IMT = this.json.getString("IMT");
+        this.Aktifitas = this.json.getString("Aktifitas");
+
     }
 
     public String getId_user() {
@@ -143,5 +152,29 @@ public class User {
 
     public void setFoto(String foto) {
         this.foto = foto;
+    }
+
+    public String getBBI() {
+        return BBI;
+    }
+
+    public void setBBI(String BBI) {
+        this.BBI = BBI;
+    }
+
+    public String getIMT() {
+        return IMT;
+    }
+
+    public void setIMT(String IMT) {
+        this.IMT = IMT;
+    }
+
+    public String getAktifitas() {
+        return Aktifitas;
+    }
+
+    public void setAktifitas(String aktifitas) {
+        Aktifitas = aktifitas;
     }
 }

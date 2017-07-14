@@ -47,7 +47,8 @@
         <activity
             android:name=".JadwalActivity"
             android:label="Jadwal" />
-        <activity android:name=".reportOlahragaAktif"></activity>
+        <activity android:name=".reportOlahragaAktif" />
+        <activity android:name=".DetailJadwal"></activity>
     </application>
 
 </manifest>

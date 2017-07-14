@@ -1,5 +1,7 @@
 package com.example.sam_boncel.kalkulatorgizi;
 
+import android.app.Activity;
+import android.app.KeyguardManager;
 import android.content.Intent;
 import android.hardware.SensorEvent;
 import android.os.CountDownTimer;
@@ -11,6 +13,7 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,7 +25,7 @@ public class OlahragaAktif extends AppCompatActivity implements SensorEventListe
     private CountDownTimer countDownTimer;
     TextView totalcoor, progress, txtKalori,txtKalTerbakar, txtNamaOlahraga;
     TextView txtJam;
-    Button btnOlahraga, btnMulai, btnHenti;
+    Button btnOlahraga;
     private float acelVal, acelLast, shake;
     String str = "";
     Double hasilKal, kkal, waktu;
@@ -47,8 +50,6 @@ public class OlahragaAktif extends AppCompatActivity implements SensorEventListe
         totalcoor = (TextView)findViewById(R.id.totalcoor);
         progress =(TextView)findViewById(R.id.progress);
         btnOlahraga = (Button)findViewById(R.id.btnOlahragaAktif);
-        btnHenti = (Button)findViewById(R.id.btnHenti);
-        btnMulai = (Button)findViewById(R.id.btnMulai);
         txtJam =(TextView)findViewById(R.id.txtJam);
 
         Intent a = getIntent();
@@ -60,58 +61,45 @@ public class OlahragaAktif extends AppCompatActivity implements SensorEventListe
         hasilKal = Double.parseDouble(a.getStringExtra("hasilKal"));
         waktu = Double.parseDouble(a.getStringExtra("waktu"));
 
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         showData();
 
         sensorManager = (SensorManager)getSystemService(SENSOR_SERVICE);
         sensorManager.registerListener(this, sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
         SensorManager.SENSOR_DELAY_NORMAL);
+
+
         acelVal = SensorManager.GRAVITY_EARTH;
         acelLast = SensorManager.GRAVITY_EARTH;
         shake = 0.00f;
 
-        btnOlahraga.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(getApplicationContext(), reportOlahragaAktif.class);
-                i.putExtra("id_olahraga", id);
-                i.putExtra("nama_olahraga", Nama_olg);
-                i.putExtra("kkalTerbakar", txtKalTerbakar.getText().toString());
-                i.putExtra("waktu", txtJam.getText().toString());
-                startActivity(i);
-            }
-        });
-
         mHandler = new Handler();
-
-        btnMulai.setEnabled(true);
         buttonState = 1;
         laps = "";
         lapsCount = 0;
-
-        btnMulai.setOnClickListener(new View.OnClickListener() {
+        btnOlahraga.setText("MULAI");
+        countKal(false);
+        btnOlahraga.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                countKal(true);
                 if (buttonState == 1){
                     mStarted = true;
                     mHandler.postDelayed(mRunnable, 10L);
                     start_time = System.currentTimeMillis();
                     laps = "";
-
-                    btnMulai.setText("Stop");
                     buttonState = 2;
+                    btnOlahraga.setText("Berhenti");
                 }else if (buttonState == 2){
+                    //txtJam.setText(String.format("%02d:%02d", 0, 0));
+                    Intent i = new Intent(getApplicationContext(), reportOlahragaAktif.class);
+                    i.putExtra("id_olahraga", id);
+                    i.putExtra("nama_olahraga", Nama_olg);
+                    i.putExtra("kkalTerbakar", txtKalTerbakar.getText().toString());
+                    i.putExtra("waktu", txtJam.getText().toString());
+                    startActivity(i);
                     mStarted = false;
-                    mHandler.removeCallbacks(mRunnable);
-
-                    btnMulai.setText("Reset");
-                    buttonState = 3;
-                } else if (buttonState == 3){
-                    txtJam.setText(String.format("%02d:%02d", 0, 0));
-                    laps = "";
-                    lapsCount = 0;
-
-                    btnMulai.setText("Mulai");
-                    buttonState = 1;
+                    countKal(false);
                 }
             }
         });
@@ -125,7 +113,6 @@ public class OlahragaAktif extends AppCompatActivity implements SensorEventListe
                 long seconds = millis / 1000;
                 txtJam.setText(String.format("%02d:%02d", seconds / 60, seconds % 60));
                 mHandler.postDelayed(mRunnable, 10L);
-
             }
         }
     };
@@ -145,14 +132,17 @@ public class OlahragaAktif extends AppCompatActivity implements SensorEventListe
             shake = shake * 0.9f + delta;
 
             double a = kkal / 60;
-            String ab = txtKalTerbakar.getText().toString();
-
-            if (Double.parseDouble(ab) > hasilKal){
-                countKal(false);
-//                txtKalTerbakar.setText("0.0");
-            } else {
+            if (buttonState == 2){
                 countKal(true);
+            } else {
+                countKal(false);
             }
+
+            String ab = txtKalTerbakar.getText().toString();
+//            if (Double.parseDouble(ab) > hasilKal){
+//                countKal(false);
+//            } else {
+//            }
 
             float total = event.values[0] + event.values[1] + event.values[2];
             totalcoor.setText("shake" + shake + "\n" + "total : " +total);
@@ -185,16 +175,16 @@ public class OlahragaAktif extends AppCompatActivity implements SensorEventListe
         if (b == true) {
             if (shake > 0 && shake <= 2) { //tidak melakukan apa" atau bergerak sangat pelan
 
-            } else if (shake > 2 && shake <= 7) { // Menjalankan kondisi jika gerakan pelan terdeteksi
-
-            } else if (shake > 7) { //Menjalankan kondisi jika gerakan keras terdeteksi
+            } else if (shake > 12) { //Menjalankan kondisi jika gerakan keras terdeteksi
                 Log.d("shake2", String.valueOf(shake));
                 Log.d("shake3", String.valueOf(satu));
                 Log.d("shake3", String.valueOf(kkaljd));
                 kkaljd = satu + dua;
                 txtKalTerbakar.setText(String.valueOf(kkaljd));
-            } else {
+            }  else {
+
             }
         }
     }
+
 }

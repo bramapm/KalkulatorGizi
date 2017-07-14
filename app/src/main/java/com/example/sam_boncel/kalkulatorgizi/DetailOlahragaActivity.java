@@ -43,8 +43,10 @@ public class DetailOlahragaActivity extends AppCompatActivity {
         String foto = i.getStringExtra("foto");
         String kkal = i.getStringExtra("kkal");
         String keterangan = i.getStringExtra("keterangan");
-        Picasso.with(this).load("http://192.168.43.20/KalkulatorGiziService/assets/upload/Olahraga/"+foto).into(imageView);
+        Picasso.with(this).load("http://192.168.100.13/KalkulatorGiziService/assets/upload/Olahraga/"+foto+".png").into(imageView);
         Log.d("FOTO", foto);
+        Log.d("FOTO", Nama_olg);
+        Log.d("FOTO", "metu");
         txtNama.setText(Nama_olg);
         txtKkal.setText(kkal);
         txtKeterangan.setText(keterangan);

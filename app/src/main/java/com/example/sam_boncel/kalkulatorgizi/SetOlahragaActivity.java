@@ -82,7 +82,7 @@ public class SetOlahragaActivity extends AppCompatActivity {
         String Nama_olg = i.getStringExtra("nama_olahraga");
         String kkal = i.getStringExtra("kkal");
         String keterangan = i.getStringExtra("keterangan");
-        String hasilKal = i.getStringExtra("hasilKal");
+        hasilKal = i.getStringExtra("hasilKal");
 
         Log.d("hasil", kkal);
         Log.d("hasil", hasilKal);
